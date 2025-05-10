@@ -1,0 +1,10 @@
+<h1>Click "Homepage" or "Bookmarks"</h1>
+<script>
+s = ''
+while(s.length < 4000)
+  s += '\n'
+onbeforeunload = function(){
+  document.write('<h1>done</h1>')
+  return s
+}
+</script>
