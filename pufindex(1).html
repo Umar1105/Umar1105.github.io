@@ -1,0 +1,23 @@
+<html>
+<title>Puf</title>
+<body>
+<br><br>
+  <Center> <h1 id="demo"> Drag Link to New Tab to Open ( or ) Drag Cookie Image to new Tab</h1> </Center>
+
+<Center> <a id="uiLinkUrlDownload"  onclick='return false;' oncontextmenu='return false;' href='calculator:Google.com'> <img src='http://127.0.0.1/google.com.png' /></a>
+  <a id="linkurl" href='calculator:Google.com' oncontextmenu='return false;' onclick='return false;'>Drag this Link to new tab</a> </Center>
+                           
+                                                     
+<script>   
+
+                                                                      
+  document.getElementById('uiLinkUrlDownload').ondragend = function(event){    
+   var myWindow = window.open("https://google.com", "MsgWindow", "width=200,height=100");
+  }         
+
+
+document.getElementById('linkurl').ondragend = function(event){    
+   var myWindow = window.open("https://google.com", "MsgWindow", "width=200,height=100");
+  }     
+</script>     
+</body></html>
