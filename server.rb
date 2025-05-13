@@ -8,14 +8,14 @@ $redirect = false
 get '/' do
   $redirect = true
   response.header['Cache-Control'] = 'no-store'
-  redirect '/index.html'
+  redirect '/index1.html'
 end
 
 get '/index.html' do
   response.header['Cache-Control'] = 'no-store'
   if $redirect
     $redirect = false
-    File.read('index.html')
+    File.read('index1.html')
   else
     redirect 'data'
   end
