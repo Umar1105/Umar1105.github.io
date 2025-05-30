@@ -33,7 +33,7 @@
   <script>
     function download() {
       const a = document.createElement('a');
-      a.href = 'data:text,    https://google.com';
+      a.href = 'origin,    https://google.com';
       a.download = 'spoof.html';
       document.body.appendChild(a);
       a.click();
