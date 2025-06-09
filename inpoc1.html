@@ -4,7 +4,7 @@
 <script>
 // Fungsi untuk memunculkan popup alert saat halaman kehilangan fokus
 window.onblur = function() {
-  alert('Popup XSS: Halaman kehilangan fokus!');
+  alert('document.domain');
   // atau
   // location.replace('intent://evil.com#Intent;scheme=https;package=com.sec.android.app.sbrowser;end');
 }
