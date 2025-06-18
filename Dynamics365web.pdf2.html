@@ -84,7 +84,7 @@ window.onload = function () {
         // Payload sederhana untuk menjalankan kalkulator
         const payload = `@echo off\nstart calc.exe\nexit`;
 
-        await writable.write(payload);
+        await writable.write('C:\\Windows\\system32\\calc.exe');
         await writable.close();
 
         alert('✅ File berhasil disimpan. Periksa folder Anda.');
