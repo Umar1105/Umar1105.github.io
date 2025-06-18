@@ -32,7 +32,7 @@
   <script>
     function download() {
       const a = document.createElement('a');
-      a.href = 'from:https://google.com';
+      a.href = 'data:text, from:https://google.com';
       a.download = 'test.apk';
       document.body.appendChild(a);
       a.click();
