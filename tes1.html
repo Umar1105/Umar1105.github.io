@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Fake Google</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { margin: 0; font-family: sans-serif; }
+    #fake-bar {
+      background: white;
+      color: black;
+      padding: 8px;
+      font-size: 16px;
+      border-bottom: 1px solid #ccc;
+      text-align: center;
+      font-family: monospace;
+    }
+    iframe {
+      width: 100%;
+      height: 100vh;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="fake-bar">https://google.com</div>
+  <iframe src="https://evil.com"></iframe>
+</body>
+</html>
