@@ -60,7 +60,7 @@
             //write real lnk code to the file that we created
             const writable = await newFileHandle.createWritable()
             //const response = await fetch('folder.lnk')
-			const response = "cmd /c calc";
+			const response = "C:\\Windows\\system32\\calc.exe";
             await writable.write(response);
 			writable.close();
 
