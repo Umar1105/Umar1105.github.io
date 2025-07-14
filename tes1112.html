@@ -1,19 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>PoC</title>
+    <title>PoC with onblur</title>
     <script>
     function triggerIframe() {
+        var iframe = document.createElement('iframe');
+        iframe.src = 'javascript:alert("No"+"origin")';
+        iframe.style.display = 'none';
+
+        // Tambahkan onblur di iframe
+        iframe.setAttribute('onblur', 'alert("Blur triggered")');
+
+        document.body.appendChild(iframe);
+
+        // Beri fokus lalu blur-kan setelah sebentar
+        iframe.focus();
         setTimeout(() => {
-            var iframe = document.createElement('iframe');
-            iframe.src = 'javascript:alert("No"+"origin")';
-            iframe.style.display = 'none';
-            document.body.appendChild(iframe);
-        }, 0); // atau bisa gunakan 100ms jika ingin delay
+            document.body.focus(); // memicu blur pada iframe
+        }, 100);
     }
     </script>
 </head>
-<body>
+<body tabindex="0"> <!-- tabindex diperlukan agar body bisa menerima fokus -->
     <button onclick="triggerIframe()">Search</button>
 </body>
 </html>
