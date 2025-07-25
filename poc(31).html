@@ -1,0 +1,49 @@
+<style>
+    select {
+        all: initial;
+
+
+    }
+
+    #front {
+        display: block;
+        top: 50vh;
+        left: 50vw;
+        position: fixed;
+
+    }
+
+    #spoofed {
+        display: none;
+        z-index: 1000;
+    }
+
+    * {
+        margin: 0;
+        overflow: hidden;
+
+    }
+</style>
+
+<div id="spoofed">
+    <img src="spoof.png" class="header" style="width: 100vw;height: 100vh;" />
+</div>
+<center id="front">
+    <select onmousedown="requestPermission()">
+        <option>Click to spoof</option>
+
+    </select>
+</center>
+
+
+
+
+<script>
+    function requestPermission() {
+        var front = document.getElementById("front");
+        var spoofed = document.getElementById("spoofed");
+        document.documentElement.requestFullscreen();
+        spoofed.style.display = 'block';
+        front.style.opacity = "0";
+    }
+</script>
