@@ -1,53 +1,122 @@
-<script>
-  // Buka tab baru ke domain Google (alamat URL terlihat asli)
-  let spoofTab = window.open("https://www.google.com/csi", "_blank");
-
-  // Setelah beberapa detik, coba ubah isi halaman jika memungkinkan
-  setTimeout(() => {
-    try {
-      // Tulis konten palsu ke tab tersebut
-      spoofTab.document.open();
-      spoofTab.document.write(`
-        <title>Google</title>
-        <style>
-          body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            background: #ffffff;
-          }
-          input {
-            padding: 12px;
-            margin: 8px;
-            width: 90%;
-            max-width: 300px;
-            font-size: 16px;
-          }
-          button {
-            padding: 10px 20px;
-            margin-top: 10px;
-            background-color: #1a73e8;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            border-radius: 4px;
-          }
-        </style>
-        <body>
-          <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_160x56dp.png" width="160" />
-          <input type="email" placeholder="Email or phone" />
-          <input type="password" placeholder="Enter your password" />
-          <button>Next</button>
-        </body>
-      `);
-      spoofTab.document.close();
-    } catch (e) {
-      console.log("Tidak bisa inject konten ke tab karena cross-origin policy");
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Google Login Spoof</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      gap: 20px;
     }
-  }, 1000); // Tunggu 1 detik agar halaman termuat dulu
-</script>
+    .redirect-button {
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 6px;
+      background-color: #4285F4;
+      color: white;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(66, 133, 244, 0.5);
+      transition: background-color 0.3s ease;
+    }
+    .redirect-button:hover {
+      background-color: #357ae8;
+    }
+  </style>
+</head>
+<body>
+  <button class="redirect-button" onclick="spoof()">Click to spoof Google Login</button>
+
+  <script>
+    function spoof() {
+      // Buka tab baru ke domain Google (akan terlihat trusted)
+      let spoofTab = window.open("https://www.google.com/csi", "_blank");
+
+      // Delay untuk memastikan tab terbuka sebelum inject
+      setTimeout(() => {
+        try {
+          spoofTab.document.write(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+              <title>Sign in - Google Accounts</title>
+              <style>
+                body {
+                  font-family: Arial, sans-serif;
+                  margin: 0;
+                  padding: 0;
+                  background: #f1f1f1;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  height: 100vh;
+                }
+                .login-box {
+                  background: #fff;
+                  padding: 30px 40px;
+                  border-radius: 8px;
+                  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                  width: 300px;
+                  text-align: center;
+                }
+                img.logo {
+                  width: 75px;
+                  margin-bottom: 20px;
+                }
+                h2 {
+                  font-weight: 400;
+                  font-size: 20px;
+                  margin-bottom: 20px;
+                }
+                input {
+                  width: 100%;
+                  padding: 10px 12px;
+                  margin-bottom: 15px;
+                  border: 1px solid #ccc;
+                  border-radius: 4px;
+                  font-size: 14px;
+                }
+                button {
+                  width: 100%;
+                  padding: 10px;
+                  background-color: #1a73e8;
+                  color: #fff;
+                  font-size: 15px;
+                  border: none;
+                  border-radius: 4px;
+                  cursor: pointer;
+                }
+                .footer {
+                  font-size: 11px;
+                  margin-top: 20px;
+                  color: #777;
+                }
+              </style>
+            </head>
+            <body>
+              <div class="login-box">
+                <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png" class="logo" alt="Google" />
+                <h2>Sign in</h2>
+                <input type="email" placeholder="Email or phone" />
+                <input type="password" placeholder="Enter your password" />
+                <button onclick="alert('Fake Google login')">Next</button>
+                <div class="footer">Not your computer? Use Guest mode to sign in privately.</div>
+              </div>
+            </body>
+            </html>
+          `);
+          spoofTab.document.close();
+        } catch (e) {
+          console.warn("Injeksi gagal: kemungkinan diblokir oleh browser (cross-origin)", e);
+        }
+      }, 200); // Bisa disesuaikan delay-nya
+    }
+  </script>
+</body>
+</html>
