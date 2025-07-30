@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="ISO-2022-JP">
+  <title>Bridge Test</title>
+</head>
+<body>
+  <h1>Checking JS Interface</h1>
+  <script>
+    let results = [];
+    for (const k in window) {
+      results.push(k);
+    }
+    document.body.innerHTML += "<pre>" + results.join("\n") + "</pre>";
+  </script>
+</body>
+</html>
