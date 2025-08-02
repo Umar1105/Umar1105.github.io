@@ -1,72 +1,86 @@
 <!DOCTYPE html>
-<html onmousedown="rfsSelectAll()" onclick="selectAllChildren()">
+<html>
   <head>
     <meta charset="UTF-8" />
-    <title>Full Screen Image Trigger</title>
+    <title>Fullscreen Image with Bottom Buttons</title>
     <style>
       body.fullscreen-active {
         overflow: hidden;
       }
 
-      #scroll-filler {
-        height: 10000px;
+      #spoof {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        object-fit: cover;
+        z-index: 9998;
       }
 
-      /* Tambahan agar paragraf terlihat jelas */
-      #paragraph1 {
-        font-size: 24px;
-        margin: 40px;
+      .action-buttons {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 9999;
+      }
+
+      .action-buttons button {
+        margin: 5px;
+        padding: 10px 15px;
+        font-size: 14px;
       }
     </style>
   </head>
 
   <body>
-    <!-- Elemen kosong untuk membuat halaman bisa discroll jauh ke bawah -->
-    <div id="scroll-filler"></div>
+    <img id="spoof" src="google.png" alt="Fullscreen Image" />
+    <div class="action-buttons" id="buttons">
+      <button onclick="copy()">Copy</button>
+      <button onclick="share()">Share</button>
+      <button onclick="selectText()">Select All</button>
+    </div>
 
-    <!-- Paragraf target untuk selectAllChildren -->
-    <p id="paragraph1">
-      <!-- Trigger Translate Menu -->
-      A[= ?:TLv S9y
-      <!-- Trigger Translate Menu -->
-    </p>
+    <div id="scroll-filler" style="height: 10000px;"></div>
 
-    <!-- Gambar disembunyikan, akan muncul penuh saat di-trigger -->
-    <img
-      id="spoof"
-      style="display: none"
-      src="google.png"
-      alt="Fullscreen Image"
-    />
-
-    <!-- Script diletakkan di bagian bawah -->
     <script>
-      function rfsSelectAll() {
-        document.execCommand("selectAll");
-
+      document.body.onclick = () => {
         const img = document.getElementById("spoof");
+        const btns = document.getElementById("buttons");
 
         img.style.display = "block";
-        img.style.position = "fixed";
-        img.style.top = "0";
-        img.style.left = "0";
-        img.style.width = "100vw";
-        img.style.height = "100vh";
-        img.style.objectFit = "cover";
-        img.style.zIndex = "9999";
-
+        btns.style.display = "block";
         document.body.classList.add("fullscreen-active");
+      };
+
+      function copy() {
+        navigator.clipboard.writeText("Contoh teks disalin");
+        alert("Teks disalin!");
       }
 
-      function selectAllChildren() {
-        const paragraph = document.getElementById("paragraph1");
-        if (paragraph) {
-          const selection = document.getSelection();
-          selection.removeAllRanges();
-          const range = document.createRange();
-          range.selectNodeContents(paragraph);
-          selection.addRange(range);
+      function share() {
+        if (navigator.share) {
+          navigator.share({
+            title: "Bagikan",
+            text: "Cek gambar ini!",
+            url: window.location.href,
+          });
+        } else {
+          alert("Fitur Share tidak tersedia");
         }
+      }
+
+      function selectText() {
+        const dummyText = document.createElement("textarea");
+        dummyText.value = "Teks untuk dipilih semua.";
+        document.body.appendChild(dummyText);
+        dummyText.select();
+        document.execCommand("copy");
+        document.body.removeChild(dummyText);
+        alert("Teks dipilih dan disalin!");
       }
     </script>
   </body>
