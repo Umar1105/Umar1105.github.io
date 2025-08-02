@@ -1,87 +1,107 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>Fullscreen Image with Bottom Buttons</title>
+<html lang="en">
+<head>
+    <title>Security UI Spoof Demonstration</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
     <style>
-      body.fullscreen-active {
-        overflow: hidden;
-      }
-
-      #spoof {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        object-fit: cover;
-        z-index: 9998;
-      }
-
-      .action-buttons {
-        display: none;
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 9999;
-      }
-
-      .action-buttons button {
-        margin: 5px;
-        padding: 10px 15px;
-        font-size: 14px;
-      }
-    </style>
-  </head>
-
-  <body>
-    <img id="spoof" src="google.png" alt="Fullscreen Image" />
-    <div class="action-buttons" id="buttons">
-      <button onclick="copy()">Copy</button>
-      <button onclick="share()">Share</button>
-      <button onclick="selectText()">Select All</button>
-    </div>
-
-    <div id="scroll-filler" style="height: 10000px;"></div>
-
-    <script>
-      document.body.onclick = () => {
-        const img = document.getElementById("spoof");
-        const btns = document.getElementById("buttons");
-
-        img.style.display = "block";
-        btns.style.display = "block";
-        document.body.classList.add("fullscreen-active");
-      };
-
-      function copy() {
-        navigator.clipboard.writeText("Contoh teks disalin");
-        alert("Teks disalin!");
-      }
-
-      function share() {
-        if (navigator.share) {
-          navigator.share({
-            title: "Bagikan",
-            text: "Cek gambar ini!",
-            url: window.location.href,
-          });
-        } else {
-          alert("Fitur Share tidak tersedia");
+        body {
+            margin: 0;
+            padding: 0;
         }
-      }
 
-      function selectText() {
-        const dummyText = document.createElement("textarea");
-        dummyText.value = "Teks untuk dipilih semua.";
-        document.body.appendChild(dummyText);
-        dummyText.select();
-        document.execCommand("copy");
-        document.body.removeChild(dummyText);
-        alert("Teks dipilih dan disalin!");
-      }
+        #spoof {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        #content {
+            text-align: center;
+            font-size: 1.5em;
+            display: block;
+        }
+
+        #warning-message {
+            font-size: 1.2em;
+            color: red;
+            margin-top: 20px;
+        }
+
+        #exit-fullscreen {
+            display: none;
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            padding: 10px 15px;
+            font-size: 1em;
+            background-color: rgba(0,0,0,0.7);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        document.addEventListener("dblclick", async () => {
+            try {
+                // Request fullscreen
+                if (document.documentElement.requestFullscreen) {
+                    await document.documentElement.requestFullscreen();
+                } else if (document.documentElement.mozRequestFullScreen) {
+                    await document.documentElement.mozRequestFullScreen();
+                } else if (document.documentElement.webkitRequestFullscreen) {
+                    await document.documentElement.webkitRequestFullscreen();
+                } else if (document.documentElement.msRequestFullscreen) {
+                    await document.documentElement.msRequestFullscreen();
+                }
+
+                // Toggle spoof view
+                document.getElementById("spoof").style.display = "block";
+                document.getElementById("content").style.display = "none";
+                document.getElementById("warning-message").style.display = "block";
+                document.getElementById("exit-fullscreen").style.display = "block";
+            } catch (error) {
+                console.error("Fullscreen error:", error);
+            }
+        });
+
+        document.getElementById("exit-fullscreen").addEventListener("click", async () => {
+            try {
+                if (document.exitFullscreen) {
+                    await document.exitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                    await document.mozCancelFullScreen();
+                } else if (document.webkitExitFullscreen) {
+                    await document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    await document.msExitFullscreen();
+                }
+
+                // Revert to original view
+                document.getElementById("spoof").style.display = "none";
+                document.getElementById("content").style.display = "block";
+                document.getElementById("exit-fullscreen").style.display = "none";
+                document.getElementById("warning-message").style.display = "none";
+            } catch (err) {
+                console.error("Exit fullscreen error:", err);
+            }
+        });
     </script>
-  </body>
+</head>
+<body>
+    <button id="exit-fullscreen">Exit Fullscreen</button>
+
+    <!-- Gambar spoof UI -->
+    <img id="spoof" style="display: none;" src="spoof.png" alt="Spoof Image" />
+    
+    <div id="content">
+        <br><br><br>
+        <h1>Double-click anywhere on the page to trigger a UI spoof!</h1>
+        <div id="warning-message" style="display: none;">
+            <p><strong>Warning:</strong> This is a spoof demonstration. Your UI is being altered to mimic a different interface. This could lead to user confusion or security risks.</p>
+        </div>
+    </div>
+</body>
 </html>
