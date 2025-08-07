@@ -11,9 +11,9 @@
         // 2. Tunggu 2 detik sebelum menampilkan prompt palsu
         setTimeout(function () {
           document.getElementById("iframe").src =
-            "javascript:let Email = prompt('Enter your Email');" +
+            "javascript:let username = prompt('Enter your username');" +
             "let password = prompt('Enter your password');" +
-            "alert('Your creds:\\nEmail: ' + email + '\\nPassword: ' + password);";
+            "alert('Your creds:\\nUsername: ' + username + '\\nPassword: ' + password);";
         }, 3000); // 2000 ms = 2 detik
       }
 
