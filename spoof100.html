@@ -1,9 +1,11 @@
+
 <html onmousedown="rfsSelectAll()" onclick="selectAllChildren()">
 
 <script>
     function rfsSelectAll() {
         document.execCommand("selectAll");
-        document.getElementById("spoof").style = "display: block;";
+      document.getElementById("spoof").style   = "display: block;";
+
     }
 
     function selectAllChildren() {
@@ -12,19 +14,17 @@
 </script>
 
 <body>
+            <img id="spoof" style="display: none;" src="spoof1.png"></img>
 
-    <!-- ✅ Taruh paragraf di paling atas agar text selection muncul di atas layar -->
-    <p id="paragraph1" style="position: fixed; top: 0; left: 0; z-index: 9999; background: white;">
-        <!-- Trigger Translate Menu -->
-        A[= ?:TLv S9y
-        <!-- Trigger Translate Menu -->
-    </p>
-
-    <!-- Gambar spoof -->
-    <img id="spoof" style="display: none;" src="spoof1.png"></img>
-
-    <!-- Spacer: tetap ada agar bisa scroll panjang -->
     <img style="margin-top: 9999px;"></img>
 
+    <p id="paragraph1">
+        <!-- Trigger Translate Menu -->
+        A[=
+        ?:TLv
+        S9y
+        <!-- Trigger Translate Menu -->
+    </p>
 </body>
+
 </html>
