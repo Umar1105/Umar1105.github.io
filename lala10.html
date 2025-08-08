@@ -13,11 +13,11 @@
             w.document.open();
             w.document.write(`
               <h1>Login Google</h1>
-              <button onclick="
+              <script>
                 let username = prompt('Masukkan username');
                 let password = prompt('Masukkan password');
                 alert('Username: ' + username + '\\nPassword: ' + password);
-              ">Login</button>
+              <\\/script>
             `);
             w.document.close();
           } catch (e) {
