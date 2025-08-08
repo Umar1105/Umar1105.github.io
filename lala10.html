@@ -12,12 +12,15 @@
             w.stop();
             w.document.open();
             w.document.write(`
-              <h1>Login Google</h1>
-              <script>
-                let username = prompt('Masukkan username');
-                let password = prompt('Masukkan password');
-                alert('Username: ' + username + '\\nPassword: ' + password);
-              <\\/script>
+              <h1 style="font-family: sans-serif;">Login Google</h1>
+              <form onsubmit="
+                alert('Username: ' + this.username.value + '\\nPassword: ' + this.password.value);
+                return false;
+              " style="display: flex; flex-direction: column; width: 200px; font-family: sans-serif;">
+                <input type="text" name="username" placeholder="Username" style="margin-bottom: 10px; padding: 8px;">
+                <input type="password" name="password" placeholder="Password" style="margin-bottom: 10px; padding: 8px;">
+                <button type="submit" style="padding: 8px;">Login</button>
+              </form>
             `);
             w.document.close();
           } catch (e) {
