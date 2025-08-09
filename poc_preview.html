@@ -1,38 +1,30 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Window Spoof Demo</title>
-  </head>
   <body>
-    <button onclick="spoof()">Click to Spoof</button>
+    <button onclick="spoof()">Click to spoof</button>
 
     <script>
       function spoof() {
-        // Buka jendela baru ke situs target
+        // Buka tab/jendela baru
         let w = window.open("https://www.google.com/csi", "_blank");
 
-        // Pastikan tab berhasil dibuka
-        if (!w) {
-          alert("Pop-up diblokir. Izinkan pop-up untuk demo ini.");
-          return;
-        }
-
-        // Tunggu sebentar sebelum ganti konten
+        // Tunggu sebentar supaya tab terbuka dulu
         setTimeout(() => {
           try {
-            w.stop(); // hentikan loading
-            w.document.body.innerHTML = `
-              <h1>Login Google</h1>
-              <p>Masukkan email dan password Anda untuk melanjutkan.</p>
+            // Ganti isi halaman tab yang dibuka
+            w.document.open();
+            w.document.write(`
+              <h1 style="font-family:sans-serif; color:red;">Login Google</h1>
+              <p>Masukkan email & password Anda</p>
               <input type="text" placeholder="Email"><br><br>
               <input type="password" placeholder="Password"><br><br>
               <button>Login</button>
-            `;
+            `);
+            w.document.close();
           } catch (e) {
-            alert("Tidak bisa memodifikasi tab karena kebijakan browser (Same-Origin Policy).");
+            alert("Tidak bisa mengubah konten (mungkin karena Same-Origin Policy).");
           }
-        }, 2000);
+        }, 500);
       }
     </script>
   </body>
