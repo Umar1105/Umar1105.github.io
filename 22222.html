@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <button id="spoofSafe">Open safe demo</button>
+
+    <script>
+      document.getElementById('spoofSafe').addEventListener('click', () => {
+        const w = window.open('https://google.com/csi', '_blank');
+
+        // contoh delay untuk mensimulasikan tindakan setelah buka tab
+        setTimeout(() => {
+          try {
+            // jangan target domain pihak ketiga — gunakan about:blank
+            w.document.open();
+            w.document.write(`
+              <body style="font-family:Arial;padding:20px;">
+                <h1>TEST ENVIRONMENT — DEMO ONLY</h1>
+                <p style="color:darkred"><strong>Ini hanya environment pengujian. Jangan masukkan kredensial nyata.</strong></p>
+                <button onclick="alert('Demo button clicked')">Demo action</button>
+              </body>
+            `);
+            w.document.close();
+          } catch (e) {
+            console.error('Gagal tulis ke window:', e);
+          }
+        }, 150);
+      });
+    </script>
+  </body>
+</html>
