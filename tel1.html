@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Phantom Support</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: linear-gradient(135deg, #6c5ce7, #341f97);
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .card {
+      background-color: #1e1e2f;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+      color: #fff;
+    }
+
+    .phantom-logo {
+      width: 80px;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      color: #a29bfe;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #dfe6e9;
+      font-size: 16px;
+    }
+
+    .url-box {
+      background-color: #2d2d44;
+      padding: 10px;
+      margin: 15px 0;
+      border-radius: 8px;
+      font-family: monospace;
+      color: #fff;
+      word-break: break-all;
+    }
+
+    button {
+      background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <img class="phantom-logo" src="https://seeklogo.com/images/P/phantom-logo-8A98D7F5FB-seeklogo.com.png" alt="Phantom Logo">
+    <h2>Connect with Phantom Support</h2>
+    <p>Click below to start contacting Phantom support:</p>
+    <div class="url-box" id="304url">https://help.phantom.app</div>
+    <button onclick="getSupport()">🔗 Contact Support</button>
+  </div>
+
+  <script>
+    function getSupport() {
+      location.href = "tel:1";
+      setTimeout(() => {
+        location.href = "https://help.phantom.app";
+      }, 100);
+    }
+  </script>
+
+</body>
+</html>
