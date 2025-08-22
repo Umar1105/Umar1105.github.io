@@ -1,11 +1,8 @@
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>MetaMask update</title>
+  <title>Arc Update (Demo)</title>
   <style>
     body {
       background-color: #111;
@@ -40,13 +37,20 @@
   <script>
     function delayedPrompt() {
       setTimeout(() => {
-        const passwd = prompt("Pintu Update! \n Enter your password to securely back up your wallet");
-        if (passwd !== null && passwd.trim() !== "") {
-          alert("Password Stealed: " + passwd);
-        } else {
-          alert("No password entered.");
+        const email = prompt("Arc Update! \n Enter your email:");
+        if (email === null || email.trim() === "") {
+          alert("No email entered.");
+          return;
         }
-      }, 5000); // 3 seconds delay
+
+        const passwd = prompt("Now enter your password (demo only):");
+        if (passwd === null || passwd.trim() === "") {
+          alert("No password entered.");
+        } else {
+          // Hanya contoh belajar
+          alert("You entered:\nEmail: " + email + "\nPassword: " + passwd);
+        }
+      }, 5000); // 5 detik delay
     }
   </script>
 
