@@ -2,47 +2,60 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>UXSS Sandbox PoC - Icon Trigger</title>
+  <title>UXSS Sandbox PoC - Bottom Nav</title>
   <style>
     body {
       font-family: Arial, sans-serif;
+      margin: 0;
       background: #f2f2f2;
-      text-align: center;
-      margin-top: 100px;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      justify-content: space-between;
     }
-    .icon {
-      width: 80px;
-      height: 80px;
-      margin: 20px;
-      display: inline-block;
-      border-radius: 20px;
-      background: #4a90e2;
-      color: white;
-      font-size: 14px;
-      line-height: 80px;
+    main {
       text-align: center;
+      padding-top: 80px;
+    }
+    .navbar {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      background: #111;
+      padding: 12px 0;
+    }
+    .nav-item {
+      flex: 1;
+      text-align: center;
+      color: #aaa;
       cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      font-size: 24px;
       user-select: none;
     }
-    .icon:hover {
-      background: #357ABD;
+    .nav-item:hover {
+      color: #fff;
     }
   </style>
   <script>
-    function openDashboard() {
-      // Delay agar terlihat payload muncul setelah akses Dashboard
+    function openWallet() {
+      // delay supaya terlihat seolah payload muncul setelah masuk dashboard wallet
       setTimeout(() => {
-        alert("💥 UXSS Payload Executed on Dashboard Icon!");
+        alert("💥 UXSS Payload Executed on Wallet Dashboard!");
       }, 1200);
     }
   </script>
 </head>
 <body>
-  <h1>Wallet App Simulation</h1>
-  <p>Tap ikon untuk membuka Dashboard.</p>
+  <main>
+    <h1>Wallet App Simulation</h1>
+    <p>Tap ikon di bawah untuk navigasi.</p>
+  </main>
 
-  <!-- Simulasi icon Dashboard -->
-  <div class="icon" onclick="openDashboard()">📊<br>Dashboard</div>
+  <!-- Bottom Navigation -->
+  <div class="navbar">
+    <div class="nav-item">🏠</div>
+    <div class="nav-item" onclick="openWallet()">👛</div>
+    <div class="nav-item">⚙️</div>
+  </div>
 </body>
 </html>
