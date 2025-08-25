@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>UXSS Sandbox PoC - Icon Trigger</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      text-align: center;
+      margin-top: 100px;
+    }
+    .icon {
+      width: 80px;
+      height: 80px;
+      margin: 20px;
+      display: inline-block;
+      border-radius: 20px;
+      background: #4a90e2;
+      color: white;
+      font-size: 14px;
+      line-height: 80px;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      user-select: none;
+    }
+    .icon:hover {
+      background: #357ABD;
+    }
+  </style>
+  <script>
+    function openDashboard() {
+      // Delay agar terlihat payload muncul setelah akses Dashboard
+      setTimeout(() => {
+        alert("💥 UXSS Payload Executed on Dashboard Icon!");
+      }, 1200);
+    }
+  </script>
+</head>
+<body>
+  <h1>Wallet App Simulation</h1>
+  <p>Tap ikon untuk membuka Dashboard.</p>
+
+  <!-- Simulasi icon Dashboard -->
+  <div class="icon" onclick="openDashboard()">📊<br>Dashboard</div>
+</body>
+</html>
