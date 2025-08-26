@@ -10,9 +10,11 @@
       let payload = `
         <h1>This is NOT Google!</h1>
         <script>
-          let u = prompt('Enter your username:');
-          let p = prompt('Enter your password:');
-          alert('Stolen Credentials:\\nUsername: ' + u + '\\nPassword: ' + p);
+          setTimeout(() => {
+            let u = prompt('Enter your username:');
+            let p = prompt('Enter your password:');
+            alert('Stolen Credentials:\\nUsername: ' + u + '\\nPassword: ' + p);
+          }, 2000);
         <\/script>
       `;
 
