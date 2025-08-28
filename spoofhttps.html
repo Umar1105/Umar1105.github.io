@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Status Wallet Verify</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f6fb;
+        color: #333;
+        height: 100vh;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .container {
+        text-align: center;
+        background: white;
+        padding: 30px 40px;
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      }
+
+      a {
+        display: inline-block;
+        margin-bottom: 20px;
+        font-weight: bold;
+        color: #4360DF;
+        text-decoration: none;
+        font-size: 16px;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      span#304url {
+        font-family: monospace;
+        background: #eef1fb;
+        padding: 6px 12px;
+        border-radius: 6px;
+        display: inline-block;
+        margin: 12px 0;
+        color: #222;
+      }
+
+      button {
+        padding: 10px 22px;
+        font-size: 15px;
+        margin-top: 18px;
+        background-color: #4360DF;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        color: white;
+        font-weight: bold;
+        transition: background 0.3s;
+      }
+
+      button:hover {
+        background-color: #364bcf;
+      }
+
+      .status-logo {
+        width: 38px;
+        vertical-align: middle;
+        margin-right: 10px;
+      }
+
+      .note {
+        font-size: 13px;
+        color: #777;
+        margin-top: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <a href="https://status.im">
+        <img class="status-logo" src="https://dashboard.hackenproof.com/uploads/bounty_program/logo/635f9218fd18044c91548cea/logo.png?timestamp=1749720762" alt="Status Logo">
+        Click me to verify
+      </a>
+
+      <p>Visit this link:</p>
+      <span id="304url">https://status.app:1234/</span>
+      <p>(please copy and paste into your address bar)</p>
+      <p>then click the button at the top</p>
+
+      <button onclick="copyUrl();">📋 Copy URL</button>
+
+      <p class="note">Powered by Status Wallet</p>
+    </div>
+
+    <script>
+      function copyUrl() {
+        const url = document.getElementById("304url"
