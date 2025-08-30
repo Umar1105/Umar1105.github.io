@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Fake Login PoC</title>
+  </head>
+  <body>
+    <h1>This is not Google!</h1>
+    <button onclick="collectCreds()">Click me</button>
+
+    <script>
+      function collectCreds() {
+        let username = prompt('Enter your username');
+        let password = prompt('Enter your password');
+        alert('Your creds:\nUsername: ' + username + '\nPassword: ' + password);
+      }
+    </script>
+  </body>
+</html>
