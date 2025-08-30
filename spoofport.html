@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pretty URL Copy - Coin98</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        color: #333;
+        height: 100vh;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .container {
+        text-align: center;
+        background: white;
+        padding: 30px 40px;
+        border-radius: 12px;
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
+      }
+
+      a {
+        display: inline-block;
+        margin-bottom: 20px;
+        font-weight: bold;
+        color: #f5c211;
+        text-decoration: none;
+        font-size: 18px;
+      }
+
+      span#304url {
+        font-family: monospace;
+        background: #e0e0e0;
+        padding: 6px 12px;
+        border-radius: 6px;
+        display: inline-block;
+        margin: 12px 0;
+      }
+
+      button {
+        padding: 10px 24px;
+        font-size: 16px;
+        margin-top: 15px;
+        background-color: #f5c211;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        color: black;
+        font-weight: bold;
+      }
+
+      button:hover {
+        background-color: #d4a90f;
+      }
+
+      .coin98-logo {
+        width: 60px;
+        display: block;
+        margin: 0 auto 15px auto; /* center + add spacing */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <img class="coin98-logo" src="https://dashboard.hackenproof.com/uploads/bounty_program/logo/63a2d049fd180416530f59ad/profile_logo.png?timestamp=1751592422" alt="Coin98 Logo">
+      <span id="304url">https://coin98.com:1234/</span>
+      <p>(please copy and paste into your address bar)</p>
+      <p>then click the button at the top</p>
+
+      <button onclick="copyUrl();">📋 Copy URL</button>
+    </div>
+
+    <script>
+      function copyUrl() {
+        const url = document.getElementById("304url");
+        if (!window.getSelection) return;
+        var range = document.createRange();
+        range.selectNodeContents(url);
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        document.execCommand("copy");
+        alert("URL copied to clipboard!");
+      }
+    </script>
+  </body>
+</html>
