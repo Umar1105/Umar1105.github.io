@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <button onclick="spoof()">Click to spoof</button>
+
+  <script>
+    function spoof() {
+      let win = window.open("https://www.google.com/gen_204", "_blank");
+
+      let payload = `
+          <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_160x56dp.png"
+          alt="Google Logo" width="160" height="56">
+      `;
+
+      setTimeout(() => {
+        try {
+          win.document.write(payload);
+          win.document.close();
+        } catch (e) {
+          console.warn("Blocked by browser protections:", e);
+        }
+      }, 200);
+    }
+  </script>
+</body>
+</html>
