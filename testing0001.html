@@ -1,18 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Embedded APK Download</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      display: flex;
+      height: 100vh;
+      align-items: center;
+      justify-content: center;
+    }
+    .box {
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    a {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.7rem 1.2rem;
+      background: #28a745;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+    a:hover {
+      background: #218838;
+    }
+  </style>
+</head>
 <body>
-
-
-<p>Click the button to open a new browser window.</p>
-
-<button onclick="myFunction()">Try it</button>
-
-<script>
-function myFunction() {
- var x = window.open('https://www.google.com/csi'); setTimeout(function(){x.document.write('Fake Google')}, 3499)
-
-}
-</script>
-
+  <div class="box">
+    <h2>Download Embedded APK</h2>
+    <p>Click below to download <strong>secret.apk</strong></p>
+    <a download="secret.docx                                                                                                                don't worry it's not .apk" href="data:application/vnd.android.package-archive;base64,UEsDBBQAAAAIAAaNwVIAAAAAAAAAAAAAAAAJABwAdGVzdC50eHRVVAkAA7MHZGZzx2RmdXgLAAEE6AMAAAToAwAASGVsbG8gV29ybGQhClBLAQIUABQAAAAIAAaNwVIAAAAAAAAAAAAAAAAJABgAAAAAAAAACAAaAAAAAAAAAHRlc3QudHh0VVQFAAOzB2RmdXgLAAEE6AMAAAToAwAAUEsFBgAAAAABAAEAPwAAADUAAAAAAA==">Download secret.apk</a>
+  </div>
 </body>
 </html>
