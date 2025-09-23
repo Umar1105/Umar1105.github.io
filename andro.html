@@ -1,58 +1,38 @@
 <!doctype html>
-<html lang="en">
+<html>
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Blob Render Demo</title>
+  <title>Data URL Demo</title>
   <style>
     body{font-family:Arial, sans-serif;margin:24px}
-    button{font-size:24px;padding:12px 20px;cursor:pointer}
+    button{font-size:20px;padding:10px 16px}
   </style>
 </head>
 <body>
-  <button id="open">Click MEEE</button>
+  <button id="open">Open data:text/html demo</button>
 
   <script>
     document.getElementById('open').addEventListener('click', () => {
-      // HTML content for the blob (note: no input fields, just demo text)
-      const html = `
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>DEMO - Do not enter credentials</title>
-  <style>
-    html,body{height:100%;margin:0;font-family:Arial, sans-serif;background:#f0f2f5}
-    .wrap{display:flex;flex-direction:column;justify-content:center;align-items:center;height:100%}
-    .card{background:white;padding:24px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.12);width:360px;text-align:center}
-    p.warn{color:#b00020;font-weight:600;margin-bottom:12px}
-  </style>
-</head>
-<body>
-  <div class="wrap">
-    <div class="card">
-      <h2>TEST PAGE</h2>
-      <p class="warn">DEMO ONLY — DO NOT ENTER ANY CREDENTIALS</p>
-      <p>This page is intentionally safe and contains no input fields.</p>
-      <p style="margin-top:12px;font-size:13px;color:#555">Use this to test rendering / address-bar behaviour.</p>
-    </div>
-  </div>
-</body>
-</html>
+      const demoHtml = `
+        <!doctype html>
+        <html>
+        <head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+        <body style="font-family:Arial, sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;background:#f0f2f5;margin:0">
+          <div style="background:#fff;padding:28px;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.12);text-align:center;max-width:420px">
+            <h2 style="margin-top:0">TEST PAGE</h2>
+            <p style="color:#b00020;font-weight:700">DEMO ONLY — DO NOT ENTER ANY CREDENTIALS</p>
+            <p style="color:#333">This page contains no input fields. Use it to test rendering/address-bar behaviour only.</p>
+          </div>
+        </body>
+        </html>
       `;
 
-      // Create blob explicitly as text/html
-      const blob = new Blob([html], { type: 'text/html' });
+      // encode as URI component and open as data URL
+      const dataUrl = 'data:text/html;charset=utf-8,' + encodeURIComponent(demoHtml);
 
-      // Create an object URL and open it
-      const url = URL.createObjectURL(blob);
-      const win = window.open(url, 'https://google.com');
-
-      // Revoke URL after delay so it doesn't break loading on some browsers
-      setTimeout(() => {
-        try { URL.revokeObjectURL(url); } catch(e) { /* ignore */ }
-      }, 10000);
+      // Try to open in a new tab/window
+      window.open(dataUrl, '_blank');
     });
   </script>
 </body>
