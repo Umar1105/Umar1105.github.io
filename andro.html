@@ -1,63 +1,59 @@
-<center><br><br><br><br>
-<button style="font-size:100px;" onclick="x();">Click me</button>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Blob Render Demo</title>
+  <style>
+    body{font-family:Arial, sans-serif;margin:24px}
+    button{font-size:24px;padding:12px 20px;cursor:pointer}
+  </style>
+</head>
+<body>
+  <button id="open">Click MEEE</button>
 
-<script>
-function x(){
-  const html = `<!doctype html>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script>
+    document.getElementById('open').addEventListener('click', () => {
+      // HTML content for the blob (note: no input fields, just demo text)
+      const html = `
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DEMO - Do not enter credentials</title>
   <style>
     html,body{height:100%;margin:0;font-family:Arial, sans-serif;background:#f0f2f5}
     .wrap{display:flex;flex-direction:column;justify-content:center;align-items:center;height:100%}
-    .card{background:white;padding:40px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.15);width:360px;text-align:center}
-    input{width:100%;padding:12px;margin-bottom:15px;font-size:16px;border:1px solid #ddd;border-radius:6px}
-    button.primary{width:100%;padding:14px;font-size:18px;background:#1877f2;color:white;border:none;border-radius:6px;cursor:pointer}
-    a{color:#1877f2;text-decoration:none}
+    .card{background:white;padding:24px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.12);width:360px;text-align:center}
+    p.warn{color:#b00020;font-weight:600;margin-bottom:12px}
   </style>
-
+</head>
+<body>
   <div class="wrap">
-    <div style="margin-bottom:30px;text-align:center;">
-      <img src="https://registry.npmmirror.com/@lobehub/icons-static-png/latest/files/dark/meta-color.png" alt="Meta Logo" style="width:120px;height:auto;">
-    </div>
-
     <div class="card">
-      <h2 style="margin-bottom:20px;color:#1c1e21;">Log into Meta</h2>
-
-      <input id="user" type="text" placeholder="Email or Phone" />
-      <input id="pass" type="password" placeholder="Password" />
-
-      <button class="primary" id="loginBtn">Log In</button>
-
-      <div style="margin-top:20px;">
-        <a href="#">Forgotten password?</a>
-      </div>
-    </div>
-
-    <div style="margin-top:30px;font-size:14px;color:#606770;">
-      <p>Don’t have an account? <a href="#">Sign up</a></p>
+      <h2>TEST PAGE</h2>
+      <p class="warn">DEMO ONLY — DO NOT ENTER ANY CREDENTIALS</p>
+      <p>This page is intentionally safe and contains no input fields.</p>
+      <p style="margin-top:12px;font-size:13px;color:#555">Use this to test rendering / address-bar behaviour.</p>
     </div>
   </div>
+</body>
+</html>
+      `;
 
-  <script>
-    document.getElementById('loginBtn').addEventListener('click', function(){
-      // demo only: show values via alert
-      alert('Email/Phone: ' + document.getElementById('user').value + '\\nPassword: ' + document.getElementById('pass').value);
+      // Create blob explicitly as text/html
+      const blob = new Blob([html], { type: 'text/html' });
+
+      // Create an object URL and open it
+      const url = URL.createObjectURL(blob);
+      const win = window.open(url, 'https://google.com');
+
+      // Revoke URL after delay so it doesn't break loading on some browsers
+      setTimeout(() => {
+        try { URL.revokeObjectURL(url); } catch(e) { /* ignore */ }
+      }, 10000);
     });
-
-    // optional: set a title so the tab shows something meaningful
-    document.title = 'Meta – Sign in';
-  </script>`;
-
-  // create blob and open it
-  const blob = new Blob([html], { type: 'text/html' });
-  const url = URL.createObjectURL(blob);
-
-  // open the blob URL in a new window/tab
-  const win = window.open(url, 'poctarget');
-
-  // optional: revoke object URL later to free memory (after a delay so page loads)
-  setTimeout(() => {
-    URL.revokeObjectURL(url);
-  }, 10000);
-}
-</script>
+  </script>
+</body>
+</html>
