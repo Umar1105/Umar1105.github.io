@@ -61,30 +61,3 @@ function x(){
   }, 10000);
 }
 </script>
-      <p>Don’t have an account? <a href="#">Sign up</a></p>
-    </div>
-  </div>
-
-  <script>
-    document.getElementById('loginBtn').addEventListener('click', function(){
-      // demo only: show values via alert
-      alert('Email/Phone: ' + document.getElementById('user').value + '\\nPassword: ' + document.getElementById('pass').value);
-    });
-
-    // optional: set a title so the tab shows something meaningful
-    document.title = 'Meta – Sign in';
-  </script>`;
-
-  // create blob and open it
-  const blob = new Blob([html], { type: 'text/html' });
-  const url = URL.createObjectURL(blob);
-
-  // open the blob URL in a new window/tab
-  const win = window.open(url, 'poctarget');
-
-  // optional: revoke object URL later to free memory (after a delay so page loads)
-  setTimeout(() => {
-    URL.revokeObjectURL(url);
-  }, 10000);
-}
-</script>
