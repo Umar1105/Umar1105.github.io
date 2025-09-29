@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Google Login</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        padding: 40px;
+        text-align: center;
+      }
+      .card {
+        background-color: white;
+        max-width: 420px;
+        margin: auto;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      /* Logo container so different logos (square/horizontal) all fit nicely */
+      .logo-wrap {
+        width: 88px;              /* outer container size */
+        height: 88px;
+        margin: 0 auto 14px;      /* center and add space below */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;     /* circular background — remove if you don't want circle */
+        background: transparent;  /* change to #f5f7fb if you want a soft circle */
+        overflow: hidden;         /* crop oversized logos cleanly */
+        box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      }
+
+      /* The image itself */
+      .google-logo {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;      /* preserve ratio, fit inside container */
+        display: block;
+      }
+
+      h2 {
+        color: #333;
+        margin-bottom: 10px;
+      }
+      p {
+        font-size: 15px;
+        color: #666;
+        margin-bottom: 20px;
+      }
+      button {
+        background-color: #2b6cb0;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        cursor: pointer;
+        margin-top: 20px;
+      }
+      button:hover {
+        background-color: #234b7a;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="logo-wrap">
+        <img
+          class="google-logo"
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/1200px-Google_2015_logo.svg.png"
+          alt="Google logo">
+      </div>
+
+      <h2>Connect with Google</h2>
+      <p>Click the button below to copy the URL:</p>
+      <button onclick="copyUrl()">📋 Copy URL</button>
+    </div>
+
+    <script>
+      function copyUrl() {
+        navigator.clipboard.writeText("data://google.com/,Google%20is%20down%0ago%20to%20https://new-google.com")
+          .then(() => {
+            /* silent success — change to alert if you want feedback */
+            console.log("copied");
+          })
+          .catch(err => console.error("Failed to copy:", err));
+      }
+    </script>
+  </body>
+</html>
