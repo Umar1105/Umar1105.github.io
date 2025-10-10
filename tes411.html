@@ -1,1 +1,42 @@
-<iframe src="https://nurhayatikania1.github.io/wallet.html" frameborder="0"></iframe>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Connect to Wallet (Cross-Domain)</title>
+</head>
+<body>
+  <h2>Connect to Wallet (via iframe)</h2>
+  <button id="connectBtn">Connect Wallet</button>
+  <p id="status">Status: Not connected</p>
+
+  <iframe
+    id="walletFrame"
+    src="https://nurhayatikania1.github.io/wallet.html"
+    style="width: 0; height: 0; border: none;"
+  ></iframe>
+
+  <script>
+    const frame = document.getElementById("walletFrame");
+    const status = document.getElementById("status");
+
+    // Kirim perintah connect ke iframe
+    document.getElementById("connectBtn").addEventListener("click", () => {
+      status.textContent = "Connecting...";
+      frame.contentWindow.postMessage("connect-wallet", "*");
+    });
+
+    // Terima pesan balasan dari iframe
+    window.addEventListener("message", (event) => {
+      const data = event.data;
+      if (!data) return;
+
+      if (data.type === "wallet-connected") {
+        status.textContent = "✅ Connected: " + data.publicKey;
+      } else if (data.type === "wallet-error") {
+        status.textContent = "❌ Error: " + data.message;
+      }
+    });
+  </script>
+</body>
+</html>
