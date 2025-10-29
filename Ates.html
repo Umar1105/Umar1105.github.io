@@ -1,37 +1,109 @@
 <!DOCTYPE html>
 <html>
+<head>
+  <meta charset="utf-8" />
+  <title>Test Popup Fix</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding:20px; }
+    button { padding:10px 16px; font-size:16px; }
+  </style>
+</head>
 <body>
-<button id="openTest">Buka Test Popup</button>
+  <button id="openTest">Buka Test Popup</button>
 
-<script>
-document.getElementById('openTest').addEventListener('click', function() {
-  // buka popup yang dibuat di origin yang sama (aman untuk pengujian)
-  const win = window.open('', 'www.google.com:8080', 'width=420,height=420');
-  const content = `
-    <div style="font-family: Arial, sans-serif; text-align:center; padding:20px;">
-      <h1 style="color: #b00020;">TEST PAGE — DO NOT USE REAL CREDENTIALS</h1>
-      <p style="color:#333;">Halaman ini hanya untuk pengujian internal aplikasi Anda.</p>
-      <form id="testForm" style="margin-top:20px;">
-        <input type="text" placeholder="username" required style="display:block; margin:8px auto; padding:8px; width:80%;">
-        <input type="password" placeholder="password" required style="display:block; margin:8px auto; padding:8px; width:80%;">
-        <button type="submit" style="padding:8px 16px; margin-top:12px;">Submit (test)</button>
-      </form>
-      <pre id="result" style="text-align:left; max-width:90%; margin:12px auto; background:#f6f6f6; padding:8px;"></pre>
-      <p style="font-size:12px; color:#666;">This is a simulated response — no credentials are sent anywhere.</p>
-    </div>
-  `;
-  win.document.open();
-  win.document.write(content);
-  win.document.close();
+  <script>
+    document.getElementById('openTest').addEventListener('click', function () {
+      // Buka popup dengan nama dan ukuran — browser lebih mungkin mengizinkan
+      const win = window.open('', 'google.com/csi', 'width=420,height=520,left=200,top=200');
 
-  // contoh handler form (hanya menampilkan data di halaman test, tidak mengirim)
-  win.document.getElementById('testForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const u = win.document.querySelector('input[type="text"]').value;
-    const p = win.document.querySelector('input[type="password"]').value;
-    win.document.getElementById('result').textContent = Simulated login: username=${u}, password=${'*'.repeat(p.length)};
-  });
-});
-</script>
+      if (!win) {
+        // Popup diblokir: beri feedback / fallback
+        alert('Popup diblokir oleh browser. Menggunakan modal in-page sebagai fallback.');
+        openInlineModal();
+        return;
+      }
+
+      // Tulis konten popup (HANYA untuk pengujian; jangan gunakan logo pihak ketiga)
+      const html = `
+        <!doctype html>
+        <html>
+          <head>
+            <meta charset="utf-8" />
+            <title>Test Popup</title>
+            <style>
+              body { font-family: Arial, sans-serif; margin:20px; text-align:center; }
+              h1 { color: #b00020; }
+              input { display:block; margin:10px auto; padding:8px; width:80%; max-width:280px; }
+              button { padding:8px 16px; }
+              pre { text-align:left; background:#f6f6f6; padding:10px; max-width:90%; margin:12px auto; }
+            </style>
+          </head>
+          <body>
+            <h1>TEST PAGE — DO NOT USE REAL CREDENTIALS</h1>
+            <p>Halaman ini hanya untuk pengujian internal.</p>
+            <form id="testForm">
+              <input type="text" placeholder="username" required />
+              <input type="password" placeholder="password" required />
+              <button type="submit">Submit (test)</button>
+            </form>
+            <pre id="result"></pre>
+            <script>
+              document.getElementById('testForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const u = document.querySelector('input[type="text"]').value;
+                const p = document.querySelector('input[type="password"]').value;
+                document.getElementById('result').textContent = 'Simulated login: username=' + u + ', password=' + '*'.repeat(p.length);
+              });
+            <\/script>
+          </body>
+        </html>
+      `;
+      win.document.open();
+      win.document.write(html);
+      win.document.close();
+      win.focus();
+    });
+
+    // Fallback modal (in-page) jika popup diblokir
+    function openInlineModal() {
+      // buat modal sederhana (jika belum ada)
+      if (!document.getElementById('inlineModal')) {
+        const modal = document.createElement('div');
+        modal.id = 'inlineModal';
+        modal.innerHTML = `
+          <div style="
+            position:fixed; left:0; top:0; right:0; bottom:0;
+            background:rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center;
+            z-index:9999;">
+            <div style="background:#fff; padding:20px; width:90%; max-width:420px; border-radius:6px; text-align:center;">
+              <h2 style="margin-top:0; color:#b00020;">TEST PAGE — DO NOT USE REAL CREDENTIALS</h2>
+              <form id="inlineForm">
+                <input type="text" placeholder="username" required style="width:100%; padding:8px; margin:8px 0;" />
+                <input type="password" placeholder="password" required style="width:100%; padding:8px; margin:8px 0;" />
+                <div style="display:flex; gap:8px; justify-content:center; margin-top:12px;">
+                  <button type="submit">Submit</button>
+                  <button type="button" id="closeModal">Close</button>
+                </div>
+              </form>
+              <pre id="inlineResult" style="text-align:left; background:#f6f6f6; padding:8px; margin-top:12px; display:none;"></pre>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(modal);
+
+        document.getElementById('inlineForm').addEventListener('submit', function(e) {
+          e.preventDefault();
+          const u = modal.querySelector('input[type="text"]').value;
+          const p = modal.querySelector('input[type="password"]').value;
+          const pr = modal.querySelector('#inlineResult');
+          pr.style.display = 'block';
+          pr.textContent = 'Simulated login: username=' + u + ', password=' + '*'.repeat(p.length);
+        });
+        document.getElementById('closeModal').addEventListener('click', function() {
+          modal.remove();
+        });
+      }
+    }
+  </script>
 </body>
 </html>
