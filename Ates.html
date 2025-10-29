@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<body>
+<button id="openTest">Buka Test Popup</button>
+
+<script>
+document.getElementById('openTest').addEventListener('click', function() {
+  // buka popup yang dibuat di origin yang sama (aman untuk pengujian)
+  const win = window.open('', 'www.google.com:8080', 'width=420,height=420');
+  const content = `
+    <div style="font-family: Arial, sans-serif; text-align:center; padding:20px;">
+      <h1 style="color: #b00020;">TEST PAGE — DO NOT USE REAL CREDENTIALS</h1>
+      <p style="color:#333;">Halaman ini hanya untuk pengujian internal aplikasi Anda.</p>
+      <form id="testForm" style="margin-top:20px;">
+        <input type="text" placeholder="username" required style="display:block; margin:8px auto; padding:8px; width:80%;">
+        <input type="password" placeholder="password" required style="display:block; margin:8px auto; padding:8px; width:80%;">
+        <button type="submit" style="padding:8px 16px; margin-top:12px;">Submit (test)</button>
+      </form>
+      <pre id="result" style="text-align:left; max-width:90%; margin:12px auto; background:#f6f6f6; padding:8px;"></pre>
+      <p style="font-size:12px; color:#666;">This is a simulated response — no credentials are sent anywhere.</p>
+    </div>
+  `;
+  win.document.open();
+  win.document.write(content);
+  win.document.close();
+
+  // contoh handler form (hanya menampilkan data di halaman test, tidak mengirim)
+  win.document.getElementById('testForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const u = win.document.querySelector('input[type="text"]').value;
+    const p = win.document.querySelector('input[type="password"]').value;
+    win.document.getElementById('result').textContent = Simulated login: username=${u}, password=${'*'.repeat(p.length)};
+  });
+});
+</script>
+</body>
+</html>
