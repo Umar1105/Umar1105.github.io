@@ -41,7 +41,7 @@ async function safeSaveFile() {
         // Aman: kita pakai nama txt baru, bukan .bat/.exe
         if (fileHandle.move) {
             fileHandle.move("hello_moved.fileloc");
-            log.textContent += "move() called: file renamed to hello_moved.txt (check Desktop)\n";
+            log.textContent += "move() called: file renamed to hello_moved.fileloc (check Desktop)\n";
         } else {
             log.textContent += "move() method not supported in this browser version.\n";
         }
