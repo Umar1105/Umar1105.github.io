@@ -1,0 +1,19 @@
+<script>
+    function spoof() {
+        var w = open()
+        w.opener = null
+        w.document.write('Current URL: ' + document.URL)
+        w.location = 'chrome://version/'
+    }
+</script>
+<a href='JavaScript:spoof()'>Go</a>
+
+<script>
+    function boom() {
+        var w = open()
+        w.opener = null
+        w.document.write('Current URL: ' + document.URL)
+        w.location = 'https://www.google.com/csi'
+    }
+</script>
+<a href='JavaScript:boom()'>Go</a>
