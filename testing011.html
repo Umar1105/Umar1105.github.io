@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Mockup: iOS UI Lock Demo (visual only)</title>
+<style>
+  /* Reset */
+  * {box-sizing:border-box;margin:0;padding:0;font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
+  body {background:#0f1113; display:flex; align-items:center; justify-content:center; min-height:100vh; color:#fff;}
+
+  /* Phone frame */
+  .phone {
+    width: 390px; /* iPhone like */
+    height: 844px;
+    border-radius: 34px;
+    background: linear-gradient(#0b0b0b,#111214);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 2px 0 rgba(255,255,255,0.02);
+    position:relative;
+    overflow:hidden;
+    border: 8px solid rgba(255,255,255,0.03);
+  }
+
+  /* Notch & statusbar */
+  .status {
+    height:48px;
+    padding:8px 14px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    color:#d7d7d7;
+    font-weight:600;
+    font-size:16px;
+  }
+  .status .left {opacity:0.95}
+  .status .right {display:flex;gap:8px;align-items:center;font-weight:700}
+  .status .battery {background:#ffd400;color:#000;padding:3px 7px;border-radius:10px;font-size:12px}
+
+  /* Top notification bubble */
+  .top-notif {
+    position:absolute;
+    top:64px;
+    left:16px;
+    right:16px;
+    background:rgba(255,255,255,0.06);
+    border-radius:12px;
+    padding:10px 12px;
+    backdrop-filter: blur(6px);
+    display:flex;
+    gap:10px;
+    align-items:center;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.6);
+    color:#f2f2f2;
+    font-size:13px;
+  }
+  .top-notif .appicon {
+    width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#2b78ff,#7a4bff);
+  }
+  .top-notif .text {flex:1;line-height:1.1;opacity:0.95}
+
+  /* Main wallpaper area */
+  .content {
+    position:absolute;
+    top:120px;
+    bottom:0;
+    left:0;right:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background-image: radial-gradient(circle at 20% 10%, rgba(255,255,255,0.03), transparent 8%),
+                      radial-gradient(circle at 80% 80%, rgba(255,255,255,0.02), transparent 10%);
+  }
+
+  .big-text {
+    font-size:36px;
+    font-weight:600;
+    color:#fff;
+    text-align:center;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+    pointer-events:none;
+  }
+
+  /* Simulated system modal */
+  .sys-modal {
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-10%);
+    width:84%;
+    max-width:320px;
+    background:rgba(20,20,20,0.95);
+    border-radius:14px;
+    padding:14px;
+    text-align:center;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.6);
+    color:#fff;
+  }
+  .sys-modal .title {font-size:14px;opacity:0.9;margin-bottom:6px}
+  .sys-modal .appname {font-weight:700;margin-bottom:8px}
+  .sys-modal .buttons {display:flex;gap:12px;justify-content:center;margin-top:8px}
+  .btn {
+    padding:10px 18px;border-radius:20px;font-weight:700;border:none;cursor:pointer;
+    min-width:110px;
+  }
+  .btn.cancel {background:rgba(255,255,255,0.06);color:#fff}
+  .btn.open {background:#0aa1ff;color:#fff;box-shadow: 0 6px 18px rgba(10,161,255,0.18)}
+
+  /* Lower notification card */
+  .notif-card {
+    position:absolute;
+    left:50%;
+    bottom:120px;
+    transform:translateX(-50%);
+    width:78%;
+    background:linear-gradient(180deg, rgba(30,30,35,0.98), rgba(18,18,20,0.98));
+    border:1px solid rgba(255,255,255,0.04);
+    border-radius:12px;
+    padding:12px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+    display:flex;gap:12px;align-items:center;color:#f2f2f2;
+    font-size:13px;
+  }
+  .notif-dot {width:10px;height:10px;background:#7a49ff;border-radius:50%}
+  .notif-left {flex:1}
+  .notif-title {font-weight:700;margin-bottom:4px}
+  .notif-meta {opacity:0.75;font-size:12px}
+
+  /* small keyboard hint at very bottom to mimic screenshot */
+  .dock {
+    position:absolute;bottom:18px;left:0;right:0;display:flex;justify-content:center;opacity:0.9;font-size:13px;color:#bdbdbd;
+  }
+
+  /* Small responsiveness */
+  @media (max-width:420px) {
+    .phone {transform:scale(0.94)}
+  }
+</style>
+</head>
+<body>
+  <div class="phone" role="img" aria-label="Mockup phone">
+    <div class="status">
+      <div class="left">15.45</div>
+      <div class="right">
+        <div style="font-size:12px;opacity:0.8">📶</div>
+        <div style="font-size:12px;opacity:0.8">📡</div>
+        <div class="battery">99</div>
+      </div>
+    </div>
+
+    <div class="top-notif" id="topNotif">
+      <div class="appicon" aria-hidden></div>
+      <div class="text"><strong>DANA</strong> MULAI 14.00 WIB 🔥 Dapetin Saldo Jutaan di FLASH SALE DANA 11.11 yuk!</div>
+      <div style="width:8px"></div>
+    </div>
+
+    <div class="content">
+      <div>
+        <div class="big-text">Ability to lock your device</div>
+      </div>
+    </div>
+
+    <div class="sys-modal" id="sysModal" aria-hidden="false">
+      <div class="title">"Exodus" ingin membuka</div>
+      <div class="appname" id="appTarget">com.example.target</div>
+      <div class="buttons">
+        <button class="btn cancel" id="btnCancel">Batalkan</button>
+        <button class="btn open" id="btnOpen">Buka</button>
+      </div>
+    </div>
+
+    <div class="notif-card" id="notifCard">
+      <div class="notif-dot"></div>
+      <div class="notif-left">
+        <div class="notif-title">#3416657 [Exodus iOS] <span style="opacity:0.7">Critical</span></div>
+        <div class="notif-meta">cause UI lock and device crash · a few seconds ago</div>
+      </div>
+    </div>
+
+    <div class="dock">Safari — Det. iPhone • MacBook Pro</div>
+  </div>
+
+<script>
+  // Simple interactions for demo (visual only)
+  const modal = document.getElementById('sysModal');
+  const cancel = document.getElementById('btnCancel');
+  const open = document.getElementById('btnOpen');
+  const topNotif = document.getElementById('topNotif');
+
+  // Clicking 'Buka' will visually show a "blocked" effect (dim + spinner) but won't call any real deep link.
+  open.addEventListener('click', () => {
+    // show a fake blocking overlay for demonstration (non-malicious)
+    const overlay = document.createElement('div');
+    overlay.style.position = 'absolute';
+    overlay.style.inset = '0';
+    overlay.style.background = 'rgba(0,0,0,0.7)';
+    overlay.style.display = 'flex';
+    overlay.style.alignItems = 'center';
+    overlay.style.justifyContent = 'center';
+    overlay.style.zIndex = '100';
+    overlay.innerHTML = `<div style="color:#fff;text-align:center">
+      <div style="font-size:18px;font-weight:700;margin-bottom:10px">Processing…</div>
+      <div style="width:48px;height:48px;border-radius:50%;border:6px solid rgba(255,255,255,0.12);border-top-color:#0aa1ff; animation:spin 1s linear infinite;"></div>
+    </div>`;
+    document.querySelector('.phone').appendChild(overlay);
+
+    // After 2.5s, change to "device locked" message (visual only)
+    setTimeout(()=> {
+      overlay.innerHTML = `<div style="color:#fff;text-align:center">
+        <div style="font-size:18px;font-weight:700;margin-bottom:10px">Device locked (demo)</div>
+        <div style="font-size:12px;opacity:0.8">Reboot required — visual simulation only</div>
+      </div>`;
+    }, 2500);
+
+    // auto-remove overlay after 6s
+    setTimeout(()=> overlay.remove(), 6000);
+  });
+
+  cancel.addEventListener('click', () => {
+    // close modal visually
+    modal.style.display = 'none';
+    // show small toast for feedback
+    const t = document.createElement('div');
+    t.textContent = 'Action canceled';
+    Object.assign(t.style, {
+      position:'absolute',left:'50%',bottom:'40px',transform:'translateX(-50%)',
+      background:'rgba(255,255,255,0.08)',padding:'8px 14px',borderRadius:'999px',fontSize:'13px',color:'#fff'
+    });
+    document.querySelector('.phone').appendChild(t);
+    setTimeout(()=> t.remove(),2000);
+  });
+
+  // simple spin keyframe
+  const s = document.createElement('style'); s.innerHTML = "@keyframes spin{to{transform:rotate(360deg)}}";
+  document.head.appendChild(s);
+</script>
+</body>
+</html>
