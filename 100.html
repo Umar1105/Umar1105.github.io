@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Safe PoC Modal on Visibility Change</title>
+<style>
+  body{font-family:Arial;background:#111;color:#fff;padding:30px}
+  #modal {
+    display:none;
+    position:fixed;inset:0;
+    background:rgba(0,0,0,0.6);
+    align-items:center;justify-content:center;
+  }
+  #box {
+    background:#fff;color:#000;padding:20px;border-radius:8px;
+    width:320px;box-shadow:0 6px 18px rgba(0,0,0,0.5);
+  }
+  #box input{width:100%;padding:8px;margin-top:8px}
+  #box button{margin-top:10px;padding:8px 12px}
+</style>
+</head>
+<body>
+  <h3>PoC — Modal ketika tab tersembunyi</h3>
+  <p>Buka tab lain atau minimalkan browser untuk memicu modal saat kembali.</p>
+
+  <div id="modal" aria-hidden="true">
+    <div id="box" role="dialog" aria-modal="true">
+      <strong>Reset Password (Demo)</strong>
+      <div style="font-size:12px;margin-top:8px;color:#333">
+        Untuk tujuan demo, masukkan kata sandi lama (tidak disimpan).
+      </div>
+      <input id="pwd" type="password" placeholder="Masukkan kata sandi lama"/>
+      <div>
+        <button id="ok">OK</button>
+        <button id="cancel">Batal</button>
+      </div>
+      <div id="note" style="margin-top:8px;font-size:11px;color:#666">
+        Sumber: <span id="origin"></span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById('modal');
+    const originSpan = document.getElementById('origin');
+    originSpan.textContent = location.origin;
+
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) return; // trigger only when tab hidden
+      // do nothing while hidden; we'll show modal when user returns
+    });
+
+    // Show modal when user comes back (visible again)
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) {
+        modal.style.display = 'flex';
+        modal.setAttribute('aria-hidden','false');
+        document.getElementById('pwd').focus();
+      }
+    });
+
+    document.getElementById('ok').addEventListener('click', () => {
+      alert('Input diterima (demo).');
+      modal.style.display = 'none';
+      modal.setAttribute('aria-hidden','true');
+    });
+    document.getElementById('cancel').addEventListener('click', () => {
+      modal.style.display = 'none';
+      modal.setAttribute('aria-hidden','true');
+    });
+  </script>
+</body>
+</html>
