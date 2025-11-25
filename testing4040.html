@@ -16,8 +16,8 @@ function testRedirect() {
     win.document.close();
     setInterval(function() {
         win.location.replace("https://www.google.com:8000", "https://www.google.com:8000", "https://www.google.com:8000", "https://www.google.com:8000");
-        win.stop("https://google.com:8000");
-    }, 10);  // Small interval to preserve the spoof
+        win.stop(win);
+    }, );  // Small interval to preserve the spoof
 }
 </script>
 </body>
