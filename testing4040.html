@@ -7,7 +7,7 @@
 function spoof() {
 
     // 1) open new tab, MUST be user interaction
-    let win = window.open("https://www.google.com:8080", "https://www.google.com:8080");
+    let win = window.open("https://www.google.com:89", "https://www.google.com:89");
 
     if(!win) return alert("Please allow popups");
 
@@ -36,7 +36,7 @@ function spoof() {
 
     // 4) minor URL enforcement
     setTimeout(()=>{
-        try{ win.location.href = "https://www.google.com:8080"; }catch(e){}
+        try{ win.location.href = "https://www.google.com:89"; }catch(e){}
     }, 10);
 
 }
