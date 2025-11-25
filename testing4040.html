@@ -14,7 +14,7 @@ function spoof() {
     // 2) early stop to freeze navigation
     setTimeout(() => {
         try { win.stop(); } catch(e){}
-    }, 120);
+    }, 2000);
 
     // 3) inject fake UI
     setTimeout(() => {
@@ -32,7 +32,7 @@ function spoof() {
             `);
             win.document.close();
         }catch(e){}
-    }, 2000);
+    }, 10);
 
     // 4) minor URL enforcement
     setTimeout(()=>{
