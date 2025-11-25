@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <body>
-<button onclick="spoof()">CLICK TO SPOOF</button>
+<button onclick="spoof()">CLICK </button>
 
 <script>
 function spoof() {
     
     // 1) buka tab baru normal, Safari friendly
-    let win = window.open("https://www.google.com:8080", "_blank");
+    let win = window.open("https://www.google.com/csi", "_blank");
 
     if(!win) return alert("Safari blocked popup, allow popup first");
 
@@ -36,7 +36,7 @@ function spoof() {
 
     // 4) minor location enforcement
     setTimeout(()=>{
-        try{ win.location.href = "https://www.google.com:8080"; }catch(e){}
+        try{ win.location.href = "https://www.google.com/csi"; }catch(e){}
     }, 500);
 
 }
