@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <body>
-<button onclick="testRedirect()">CLICK </button>
+<button onclick="testRedirect()">CLICK WOY </button>
 <script>
 function testRedirect() {
     let win = window.open("https://www.google.com:8080", "https://www.google.com/:8080");
@@ -17,7 +17,7 @@ function testRedirect() {
     win.location.replace("https://www.google.com:8080");
     setInterval(() => {
     try { win.stop(); } catch(e){}
-    }, 50);
+    }, 1900);
 }
 </script>
 </body>
