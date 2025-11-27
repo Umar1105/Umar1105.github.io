@@ -16,13 +16,12 @@
 
 		function sendToWebhook(data) {
 			fetch(WEBHOOK_URL, {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({
-					value: data,
-					time: new Date().toISOString()
-				})
-			});
+    method: "POST",
+    mode: "no-cors",   // <<< fix utama
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ value: data })
+});
+
 		}
 		/* ====== END WEBHOOK ====== */
 
@@ -46,7 +45,7 @@
 <body>
 	<center>
 		<br>
-		<h1>Click Here</h1>
+		<h1>Click Hereeeee</h1>
 	</center>
 	<iframe id="iframe"></iframe>
 </body>
